@@ -20,9 +20,10 @@ class CommonServiceTabview extends StatelessWidget {
 
     return Column(
       children: [
-        CustomTile(
-          iconData: Icons.school,
-          text: serviceName,
+        ListTile(
+          leading: const Icon(Icons.school),
+          contentPadding: const EdgeInsets.symmetric(horizontal: Sizes.space),
+          title: Text(serviceName),
         ),
         Expanded(
           child: ListView.separated(

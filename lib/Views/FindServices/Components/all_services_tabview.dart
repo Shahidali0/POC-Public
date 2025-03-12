@@ -10,9 +10,10 @@ class AllServicesTabview extends StatelessWidget {
     return ListView(
       children: [
         ///Match Organization
-        const CustomTile(
-          iconData: Icons.school,
-          text: "Match Organization",
+        const ListTile(
+          leading: Icon(Icons.school),
+          contentPadding: EdgeInsets.symmetric(horizontal: Sizes.space),
+          title: Text("Match Organization"),
         ),
         SizedBox(
           height: 340,
@@ -35,9 +36,10 @@ class AllServicesTabview extends StatelessWidget {
         ),
 
         ///Batting
-        const CustomTile(
-          iconData: Icons.school,
-          text: "Batting",
+        const ListTile(
+          leading: Icon(Icons.school),
+          contentPadding: EdgeInsets.symmetric(horizontal: Sizes.space),
+          title: Text("Batting"),
         ),
         SizedBox(
           height: 340,
@@ -60,9 +62,10 @@ class AllServicesTabview extends StatelessWidget {
         ),
 
         ///Bowling
-        const CustomTile(
-          iconData: Icons.school,
-          text: "Bowling",
+        const ListTile(
+          leading: Icon(Icons.school),
+          contentPadding: EdgeInsets.symmetric(horizontal: Sizes.space),
+          title: Text("Bowling"),
         ),
         SizedBox(
           height: 340,

@@ -3,12 +3,22 @@ import 'package:flutter/material.dart';
 
 ///This class shows custom listtile with [minimal titlegap] and [visualdensity--compact]
 class CustomTile extends StatelessWidget {
-  const CustomTile(
-      {super.key, required this.iconData, required this.text, this.fontSize});
+  const CustomTile({
+    super.key,
+    required this.iconData,
+    required this.text,
+    this.fontSize,
+    this.iconSize,
+    this.fontWeight,
+    this.contentPadding,
+  });
 
   final IconData iconData;
   final String text;
   final double? fontSize;
+  final double? iconSize;
+  final FontWeight? fontWeight;
+  final EdgeInsets? contentPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -16,12 +26,12 @@ class CustomTile extends StatelessWidget {
       minTileHeight: 12,
       minVerticalPadding: 4,
       dense: true,
-      contentPadding: EdgeInsets.zero,
+      contentPadding: contentPadding ?? EdgeInsets.zero,
       horizontalTitleGap: 5,
       visualDensity: VisualDensity.compact,
       leading: Icon(
         iconData,
-        size: 16,
+        size: iconSize ?? 16,
       ),
       title: Text(
         text,
@@ -30,7 +40,7 @@ class CustomTile extends StatelessWidget {
         style: TextStyle(
           fontSize: fontSize ?? kDefaultFontSize,
           color: AppColors.black,
-          fontWeight: FontWeight.w500,
+          fontWeight: fontWeight ?? FontWeight.w500,
         ),
       ),
     );
