@@ -1,0 +1,176 @@
+import 'package:cricket_poc/lib_exports.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    _tabController = TabController(length: homeTabbarItems.length, vsync: this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: NestedScrollView(
+        floatHeaderSlivers: true,
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return [
+            const HomeTitleAppBar(),
+            HomeSearchbarWithTabs(tabController: _tabController),
+          ];
+        },
+        body: Padding(
+          padding: Sizes.globalMargin,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Featured Services",
+                style: TextStyle(
+                  fontSize: Sizes.fontSize20,
+                  fontWeight: FontWeight.w800,
+                  color: AppColors.appTheme,
+                ),
+              ),
+              Expanded(
+                child: ListView.separated(
+                  physics: const NeverScrollableScrollPhysics(),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: Sizes.spaceHeight),
+                  itemCount: 20,
+                  itemBuilder: (BuildContext context, int index) {
+                    return const CardWidget();
+                  },
+                  separatorBuilder: (BuildContext context, int index) =>
+                      const SizedBox(height: Sizes.spaceHeight),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+///Common Card Widget
+class CardWidget extends StatelessWidget {
+  const CardWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.zero,
+      child: Padding(
+        padding: Sizes.globalMargin,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ///Header
+            const Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    "Elite Match Organization",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: Sizes.fontSize18,
+                      color: AppColors.black,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
+
+                ///Rating
+                Text(
+                  "⭐️4.6",
+                  style: TextStyle(
+                    fontSize: Sizes.fontSize12,
+                    color: AppColors.orange,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+
+            ///Tag
+            const CustomTile(
+              iconData: CupertinoIcons.person,
+              text: "Elite Match Organization",
+            ),
+
+            ///Description
+            const SizedBox(height: Sizes.space),
+            const Text(
+              "Premium match organization with top-tier grounds and professional umpires",
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: AppColors.black,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const Divider(),
+
+            ///Details
+            const CustomTile(
+              iconData: CupertinoIcons.pin,
+              text: "Melbourne Cricket Ground",
+            ),
+            const CustomTile(
+              iconData: CupertinoIcons.time,
+              text: "180 mins",
+            ),
+            const Divider(),
+
+            ///Book Now
+            Row(
+              children: [
+                const Expanded(
+                  flex: 2,
+                  child: Text(
+                    "\$ 399",
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: Sizes.fontSize16,
+                      color: AppColors.appTheme,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+
+                ///Button
+                Expanded(
+                  child: CommonButton(
+                    onPressed: () {},
+                    text: "Book Now",
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
