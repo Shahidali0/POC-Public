@@ -17,8 +17,8 @@ class MyApp extends StatelessWidget {
       darkTheme: AppTheme.darkTheme(context),
       theme: AppTheme.lightTheme(context),
       themeMode: ThemeMode.light,
-      // home: const IntroScreen(),
-      home: const DashboardNavbarScreen(),
+      home: const IntroScreen(),
+      // home: const DashboardNavbarScreen(),
       // home: const LoginScreen(),
       // home: const OtpVerificationScreen(
       //   emailId: "test@gmail.com",
