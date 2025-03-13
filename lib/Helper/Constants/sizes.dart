@@ -18,7 +18,7 @@ class Sizes {
   static const double borderRadiusMd = 4;
 
   ///Button Sizes
-  static const double buttonHeight = 46.0;
+  static const double buttonHeight = 52.0;
 
   /// Durations
   static const Duration duration = Duration(milliseconds: 450);

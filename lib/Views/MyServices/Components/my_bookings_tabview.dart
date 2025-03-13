@@ -8,6 +8,7 @@ class MyBookingsTabview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
+      key: const PageStorageKey('MyBookingsTabview'),
       padding: Sizes.globalMargin,
       child: Column(
         children: [

@@ -34,7 +34,13 @@ class DashboardNavbarScreen extends ConsumerWidget {
       ),
       floatingActionButton: SafeArea(
         child: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            AppRouter.instance.animatedPush(
+              context: context,
+              scaleTransition: true,
+              screen: const PostServiceScreen(),
+            );
+          },
           shape: const CircleBorder(),
           child: const Icon(CupertinoIcons.add),
         ),

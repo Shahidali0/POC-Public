@@ -23,7 +23,7 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showErrorSnackBar({
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontSize: Sizes.fontSize18,
+                fontSize: Sizes.fontSize16,
                 color: textColor,
                 fontWeight: FontWeight.w700,
               ),
@@ -36,7 +36,7 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showErrorSnackBar({
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               color: textColor,
-              fontSize: title != null ? Sizes.defaultSize : Sizes.fontSize18,
+              fontSize: title != null ? Sizes.defaultSize : Sizes.fontSize16,
               fontWeight: title != null ? FontWeight.w500 : FontWeight.w700,
             ),
           ),
@@ -63,7 +63,7 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSuccessSnackBar({
 }) {
   ScaffoldMessenger.of(context).clearSnackBars();
 
-  Color backgroundColor = AppColors.appTheme;
+  Color backgroundColor = AppColors.orange;
   Color textColor = AppColors.white;
 
   return ScaffoldMessenger.of(context).showSnackBar(

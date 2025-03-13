@@ -1,6 +1,8 @@
-import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cricket_poc/lib_exports.dart';
+
+part 'Components/home_appbar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -31,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         floatHeaderSlivers: true,
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return [
-            const HomeTitleAppBar(),
+            const _HomeTitleAppBar(),
             HomeSearchbarWithTabs(tabController: _tabController),
           ];
         },

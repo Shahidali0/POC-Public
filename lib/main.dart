@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       home: const DashboardNavbarScreen(),
       // home: const LoginScreen(),
       // home: const OtpVerificationScreen(
-      //   emailId: "test@gmail.com",
+      //   emailId: "shahid@asztechnologies.com",
       // ),
     );
   }

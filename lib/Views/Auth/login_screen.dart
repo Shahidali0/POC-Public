@@ -1,19 +1,22 @@
 import 'package:cricket_poc/lib_exports.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   late TextEditingController _emailController;
+  late TextEditingController _passwordController;
 
   @override
   void initState() {
     _emailController = TextEditingController();
+    _passwordController = TextEditingController();
 
     super.initState();
   }
@@ -21,54 +24,73 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void dispose() {
     _emailController.dispose();
+    _passwordController.dispose();
 
     super.dispose();
   }
 
   ///OnTap SendCode
-  void _onTapSendCode(
-          {required BuildContext context, required WidgetRef ref}) =>
-      ref.read(authControllerPr.notifier).onTapSendCode(
-            context: context,
-            email: _emailController.text.trim(),
-          );
+  void _onTapSignIn({
+    required BuildContext context,
+    required WidgetRef ref,
+  }) async {
+    Utils.instance.hideFoucs(context);
+    await ref.read(authControllerPr.notifier).signInUser(
+          context: context,
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
+    return;
+  }
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = ref.watch(authControllerPr);
     return AuthBackground(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: Sizes.spaceHeight * 2),
-          const Text(
-            "👋 Hello,",
-            style: TextStyle(
-              fontSize: Sizes.fontSize24,
-              fontStyle: FontStyle.italic,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const Text(
-            "Welcome back to your account",
-            style: TextStyle(fontSize: Sizes.fontSize18),
-          ),
-          const SizedBox(height: Sizes.spaceHeight),
-          _EmailField(controller: _emailController),
-          const SizedBox(height: Sizes.spaceHeight),
-          Consumer(
-            builder: (_, WidgetRef ref, __) {
-              return CommonButton(
-                onPressed: () => _onTapSendCode(
+      child: AbsorbPointer(
+        absorbing: isLoading,
+        child: AutofillGroup(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: Sizes.spaceHeight * 2),
+              const Text(
+                "👋 Hello,",
+                style: TextStyle(
+                  fontSize: Sizes.fontSize24,
+                  fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              const Text(
+                "Welcome back to your account",
+                style: TextStyle(fontSize: Sizes.fontSize18),
+              ),
+              const SizedBox(height: Sizes.spaceHeight),
+
+              ///Email
+              _EmailField(controller: _emailController),
+
+              ///Password
+              _PasswordField(controller: _passwordController),
+
+              ///SignIn Button
+              const SizedBox(height: Sizes.space * 2),
+              CommonButton(
+                onPressed: () => _onTapSignIn(
                   context: context,
                   ref: ref,
                 ),
-                text: "Send Code",
-              );
-            },
+                text: "Sign In",
+                isLoading: isLoading,
+              ),
+
+              ///Have an account
+              const SizedBox(height: Sizes.spaceHeight),
+              const HaveAnAccountWidget(authType: AuthType.login),
+            ],
           ),
-          const SizedBox(height: Sizes.spaceHeight),
-          const HaveAnAccountWidget(authType: AuthType.login),
-        ],
+        ),
       ),
     );
   }
@@ -89,9 +111,40 @@ class _EmailField extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         keyboardType: TextInputType.emailAddress,
-        validator: FieldValidators.instance.emailValidator,
         autofillHints: Formatter.instance.emailAutoFillHints,
         decoration: const InputDecoration(hintText: "Enter your email"),
+      ),
+    );
+  }
+}
+
+///Password Field
+class _PasswordField extends ConsumerWidget {
+  const _PasswordField({required this.controller});
+
+  final TextEditingController controller;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final obSecureText = ref.watch(obSecurePasswordPr);
+    return FormFiledWidget(
+      title: "Password",
+      child: TextFormField(
+        controller: controller,
+        obscureText: obSecureText,
+        autofillHints: Formatter.instance.passwordAutoFillHints,
+        decoration: InputDecoration(
+          hintText: "Enter your password",
+          suffixIcon: GestureDetector(
+            onTap: () => ref
+                .read(obSecurePasswordPr.notifier)
+                .update((state) => state = !obSecureText),
+            child: Icon(
+              obSecureText ? CupertinoIcons.eye_slash : CupertinoIcons.eye,
+              size: 23,
+            ),
+          ),
+        ),
       ),
     );
   }

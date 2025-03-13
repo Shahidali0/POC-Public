@@ -29,7 +29,8 @@ class FormFiledWidget extends StatelessWidget {
           title,
           style: const TextStyle(
             color: AppColors.black,
-            fontSize: Sizes.defaultSize,
+            fontSize: Sizes.fontSize16,
+            fontWeight: FontWeight.w600,
           ),
         ),
         const SizedBox(height: Sizes.spaceMed),

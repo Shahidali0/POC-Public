@@ -13,6 +13,14 @@ abstract class AuthServices {
     required String email,
     required String password,
   });
+
+  Future<String?> signUpUser({
+    required SignUpDto signUpDto,
+  });
+  Future<String?> verifyOtp({
+    required String email,
+    required String otp,
+  });
 }
 
 class _AuthServicesImpl extends AuthServices {
@@ -21,18 +29,56 @@ class _AuthServicesImpl extends AuthServices {
   _AuthServicesImpl({required ApiHeaders apiHeaders})
       : _apiHeaders = apiHeaders;
 
-  ///Authenticate Vendor app
+  //* Authenticate User
   @override
   Future<String?> authenticate({
     required String email,
     required String password,
   }) async {
-    const url = "staging/login";
+    const url = "login";
 
     final body = jsonEncode(
       <String, dynamic>{
         "username": email,
         "password": password,
+      },
+    );
+
+    final response = await BaseHttpClient.postService(
+      urlEndPoint: url,
+      body: body,
+      headers: _apiHeaders.headers,
+    );
+
+    return response;
+  }
+
+//* SignUp User
+  @override
+  Future<String?> signUpUser({required SignUpDto signUpDto}) async {
+    const url = "signup";
+
+    final body = signUpDto.toRawJson();
+
+    final response = await BaseHttpClient.postService(
+      urlEndPoint: url,
+      body: body,
+      headers: _apiHeaders.headers,
+    );
+
+    return response;
+  }
+
+  //* Verify- Email & OTP
+  @override
+  Future<String?> verifyOtp(
+      {required String email, required String otp}) async {
+    const url = "confirm";
+
+    final body = jsonEncode(
+      <String, dynamic>{
+        "username": email,
+        "confirmationCode": otp,
       },
     );
 

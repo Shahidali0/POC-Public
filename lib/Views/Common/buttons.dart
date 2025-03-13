@@ -28,6 +28,7 @@ class CommonButton extends _PlatformWidget {
     super.key,
     required this.onPressed,
     required this.text,
+    this.isLoading = false,
     this.iconData,
     this.backgroundColor = AppColors.appTheme,
     this.minButtonWidth,
@@ -38,6 +39,7 @@ class CommonButton extends _PlatformWidget {
 
   final void Function()? onPressed;
   final String text;
+  final bool isLoading;
   final IconData? iconData;
   final Color backgroundColor;
   final double? minButtonWidth;
@@ -54,7 +56,7 @@ class CommonButton extends _PlatformWidget {
         padding: EdgeInsets.zero,
         color: backgroundColor,
         borderRadius: _borderRadius,
-        minSize: dense ? Sizes.buttonHeight * 0.8 : Sizes.buttonHeight,
+        minSize: dense ? Sizes.buttonHeight * 0.7 : Sizes.buttonHeight,
         onPressed: onPressed,
         child: getChild,
       ),
@@ -71,7 +73,7 @@ class CommonButton extends _PlatformWidget {
         shape: RoundedRectangleBorder(borderRadius: _borderRadius),
         minimumSize: Size(
           _minButtonWidthValue(context),
-          dense ? Sizes.buttonHeight * 0.8 : Sizes.buttonHeight,
+          dense ? Sizes.buttonHeight * 0.7 : Sizes.buttonHeight,
         ),
       ),
       onPressed: onPressed,
@@ -80,32 +82,34 @@ class CommonButton extends _PlatformWidget {
   }
 
   ///CHILD WIDGET
-  Widget get getChild => Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          if (iconData != null) ...[
-            Icon(
-              iconData,
-              color: textColor,
-            ),
-            const SizedBox(width: Sizes.spaceMed),
-          ],
+  Widget get getChild => isLoading
+      ? const ShowPlatformLoader(color: AppColors.white)
+      : Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (iconData != null) ...[
+              Icon(
+                iconData,
+                color: textColor,
+              ),
+              const SizedBox(width: Sizes.spaceMed),
+            ],
 
-          ///FittedBox --> To fix the fontoverflow issue on buttons
-          FittedBox(
-            child: Text(
-              text,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: Sizes.fontSize16,
-                fontWeight: FontWeight.w800,
-                color: textColor ?? AppColors.white,
+            ///FittedBox --> To fix the fontoverflow issue on buttons
+            FittedBox(
+              child: Text(
+                text,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: Sizes.fontSize16,
+                  fontWeight: FontWeight.w800,
+                  color: textColor ?? AppColors.white,
+                ),
               ),
             ),
-          ),
-        ],
-      );
+          ],
+        );
 
   BorderRadius get _borderRadius =>
       borderRadius ?? BorderRadius.circular(Sizes.borderRadius);
@@ -219,7 +223,7 @@ class CommonOutlineButton extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: _borderRadius),
         minimumSize: Size(
           _minButtonWidthValue(context),
-          dense ? Sizes.buttonHeight * 0.8 : Sizes.buttonHeight,
+          dense ? Sizes.buttonHeight * 0.7 : Sizes.buttonHeight,
         ),
       ),
       onPressed: onPressed,

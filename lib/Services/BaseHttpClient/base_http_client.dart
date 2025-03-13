@@ -19,7 +19,7 @@ class BaseHttpClient {
     required Map<String, String> headers,
     bool hideDialogs = false,
   }) async {
-    Uri uri = Uri.parse(Utils.baseUrl + urlEndPoint);
+    Uri uri = Uri.parse(Utils.instance.baseUrl + urlEndPoint);
 
     final response = await http.get(uri, headers: headers);
 
@@ -34,7 +34,7 @@ class BaseHttpClient {
     required Map<String, String> headers,
     bool hideDialogs = false,
   }) async {
-    Uri uri = Uri.parse(Utils.baseUrl + urlEndPoint);
+    Uri uri = Uri.parse(Utils.instance.baseUrl + urlEndPoint);
 
     final response = await http.delete(uri, headers: headers);
 
@@ -50,7 +50,7 @@ class BaseHttpClient {
     required Map<String, String> headers,
     bool hideDialogs = false,
   }) async {
-    Uri uri = Uri.parse(Utils.baseUrl + urlEndPoint);
+    Uri uri = Uri.parse(Utils.instance.baseUrl + urlEndPoint);
 
     final response = await http.post(
       uri,
@@ -70,7 +70,7 @@ class BaseHttpClient {
     required Map<String, String> headers,
     bool hideDialogs = false,
   }) async {
-    Uri uri = Uri.parse(Utils.baseUrl + urlEndPoint);
+    Uri uri = Uri.parse(Utils.instance.baseUrl + urlEndPoint);
     final response = await http.put(
       uri,
       body: body,
@@ -89,7 +89,7 @@ class BaseHttpClient {
     required Map<String, String> headers,
     bool hideDialogs = false,
   }) async {
-    Uri uri = Uri.parse(Utils.baseUrl + urlEndPoint);
+    Uri uri = Uri.parse(Utils.instance.baseUrl + urlEndPoint);
 
     final request = mhttp.MultipartRequest('POST', uri);
 

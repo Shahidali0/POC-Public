@@ -19,20 +19,24 @@ class ResponseHandler {
     else if (response.statusCode == 400) {
       if (response.body.isEmpty) {
         throw MyHttpClientException(
-            failure: AppExceptions.handleUnAuthorizedError());
+          failure: AppExceptions.handleUnAuthorizedError(),
+        );
       }
 
       ///
       final responseData = jsonDecode(response.body);
-      String message =
-          responseData["message"].toString().replaceAll(".", "").toLowerCase();
-      String status = responseData["status"].toString().toLowerCase();
-      if (status.toLowerCase().contains("error")) {
-        basicFailure = Failure(
-          title: AppExceptions.serverError,
-          message: message,
-        );
-      }
+      String title = responseData["message"].toString().replaceAll(".", "");
+      String message = responseData["error"].toString();
+      // if (status.toLowerCase().contains("error")) {
+      //   basicFailure = Failure(
+      //     title: AppExceptions.serverError,
+      //     message: message,
+      //   );
+      // }
+      basicFailure = Failure(
+        title: title,
+        message: message,
+      );
 
       throw MyHttpClientException(failure: basicFailure);
     }
@@ -55,15 +59,14 @@ class ResponseHandler {
 
       ///
       final responseData = jsonDecode(response.body);
-      String message =
+      String title =
           responseData["message"].toString().replaceAll(".", "").toLowerCase();
-      String status = responseData["status"].toString().toLowerCase();
-      if (status.toLowerCase().contains("error")) {
-        basicFailure = Failure(
-          title: AppExceptions.serverError,
-          message: message,
-        );
-      }
+      String message = responseData["error"].toString().toLowerCase();
+
+      basicFailure = Failure(
+        title: title,
+        message: message,
+      );
 
       throw MyHttpClientException(failure: basicFailure);
     }

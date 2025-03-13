@@ -89,36 +89,41 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
   @override
   Widget build(BuildContext context) {
     var otpErrorText = ref.watch(authControllerPr.notifier).otpErrorText;
+    final isLoading = ref.watch(authControllerPr);
 
     return AuthBackground(
       title: "Verify with OTP",
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Text(
-              "We have sent you a security code to\n $userEmailId \n Please type it here",
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: Sizes.fontSize18),
-            ),
-            Image.asset(AppImages.verifyOtp),
-            OtpFieldsWidget(
-              errorController: _authController.errorController,
-              otpController: _otpController,
-            ),
-            _OtpErrorWidget(otpErrorText),
-            _ResendOTPWidget(
-              listenable: _start,
-              onTap: _onPressedResend,
-            ),
-            const SizedBox(height: Sizes.spaceHeight),
+      child: AbsorbPointer(
+        absorbing: isLoading,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Text(
+                "We have sent you a security code to\n $userEmailId \n Please type it here",
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: Sizes.fontSize18),
+              ),
+              Image.asset(AppImages.verifyOtp),
+              OtpFieldsWidget(
+                errorController: _authController.errorController,
+                otpController: _otpController,
+              ),
+              _OtpErrorWidget(otpErrorText),
+              _ResendOTPWidget(
+                listenable: _start,
+                onTap: _onPressedResend,
+              ),
+              const SizedBox(height: Sizes.spaceHeight),
 
-            ///Register Button
-            CommonButton(
-              onPressed: () => _verifyOtp(),
-              text: "Verify OTP",
-            ),
-            const SizedBox(height: Sizes.spaceHeight),
-          ],
+              ///Verify OTP Button
+              CommonButton(
+                onPressed: _verifyOtp,
+                text: "Verify OTP",
+                isLoading: isLoading,
+              ),
+              const SizedBox(height: Sizes.spaceHeight),
+            ],
+          ),
         ),
       ),
     );
@@ -143,8 +148,8 @@ class _OtpErrorWidget extends ConsumerWidget {
                   value,
                   style: const TextStyle(
                     color: AppColors.red,
-                    fontSize: Sizes.fontSize20,
-                    fontWeight: FontWeight.w500,
+                    fontSize: Sizes.fontSize16,
+                    fontWeight: FontWeight.w400,
                   ),
                   textAlign: TextAlign.center,
                   maxLines: 3,

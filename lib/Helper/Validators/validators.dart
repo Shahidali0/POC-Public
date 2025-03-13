@@ -27,6 +27,23 @@ class FieldValidators {
   //   return null;
   // }
 
+  ///Password Validator
+  String? passwordValidator(String? value) {
+    if (value!.isEmpty) {
+      return requiredText;
+    } else if (value.length < 3) {
+      return strongPasswordText;
+    } else if (!value.contains(
+      RegExp(
+          r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$'),
+      // RegExp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$'),
+    )) {
+      return passwordIncorrectFormat;
+    }
+
+    return null;
+  }
+
   ///Email Validator
   String? emailValidator(String? value) {
     if (value == null || value.isEmpty) {

@@ -148,24 +148,69 @@ class SliverPinnedTabBar extends SliverPersistentHeaderDelegate {
       false;
 }
 
-///Normal Page Appbar
-class NormalSliverAppbar extends StatelessWidget {
-  const NormalSliverAppbar({
+// ///Normal Page Sliver Appbar
+// class NormalSliverAppbar extends StatelessWidget {
+//   const NormalSliverAppbar({
+//     super.key,
+//     required this.title,
+//     this.actions,
+//   });
+//   final String title;
+//   final List<Widget>? actions;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return SliverAppBar.medium(
+//       floating: true,
+//       snap: true,
+//       scrolledUnderElevation: 4,
+//       title: Text(title),
+//       actions: actions,
+//     );
+//   }
+// }
+
+///CupertinoStyle Tabbar
+class MyCupertinoPageScaffold extends StatelessWidget {
+  const MyCupertinoPageScaffold({
     super.key,
     required this.title,
-    this.actions,
+    required this.body,
+    this.previousPageTitle,
+    this.trailing,
+    this.bottomNavBar,
   });
+
   final String title;
-  final List<Widget>? actions;
+  final Widget body;
+  final String? previousPageTitle;
+  final Widget? trailing;
+  final Widget? bottomNavBar;
 
   @override
   Widget build(BuildContext context) {
-    return SliverAppBar.medium(
-      floating: true,
-      snap: true,
-      scrolledUnderElevation: 4,
-      title: Text(title),
-      actions: actions,
+    return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(
+        backgroundColor: AppColors.transparent, // Makes the AppBar transparent
+        border: Border(bottom: BorderSide(color: AppColors.lightGrey)),
+        previousPageTitle: previousPageTitle,
+        trailing: trailing,
+        middle: Text(
+          title,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
+            color: AppColors.appTheme,
+          ),
+        ),
+      ),
+      child: Scaffold(
+        bottomNavigationBar: bottomNavBar,
+        body: Padding(
+          padding: Sizes.globalMargin,
+          child: body,
+        ),
+      ),
     );
   }
 }

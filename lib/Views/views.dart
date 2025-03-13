@@ -32,7 +32,7 @@ export 'DashboardNavBar/Controller/navbar_controller.dart';
 
 export 'Home/Controller/home_controller.dart';
 
-export 'Home/Components/home_appbar.dart';
+// export 'Home/Components/home_appbar.dart';
 
 export 'Home/home_screen.dart';
 
@@ -53,6 +53,12 @@ export 'MyServices/Components/my_bookings_tabview.dart';
 export 'MyServices/Components/my_services_tabview.dart';
 
 export 'MyServices/Controller/my_servcies_controller.dart';
+
+//* Post Service
+
+export 'PostService/Controller/post_service_controller.dart';
+
+export 'PostService/post_service_screen.dart';
 
 //* Profile
 

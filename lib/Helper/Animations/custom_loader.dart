@@ -114,9 +114,14 @@ class ShowDataLoader extends StatelessWidget {
 
 //? Show Platform Loader
 class ShowPlatformLoader extends StatelessWidget {
-  const ShowPlatformLoader({super.key, this.radius = 20});
+  const ShowPlatformLoader({
+    super.key,
+    this.radius = 30,
+    this.color,
+  });
 
   final double radius;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -124,10 +129,16 @@ class ShowPlatformLoader extends StatelessWidget {
       return SizedBox(
         height: radius,
         width: radius,
-        child: const CircularProgressIndicator(strokeWidth: 2),
+        child: CircularProgressIndicator(
+          strokeWidth: 2,
+          color: color,
+        ),
       );
     }
-    return const CupertinoActivityIndicator(radius: 20);
+    return CupertinoActivityIndicator(
+      radius: 14,
+      color: color,
+    );
   }
 }
 

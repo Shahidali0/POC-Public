@@ -13,7 +13,7 @@ class MyInputDecorationTheme {
       alignLabelWithHint: true,
       errorMaxLines: 4,
       prefixIconColor: AppColors.grey,
-      suffixIconColor: AppColors.grey,
+      suffixIconColor: AppColors.black.withOpacity(0.7),
       floatingLabelAlignment: FloatingLabelAlignment.start,
       focusedBorder: OutlineInputBorder(
         borderSide: const BorderSide(color: AppColors.appTheme),

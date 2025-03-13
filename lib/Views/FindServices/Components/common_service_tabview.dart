@@ -15,10 +15,13 @@ class CommonServiceTabview extends StatelessWidget {
   Widget build(BuildContext context) {
     if (serviceData == 0) {
       return const EmptyDataWidget(
-          subTitle: "No services found for the selected category.");
+        key: PageStorageKey('CommonServiceTabview'),
+        subTitle: "No services found for the selected category.",
+      );
     }
 
     return Column(
+      key: const PageStorageKey('CommonServiceTabview'),
       children: [
         ListTile(
           leading: const Icon(Icons.school),

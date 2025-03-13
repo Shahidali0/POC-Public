@@ -1,10 +1,8 @@
-import 'package:cricket_poc/lib_exports.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+part of 'package:cricket_poc/Views/Home/home_screen.dart';
 
 ///This Class shows homepage appbar with location of user and notifications icon
-class HomeTitleAppBar extends StatelessWidget {
-  const HomeTitleAppBar({super.key});
+class _HomeTitleAppBar extends StatelessWidget {
+  const _HomeTitleAppBar();
 
   @override
   Widget build(BuildContext context) {

@@ -9,7 +9,6 @@ class MyChipTheme {
   ///#### LIGHT CHIP THEME #####
   ChipThemeData lightChipTheme(BuildContext context) {
     return Theme.of(context).chipTheme.copyWith(
-          backgroundColor: AppColors.lightGrey,
           labelStyle: const TextStyle(
             color: AppColors.black,
             fontWeight: FontWeight.w400,
