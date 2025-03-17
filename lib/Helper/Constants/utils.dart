@@ -40,4 +40,27 @@ class Utils {
 
     return dateTime;
   }
+
+  //* DatePicker Theme --For Android
+  Theme datePickerTheme({
+    required BuildContext context,
+    required Widget child,
+  }) =>
+      Theme(
+        data: Theme.of(context).copyWith(
+          colorScheme: const ColorScheme.light(
+            brightness: Brightness.light,
+            primary: AppColors.appTheme,
+          ),
+          textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(
+              foregroundColor: AppColors.appTheme,
+              textStyle: const TextStyle(
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ),
+        ),
+        child: child,
+      );
 }

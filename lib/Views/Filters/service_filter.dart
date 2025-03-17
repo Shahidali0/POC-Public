@@ -29,7 +29,8 @@ class ServiceFilters extends StatelessWidget {
           text: "Apply Filters",
         ),
       ),
-      body: ListView(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
             "Category:",

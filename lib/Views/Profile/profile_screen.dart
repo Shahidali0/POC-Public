@@ -20,52 +20,49 @@ class _FindServicesScreenState extends State<ProfileScreen> {
             appBarColor: AppColors.indicatorColors[3],
           ),
         ],
-        body: Padding(
+        body: ListView(
           padding: Sizes.globalMargin,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                "ACCOUNT",
-                style: TextStyle(
-                  fontSize: Sizes.fontSize18,
-                  fontStyle: FontStyle.italic,
-                  fontWeight: FontWeight.bold,
-                ),
+          children: [
+            const Text(
+              "ACCOUNT",
+              style: TextStyle(
+                fontSize: Sizes.fontSize18,
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.bold,
               ),
-              const Text(
-                "Login/Create Account to manage orders",
-                style: TextStyle(
-                  fontSize: Sizes.fontSize16,
-                ),
+            ),
+            const Text(
+              "Login/Create Account to manage orders",
+              style: TextStyle(
+                fontSize: Sizes.fontSize16,
               ),
-              const SizedBox(height: Sizes.space),
-              CommonButton(
-                onPressed: () => AppRouter.instance.push(
-                  context: context,
-                  screen: const LoginScreen(),
-                ),
-                text: "Login",
+            ),
+            const SizedBox(height: Sizes.space),
+            CommonButton(
+              onPressed: () => AppRouter.instance.push(
+                context: context,
+                screen: const LoginScreen(),
               ),
-              const SizedBox(height: Sizes.spaceMed),
+              text: "Login",
+            ),
+            const SizedBox(height: Sizes.spaceMed),
 
-              ///Divider
-              const Divider(thickness: 5),
+            ///Divider
+            const Divider(thickness: 5),
 
-              ///AboutUs
-              ListTile(
-                onTap: () {},
-                leading: const Icon(Icons.info),
-                title: const Text("About Us"),
-                trailing: const Icon(Icons.chevron_right),
-              ),
+            ///AboutUs
+            ListTile(
+              onTap: () {},
+              leading: const Icon(Icons.info),
+              title: const Text("About Us"),
+              trailing: const Icon(Icons.chevron_right),
+            ),
 
-              ///Version
-              const Center(
-                child: Text("App version 1.0.0"),
-              ),
-            ],
-          ),
+            ///Version
+            const Center(
+              child: Text("App version 1.0.0"),
+            ),
+          ],
         ),
       ),
     );

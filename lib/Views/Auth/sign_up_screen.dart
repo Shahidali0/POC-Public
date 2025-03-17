@@ -184,7 +184,8 @@ class _FullNameField extends StatelessWidget {
           ///First Name
           Flexible(
             child: FormFiledWidget(
-              title: "First Name *",
+              title: "First Name",
+              isRequired: true,
               child: TextFormField(
                 controller: firstNameController,
                 keyboardType: TextInputType.name,
@@ -199,7 +200,8 @@ class _FullNameField extends StatelessWidget {
           ///Last Name
           Flexible(
             child: FormFiledWidget(
-              title: "Last Name *",
+              title: "Last Name",
+              isRequired: true,
               child: TextFormField(
                 controller: lastNameController,
                 keyboardType: TextInputType.name,
@@ -227,7 +229,8 @@ class _EmailField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FormFiledWidget(
-      title: "Email *",
+      title: "Email",
+      isRequired: true,
       child: TextFormField(
         controller: controller,
         keyboardType: TextInputType.emailAddress,
@@ -250,7 +253,8 @@ class _NewPasswordField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FormFiledWidget(
-      title: "Password *",
+      title: "Password",
+      isRequired: true,
       child: TextFormField(
         controller: controller,
         keyboardType: TextInputType.text,
@@ -272,7 +276,8 @@ class _HomeSuburbField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FormFiledWidget(
-      title: "Enter your home suburb *",
+      title: "Enter your home suburb",
+      isRequired: true,
       child: TextFormField(
         controller: controller,
         keyboardType: TextInputType.name,
@@ -297,7 +302,8 @@ class _MainGoalWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FormFiledWidget(
-      title: "What is your main goal on PlayMate? *",
+      title: "What is your main goal on PlayMate?",
+      isRequired: true,
       child: SizedBox(
         width: double.infinity,
         child: ValueListenableBuilder(
@@ -351,7 +357,8 @@ class _AboutYourSelfWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FormFiledWidget(
-      title: "Tell us about yourself *",
+      title: "Tell us about yourself",
+      isRequired: true,
       child: SizedBox(
         width: double.infinity,
         child: ValueListenableBuilder(

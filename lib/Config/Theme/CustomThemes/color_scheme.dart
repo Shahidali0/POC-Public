@@ -11,6 +11,8 @@ class MyColorScheme {
     return Theme.of(context).colorScheme.copyWith(
           brightness: Brightness.light,
           primary: AppColors.appTheme,
+          surface: AppColors.white,
+          onSurface: AppColors.black,
         );
   }
 

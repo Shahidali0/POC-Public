@@ -179,6 +179,7 @@ class MyCupertinoPageScaffold extends StatelessWidget {
     this.previousPageTitle,
     this.trailing,
     this.bottomNavBar,
+    this.margin = Sizes.globalMargin,
   });
 
   final String title;
@@ -186,29 +187,48 @@ class MyCupertinoPageScaffold extends StatelessWidget {
   final String? previousPageTitle;
   final Widget? trailing;
   final Widget? bottomNavBar;
+  final EdgeInsets margin;
 
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        backgroundColor: AppColors.transparent, // Makes the AppBar transparent
-        border: Border(bottom: BorderSide(color: AppColors.lightGrey)),
-        previousPageTitle: previousPageTitle,
-        trailing: trailing,
-        middle: Text(
-          title,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontStyle: FontStyle.italic,
-            color: AppColors.appTheme,
+      child: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) =>
+            [
+          CupertinoSliverNavigationBar(
+            backgroundColor:
+                AppColors.transparent, // Makes the AppBar transparent
+            // border: null,
+            border: Border(bottom: BorderSide(color: AppColors.lightGrey)),
+            previousPageTitle: previousPageTitle,
+            trailing: trailing,
+            alwaysShowMiddle: false,
+            middle: Text(
+              title,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic,
+                color: AppColors.appTheme,
+              ),
+            ),
+            largeTitle: Text(
+              title,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic,
+                color: AppColors.black,
+                fontSize: Sizes.fontSize22,
+              ),
+            ),
           ),
-        ),
-      ),
-      child: Scaffold(
-        bottomNavigationBar: bottomNavBar,
-        body: Padding(
-          padding: Sizes.globalMargin,
-          child: body,
+        ],
+        body: Scaffold(
+          bottomNavigationBar: bottomNavBar,
+          body: Padding(
+            padding: margin,
+            child: body,
+          ),
         ),
       ),
     );

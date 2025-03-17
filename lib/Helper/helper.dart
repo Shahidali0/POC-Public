@@ -14,5 +14,5 @@ export 'Validators/validators.dart';
 
 export 'Storage/local_storage.dart';
 
-export 'Alerts/dialogs.dart';
+export 'Alerts/alerts.dart';
 export 'Alerts/snackbars.dart';

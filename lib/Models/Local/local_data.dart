@@ -26,6 +26,20 @@ List<String> findServicesTabs = [
   "Hire Equipment",
 ];
 
+List<String> duration = ["30 min", "60 min", "90 min", "2 hrs"];
+
+List<String> timeSlots = [
+  "09:00 Am",
+  "10:00 Am",
+  "11:00 Am",
+  "12:00 Pm",
+  "01:00 Pm",
+  "02:00 Pm",
+  "03:00 Pm",
+  "04:00 Pm",
+  "05:00 Pm",
+];
+
 List<String> myServicesTabs = [
   "My Services",
   "My Booking",

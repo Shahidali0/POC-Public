@@ -8,4 +8,6 @@ final findServicesTabBarIndexPr = StateProvider<int>((ref) => 0);
 
 class FindServciesController extends StateNotifier<bool> {
   FindServciesController() : super(false);
+
+  //* Open a bottom sheet
 }

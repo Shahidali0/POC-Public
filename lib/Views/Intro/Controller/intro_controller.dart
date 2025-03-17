@@ -11,7 +11,7 @@ class IntroController extends StateNotifier<bool> {
 
   ///Show Dailog for ReadyToGetStarted
   FutureVoid _showDialogBoxForMarkReady(BuildContext context) {
-    return LogHelper.showGeneralDialogBox(
+    return LogHelper.instance.showGeneralDialogBox(
       context: context,
       barrierLabel: "Ready To Get Started",
       child: const IntroFinalScreen(),
