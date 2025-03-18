@@ -143,7 +143,7 @@ class _IntroWidget extends StatelessWidget {
         FadeAnimations(
           from: 80,
           delay: 3.2,
-          type: FadeAnimationType.rightToLeft,
+          type: MyAnimationType.rightToLeft,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(Sizes.borderRadius),
             child: Image.asset(
@@ -159,7 +159,7 @@ class _IntroWidget extends StatelessWidget {
         FadeAnimations(
           from: 80,
           delay: 3.2,
-          type: FadeAnimationType.rightToLeft,
+          type: MyAnimationType.rightToLeft,
           child: Text(
             heading,
             style: const TextStyle(
@@ -175,7 +175,7 @@ class _IntroWidget extends StatelessWidget {
         FadeAnimations(
           from: 80,
           delay: 3.2,
-          type: FadeAnimationType.rightToLeft,
+          type: MyAnimationType.rightToLeft,
           child: Text(
             description,
             textAlign: TextAlign.center,

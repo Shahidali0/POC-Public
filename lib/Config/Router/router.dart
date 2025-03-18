@@ -29,7 +29,7 @@ class AppRouter {
   Future<dynamic>? animatedPush({
     required BuildContext context,
     required Widget screen,
-    FadeAnimationType type = FadeAnimationType.bottomUp,
+    MyAnimationType type = MyAnimationType.bottomUp,
     bool scaleTransition = false,
   }) {
     return Navigator.of(context).push(
@@ -95,14 +95,14 @@ class AppRouter {
   }
 
   ///Get OffSet For PageTransition Animation
-  Offset _getOffset(FadeAnimationType type) {
-    if (type == FadeAnimationType.leftToRight) {
+  Offset _getOffset(MyAnimationType type) {
+    if (type == MyAnimationType.leftToRight) {
       return const Offset(-1, 0);
     }
-    if (type == FadeAnimationType.rightToLeft) {
+    if (type == MyAnimationType.rightToLeft) {
       return const Offset(1, 0);
     }
-    if (type == FadeAnimationType.upDown) {
+    if (type == MyAnimationType.upDown) {
       return const Offset(0, -1);
     }
     return const Offset(0, 1);

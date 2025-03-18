@@ -20,4 +20,4 @@ export 'package:flutter_riverpod/flutter_riverpod.dart';
 // export 'package:flutter_native_splash/flutter_native_splash.dart';
 export 'package:intl/intl.dart';
 export 'package:pin_code_fields/pin_code_fields.dart';
-export 'package:calendar_date_picker2/calendar_date_picker2.dart';
+export 'package:table_calendar/table_calendar.dart';

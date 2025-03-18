@@ -1,14 +1,15 @@
 import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter/material.dart';
 
-class ServiceDetailsForm extends ConsumerStatefulWidget {
-  const ServiceDetailsForm({super.key});
+class PostServiceDetailsForm extends ConsumerStatefulWidget {
+  const PostServiceDetailsForm({super.key});
 
   @override
-  ConsumerState<ServiceDetailsForm> createState() => _ServiceDetailsFormState();
+  ConsumerState<PostServiceDetailsForm> createState() =>
+      _ServiceDetailsFormState();
 }
 
-class _ServiceDetailsFormState extends ConsumerState<ServiceDetailsForm> {
+class _ServiceDetailsFormState extends ConsumerState<PostServiceDetailsForm> {
   late TextEditingController _serviceTitleController;
   late TextEditingController _serviceDescriptionController;
   late TextEditingController _serviceCategoryController;
@@ -29,6 +30,7 @@ class _ServiceDetailsFormState extends ConsumerState<ServiceDetailsForm> {
     _serviceTitleController.dispose();
     _serviceDescriptionController.dispose();
     _serviceCategoryController.dispose();
+    _selectedServiceCategory.dispose();
     super.dispose();
   }
 

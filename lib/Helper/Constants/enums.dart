@@ -1,6 +1,6 @@
 enum SnackbarType { failure, success }
 
-enum FadeAnimationType { bottomUp, rightToLeft, leftToRight, upDown }
+enum MyAnimationType { bottomUp, rightToLeft, leftToRight, upDown }
 
 enum AuthType { signup, login }
 

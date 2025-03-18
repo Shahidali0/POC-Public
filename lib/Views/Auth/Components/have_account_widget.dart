@@ -26,28 +26,32 @@ class HaveAnAccountWidget extends StatelessWidget {
 
     final String buttonText =
         authType == AuthType.signup ? "Login" : "Create Account";
-    return Align(
-      alignment: Alignment.center,
-      child: RichText(
-        textAlign: TextAlign.center,
-        text: TextSpan(
-          text: title,
-          style: const TextStyle(
-            color: AppColors.blueGrey,
-            fontSize: Sizes.defaultSize,
-          ),
-          children: [
-            TextSpan(
-              text: buttonText,
-              style: const TextStyle(
-                decoration: TextDecoration.underline,
-                decorationStyle: TextDecorationStyle.solid,
-                color: AppColors.appTheme,
-                fontWeight: FontWeight.w600,
-              ),
-              recognizer: TapGestureRecognizer()..onTap = () => _onTap(context),
+
+    return FadeAnimations(
+      child: Align(
+        alignment: Alignment.center,
+        child: RichText(
+          textAlign: TextAlign.center,
+          text: TextSpan(
+            text: title,
+            style: const TextStyle(
+              color: AppColors.blueGrey,
+              fontSize: Sizes.defaultSize,
             ),
-          ],
+            children: [
+              TextSpan(
+                text: buttonText,
+                style: const TextStyle(
+                  decoration: TextDecoration.underline,
+                  decorationStyle: TextDecorationStyle.solid,
+                  color: AppColors.appTheme,
+                  fontWeight: FontWeight.w600,
+                ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => _onTap(context),
+              ),
+            ],
+          ),
         ),
       ),
     );

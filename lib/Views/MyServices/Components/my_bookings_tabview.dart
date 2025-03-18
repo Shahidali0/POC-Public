@@ -11,19 +11,29 @@ class MyBookingsTabview extends StatelessWidget {
       key: const PageStorageKey('MyBookingsTabview'),
       padding: Sizes.globalMargin,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          const Text(
-            "My Bookings",
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: Sizes.fontSize18,
-              color: AppColors.appTheme,
-              fontWeight: FontWeight.bold,
-            ),
+          const Row(
+            children: [
+              Text(
+                "My Bookings:",
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: Sizes.fontSize16,
+                  color: AppColors.appTheme,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.underline,
+                  decorationColor: AppColors.appTheme,
+                  decorationStyle: TextDecorationStyle.dashed,
+                ),
+              ),
+              SizedBox(width: Sizes.spaceHeight),
+              Flexible(child: _MyBookingSegments()),
+            ],
           ),
           const SizedBox(height: Sizes.spaceHeightSm),
-          const _MyBookingTabs(),
-          const SizedBox(height: Sizes.spaceHeightSm),
+
+          ///List of Bookings
           Expanded(
             child: Consumer(
               builder: (_, WidgetRef ref, __) {
@@ -45,8 +55,8 @@ class MyBookingsTabview extends StatelessWidget {
 }
 
 ///myBooking Tabs
-class _MyBookingTabs extends ConsumerWidget {
-  const _MyBookingTabs();
+class _MyBookingSegments extends ConsumerWidget {
+  const _MyBookingSegments();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -69,11 +79,13 @@ class _MyBookingTabs extends ConsumerWidget {
                 color: selectedSegment == MyBookingType.upcoming
                     ? AppColors.white
                     : null,
+                size: Sizes.fontSize12,
               ),
               const SizedBox(width: Sizes.space),
               Text(
                 "UpComing",
                 style: TextStyle(
+                  fontSize: Sizes.fontSize12,
                   color: selectedSegment == MyBookingType.upcoming
                       ? AppColors.white
                       : null,
@@ -99,11 +111,13 @@ class _MyBookingTabs extends ConsumerWidget {
                 color: selectedSegment == MyBookingType.past
                     ? AppColors.white
                     : null,
+                size: Sizes.fontSize12,
               ),
               const SizedBox(width: Sizes.space),
               Text(
                 "Past",
                 style: TextStyle(
+                  fontSize: Sizes.fontSize12,
                   color: selectedSegment == MyBookingType.past
                       ? AppColors.white
                       : null,

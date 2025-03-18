@@ -42,6 +42,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     _passwordController.dispose();
     _homeSuburbController.dispose();
     _abnController.dispose();
+    _selectedGoal.dispose();
+    _aboutYourSelf.dispose();
 
     super.dispose();
   }
@@ -93,18 +95,22 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: Sizes.spaceHeight),
-                const Text(
-                  "Hello,",
-                  style: TextStyle(
-                    fontSize: Sizes.fontSize24,
-                    fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.w800,
+                const FadeAnimations(
+                  child: Text(
+                    "Hello,",
+                    style: TextStyle(
+                      fontSize: Sizes.fontSize24,
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
                 ),
-                const Text(
-                  "Get started with PlayMate",
-                  style: TextStyle(
-                    fontSize: Sizes.fontSize18,
+                const FadeAnimations(
+                  child: Text(
+                    "Get started with PlayMate",
+                    style: TextStyle(
+                      fontSize: Sizes.fontSize18,
+                    ),
                   ),
                 ),
 
@@ -144,13 +150,15 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
                 ///SignUp Button
                 const SizedBox(height: Sizes.space * 2),
-                CommonButton(
-                  onPressed: () => _onTapSignUp(
-                    context: context,
-                    ref: ref,
+                FadeAnimations(
+                  child: CommonButton(
+                    onPressed: () => _onTapSignUp(
+                      context: context,
+                      ref: ref,
+                    ),
+                    text: "Sign Up",
+                    isLoading: isLoading,
                   ),
-                  text: "Sign Up",
-                  isLoading: isLoading,
                 ),
 
                 ///Have an account
@@ -183,32 +191,36 @@ class _FullNameField extends StatelessWidget {
         children: [
           ///First Name
           Flexible(
-            child: FormFiledWidget(
-              title: "First Name",
-              isRequired: true,
-              child: TextFormField(
-                controller: firstNameController,
-                keyboardType: TextInputType.name,
-                validator: FieldValidators.instance.commonValidator,
-                autofillHints: Formatter.instance.firstNameAutoFillHints,
-                textCapitalization: TextCapitalization.words,
-                decoration: const InputDecoration(hintText: "John"),
+            child: FadeAnimations(
+              child: FormFiledWidget(
+                title: "First Name",
+                isRequired: true,
+                child: TextFormField(
+                  controller: firstNameController,
+                  keyboardType: TextInputType.name,
+                  validator: FieldValidators.instance.commonValidator,
+                  autofillHints: Formatter.instance.firstNameAutoFillHints,
+                  textCapitalization: TextCapitalization.words,
+                  decoration: const InputDecoration(hintText: "John"),
+                ),
               ),
             ),
           ),
 
           ///Last Name
           Flexible(
-            child: FormFiledWidget(
-              title: "Last Name",
-              isRequired: true,
-              child: TextFormField(
-                controller: lastNameController,
-                keyboardType: TextInputType.name,
-                validator: FieldValidators.instance.commonValidator,
-                autofillHints: Formatter.instance.lastNameAutoFillHints,
-                textCapitalization: TextCapitalization.words,
-                decoration: const InputDecoration(hintText: "Doe"),
+            child: FadeAnimations(
+              child: FormFiledWidget(
+                title: "Last Name",
+                isRequired: true,
+                child: TextFormField(
+                  controller: lastNameController,
+                  keyboardType: TextInputType.name,
+                  validator: FieldValidators.instance.commonValidator,
+                  autofillHints: Formatter.instance.lastNameAutoFillHints,
+                  textCapitalization: TextCapitalization.words,
+                  decoration: const InputDecoration(hintText: "Doe"),
+                ),
               ),
             ),
           ),
@@ -228,15 +240,17 @@ class _EmailField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FormFiledWidget(
-      title: "Email",
-      isRequired: true,
-      child: TextFormField(
-        controller: controller,
-        keyboardType: TextInputType.emailAddress,
-        validator: FieldValidators.instance.emailValidator,
-        autofillHints: Formatter.instance.emailAutoFillHints,
-        decoration: const InputDecoration(hintText: "name@example.com"),
+    return FadeAnimations(
+      child: FormFiledWidget(
+        title: "Email",
+        isRequired: true,
+        child: TextFormField(
+          controller: controller,
+          keyboardType: TextInputType.emailAddress,
+          validator: FieldValidators.instance.emailValidator,
+          autofillHints: Formatter.instance.emailAutoFillHints,
+          decoration: const InputDecoration(hintText: "name@example.com"),
+        ),
       ),
     );
   }
@@ -252,14 +266,16 @@ class _NewPasswordField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FormFiledWidget(
-      title: "Password",
-      isRequired: true,
-      child: TextFormField(
-        controller: controller,
-        keyboardType: TextInputType.text,
-        validator: FieldValidators.instance.passwordValidator,
-        decoration: const InputDecoration(hintText: "Enter a new password"),
+    return FadeAnimations(
+      child: FormFiledWidget(
+        title: "Password",
+        isRequired: true,
+        child: TextFormField(
+          controller: controller,
+          keyboardType: TextInputType.text,
+          validator: FieldValidators.instance.passwordValidator,
+          decoration: const InputDecoration(hintText: "Enter a new password"),
+        ),
       ),
     );
   }
@@ -275,15 +291,17 @@ class _HomeSuburbField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FormFiledWidget(
-      title: "Enter your home suburb",
-      isRequired: true,
-      child: TextFormField(
-        controller: controller,
-        keyboardType: TextInputType.name,
-        validator: FieldValidators.instance.commonValidator,
-        textCapitalization: TextCapitalization.words,
-        decoration: const InputDecoration(hintText: "Enter a suburb"),
+    return FadeAnimations(
+      child: FormFiledWidget(
+        title: "Enter your home suburb",
+        isRequired: true,
+        child: TextFormField(
+          controller: controller,
+          keyboardType: TextInputType.name,
+          validator: FieldValidators.instance.commonValidator,
+          textCapitalization: TextCapitalization.words,
+          decoration: const InputDecoration(hintText: "Enter a suburb"),
+        ),
       ),
     );
   }
@@ -301,43 +319,45 @@ class _MainGoalWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FormFiledWidget(
-      title: "What is your main goal on PlayMate?",
-      isRequired: true,
-      child: SizedBox(
-        width: double.infinity,
-        child: ValueListenableBuilder(
-          valueListenable: slectedGoal,
-          builder: (BuildContext context, String? goal, Widget? child) {
-            return CupertinoSlidingSegmentedControl<String?>(
-              groupValue: goal,
-              thumbColor: AppColors.appTheme,
-              children: <String?, Widget>{
-                ///Get Things Done
-                "Done": _CardWidgetForSegments(
-                  iconData: CupertinoIcons.check_mark_circled,
-                  text: "Get Things Done",
-                  color: goal != null && goal == "Done"
-                      ? AppColors.white
-                      : AppColors.blueGrey,
-                ),
+    return FadeAnimations(
+      child: FormFiledWidget(
+        title: "What is your main goal on PlayMate?",
+        isRequired: true,
+        child: SizedBox(
+          width: double.infinity,
+          child: ValueListenableBuilder(
+            valueListenable: slectedGoal,
+            builder: (BuildContext context, String? goal, Widget? child) {
+              return CupertinoSlidingSegmentedControl<String?>(
+                groupValue: goal,
+                thumbColor: AppColors.appTheme,
+                children: <String?, Widget>{
+                  ///Get Things Done
+                  "Done": _CardWidgetForSegments(
+                    iconData: CupertinoIcons.check_mark_circled,
+                    text: "Get Things Done",
+                    color: goal != null && goal == "Done"
+                        ? AppColors.white
+                        : AppColors.blueGrey,
+                  ),
 
-                ///Earn Money
-                "Money": _CardWidgetForSegments(
-                  iconData: CupertinoIcons.money_dollar,
-                  text: "Earn Money",
-                  color: goal != null && goal == "Money"
-                      ? AppColors.white
-                      : AppColors.blueGrey,
-                ),
-              },
-              onValueChanged: (String? value) {
-                if (value == null) return;
+                  ///Earn Money
+                  "Money": _CardWidgetForSegments(
+                    iconData: CupertinoIcons.money_dollar,
+                    text: "Earn Money",
+                    color: goal != null && goal == "Money"
+                        ? AppColors.white
+                        : AppColors.blueGrey,
+                  ),
+                },
+                onValueChanged: (String? value) {
+                  if (value == null) return;
 
-                updateData(value);
-              },
-            );
-          },
+                  updateData(value);
+                },
+              );
+            },
+          ),
         ),
       ),
     );
@@ -356,43 +376,45 @@ class _AboutYourSelfWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FormFiledWidget(
-      title: "Tell us about yourself",
-      isRequired: true,
-      child: SizedBox(
-        width: double.infinity,
-        child: ValueListenableBuilder(
-          valueListenable: aboutYourSelf,
-          builder: (BuildContext context, String? aboutYou, Widget? child) {
-            return CupertinoSlidingSegmentedControl<String?>(
-              groupValue: aboutYou,
-              thumbColor: AppColors.appTheme,
-              children: <String?, Widget>{
-                ///Individual
-                "Individual": _CardWidgetForSegments(
-                  iconData: CupertinoIcons.person,
-                  text: "Individual",
-                  color: aboutYou != null && aboutYou == "Individual"
-                      ? AppColors.white
-                      : AppColors.blueGrey,
-                ),
+    return FadeAnimations(
+      child: FormFiledWidget(
+        title: "Tell us about yourself",
+        isRequired: true,
+        child: SizedBox(
+          width: double.infinity,
+          child: ValueListenableBuilder(
+            valueListenable: aboutYourSelf,
+            builder: (BuildContext context, String? aboutYou, Widget? child) {
+              return CupertinoSlidingSegmentedControl<String?>(
+                groupValue: aboutYou,
+                thumbColor: AppColors.appTheme,
+                children: <String?, Widget>{
+                  ///Individual
+                  "Individual": _CardWidgetForSegments(
+                    iconData: CupertinoIcons.person,
+                    text: "Individual",
+                    color: aboutYou != null && aboutYou == "Individual"
+                        ? AppColors.white
+                        : AppColors.blueGrey,
+                  ),
 
-                ///Business user
-                "Business": _CardWidgetForSegments(
-                  iconData: CupertinoIcons.building_2_fill,
-                  text: "Business User",
-                  color: aboutYou != null && aboutYou == "Business"
-                      ? AppColors.white
-                      : AppColors.blueGrey,
-                ),
-              },
-              onValueChanged: (String? value) {
-                if (value == null) return;
+                  ///Business user
+                  "Business": _CardWidgetForSegments(
+                    iconData: CupertinoIcons.building_2_fill,
+                    text: "Business User",
+                    color: aboutYou != null && aboutYou == "Business"
+                        ? AppColors.white
+                        : AppColors.blueGrey,
+                  ),
+                },
+                onValueChanged: (String? value) {
+                  if (value == null) return;
 
-                updateData(value);
-              },
-            );
-          },
+                  updateData(value);
+                },
+              );
+            },
+          ),
         ),
       ),
     );
@@ -409,20 +431,22 @@ class _ABNField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FormFiledWidget(
-      title: "ABN (if applicable)",
-      child: TextFormField(
-        controller: controller,
-        keyboardType: TextInputType.name,
-        textCapitalization:
-            TextCapitalization.characters, // Capitalizes each letter
-        onChanged: (text) {
-          controller.value = controller.value.copyWith(
-            text: text.toUpperCase(),
-            selection: TextSelection.collapsed(offset: text.length),
-          );
-        },
-        decoration: const InputDecoration(hintText: "Enter a suburb"),
+    return FadeAnimations(
+      child: FormFiledWidget(
+        title: "ABN (if applicable)",
+        child: TextFormField(
+          controller: controller,
+          keyboardType: TextInputType.name,
+          textCapitalization:
+              TextCapitalization.characters, // Capitalizes each letter
+          onChanged: (text) {
+            controller.value = controller.value.copyWith(
+              text: text.toUpperCase(),
+              selection: TextSelection.collapsed(offset: text.length),
+            );
+          },
+          decoration: const InputDecoration(hintText: "Enter a suburb"),
+        ),
       ),
     );
   }

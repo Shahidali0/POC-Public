@@ -54,17 +54,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: Sizes.spaceHeight * 2),
-              const Text(
-                "👋 Hello,",
-                style: TextStyle(
-                  fontSize: Sizes.fontSize24,
-                  fontStyle: FontStyle.italic,
-                  fontWeight: FontWeight.w800,
+              const FadeAnimations(
+                child: Text(
+                  "👋 Hello,",
+                  style: TextStyle(
+                    fontSize: Sizes.fontSize24,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
               ),
-              const Text(
-                "Welcome back to your account",
-                style: TextStyle(fontSize: Sizes.fontSize18),
+              const FadeAnimations(
+                child: Text(
+                  "Welcome back to your account",
+                  style: TextStyle(fontSize: Sizes.fontSize18),
+                ),
               ),
               const SizedBox(height: Sizes.spaceHeight),
 
@@ -76,13 +80,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
               ///SignIn Button
               const SizedBox(height: Sizes.space * 2),
-              CommonButton(
-                onPressed: () => _onTapSignIn(
-                  context: context,
-                  ref: ref,
+              FadeAnimations(
+                child: CommonButton(
+                  onPressed: () => _onTapSignIn(
+                    context: context,
+                    ref: ref,
+                  ),
+                  text: "Sign In",
+                  isLoading: isLoading,
                 ),
-                text: "Sign In",
-                isLoading: isLoading,
               ),
 
               ///Have an account
@@ -106,13 +112,15 @@ class _EmailField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FormFiledWidget(
-      title: "Email",
-      child: TextFormField(
-        controller: controller,
-        keyboardType: TextInputType.emailAddress,
-        autofillHints: Formatter.instance.emailAutoFillHints,
-        decoration: const InputDecoration(hintText: "Enter your email"),
+    return FadeAnimations(
+      child: FormFiledWidget(
+        title: "Email",
+        child: TextFormField(
+          controller: controller,
+          keyboardType: TextInputType.emailAddress,
+          autofillHints: Formatter.instance.emailAutoFillHints,
+          decoration: const InputDecoration(hintText: "Enter your email"),
+        ),
       ),
     );
   }
@@ -127,21 +135,24 @@ class _PasswordField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final obSecureText = ref.watch(obSecurePasswordPr);
-    return FormFiledWidget(
-      title: "Password",
-      child: TextFormField(
-        controller: controller,
-        obscureText: obSecureText,
-        autofillHints: Formatter.instance.passwordAutoFillHints,
-        decoration: InputDecoration(
-          hintText: "Enter your password",
-          suffixIcon: GestureDetector(
-            onTap: () => ref
-                .read(obSecurePasswordPr.notifier)
-                .update((state) => state = !obSecureText),
-            child: Icon(
-              obSecureText ? CupertinoIcons.eye_slash : CupertinoIcons.eye,
-              size: 23,
+
+    return FadeAnimations(
+      child: FormFiledWidget(
+        title: "Password",
+        child: TextFormField(
+          controller: controller,
+          obscureText: obSecureText,
+          autofillHints: Formatter.instance.passwordAutoFillHints,
+          decoration: InputDecoration(
+            hintText: "Enter your password",
+            suffixIcon: GestureDetector(
+              onTap: () => ref
+                  .read(obSecurePasswordPr.notifier)
+                  .update((state) => state = !obSecureText),
+              child: Icon(
+                obSecureText ? CupertinoIcons.eye_slash : CupertinoIcons.eye,
+                size: 23,
+              ),
             ),
           ),
         ),

@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -13,30 +15,22 @@ class LocationScheduleForm extends ConsumerStatefulWidget {
 
 class _LocationScheduleFormState extends ConsumerState<LocationScheduleForm> {
   late TextEditingController _locationController;
-  late CalendarDatePicker2Config config;
 
-  final ValueNotifier<String?> _selectedTimeSlots = ValueNotifier(null);
-  final ValueNotifier<String> _selectedSessionDuration =
-      ValueNotifier(duration[0]);
+  late ValueNotifier<String?> _selectedTimeSlotsListenable;
+  late ValueNotifier<String> _selectedSessionDurationListenable;
 
-  // static final today = DateUtils.dateOnly(DateTime.now());
-
-  // List<DateTime?> _multiDatePickerValueWithDefaultValue = [
-  //   DateTime(today.year, today.month, 1),
-  //   DateTime(today.year, today.month, 5),
-  //   DateTime(today.year, today.month, 14),
-  //   DateTime(today.year, today.month, 17),
-  //   DateTime(today.year, today.month, 25),
-  // ];
+  ///For Multi-Dates-Picker
+  // Using a `LinkedHashSet` is recommended due to equality comparison override
+  late Set<DateTime> _selectedDays;
 
   @override
   void initState() {
     _locationController = TextEditingController();
-    config = CalendarDatePicker2Config(
-      dayModeScrollDirection: Axis.horizontal,
-      disableMonthPicker: true,
-      calendarType: CalendarDatePicker2Type.multi,
-      selectedDayHighlightColor: Colors.indigo,
+    _selectedTimeSlotsListenable = ValueNotifier(null);
+    _selectedSessionDurationListenable = ValueNotifier(duration[0]);
+    _selectedDays = LinkedHashSet<DateTime>(
+      equals: isSameDay,
+      hashCode: Utils.instance.getHashCode,
     );
     super.initState();
   }
@@ -44,16 +38,18 @@ class _LocationScheduleFormState extends ConsumerState<LocationScheduleForm> {
   @override
   void dispose() {
     _locationController.dispose();
+    _selectedTimeSlotsListenable.dispose();
+
     super.dispose();
   }
 
   ///Update Selected TimeSlot Value
   void _updateSelectedTimeSlots(String value) =>
-      _selectedTimeSlots.value = value;
+      _selectedTimeSlotsListenable.value = value;
 
   ///Update Selected Session Duration Value
   void _updateSelectedSessionDuration(String value) {
-    _selectedSessionDuration.value = value;
+    _selectedSessionDurationListenable.value = value;
   }
 
   @override
@@ -80,21 +76,20 @@ class _LocationScheduleFormState extends ConsumerState<LocationScheduleForm> {
           _LocationField(controller: _locationController),
 
           ///Available Dates
-          _AvailableDates(
-            config: config,
-          ),
+          _AvailableDates(selectedDays: _selectedDays),
 
           ///Available Time Slots
           _AvailableTimeSlots(
-            selectedTimeSlots: _selectedTimeSlots,
+            selectedTimeSlots: _selectedTimeSlotsListenable,
             onSelectTimeSlot: _updateSelectedTimeSlots,
           ),
 
           ///Session Duration
           _SessionDurationField(
-            selectedSessionDuration: _selectedSessionDuration,
+            selectedSessionDuration: _selectedSessionDurationListenable,
             onChanged: _updateSelectedSessionDuration,
           ),
+
           const SizedBox(height: Sizes.spaceHeight),
         ],
       ),
@@ -131,81 +126,150 @@ class _LocationField extends StatelessWidget {
 ///Available Dates
 class _AvailableDates extends StatelessWidget {
   const _AvailableDates({
-    required this.config,
+    required this.selectedDays,
   });
 
-  final CalendarDatePicker2Config config;
+  final Set<DateTime> selectedDays;
 
   @override
   Widget build(BuildContext context) {
-    return FormFiledWidget(
-      title: "Available Dates",
-      isRequired: true,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(
-            width: 300,
-            child: CalendarDatePicker2(
-              config: config,
-              value: const [],
-              onValueChanged: (dates) {
-                print(dates);
-              },
-            ),
-          ),
-          const SizedBox(height: 10),
-          const Wrap(
+    DateTime focusedDay = DateTime.now();
+
+    return StatefulBuilder(
+      builder: (BuildContext context, void Function(void Function()) setState) {
+        return FormFiledWidget(
+          title: "Available Dates",
+          isRequired: true,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Selection(s):  '),
-              SizedBox(width: 10),
-              // Text(
-              //   _getValueText(
-              //     config.calendarType,
-              //     _multiDatePickerValueWithDefaultValue,
-              //   ),
-              //   overflow: TextOverflow.ellipsis,
-              //   maxLines: 1,
-              //   softWrap: false,
-              // ),
+              const SizedBox(height: Sizes.spaceMed),
+
+              ///DatePicker--Multi
+              Card(
+                margin: EdgeInsets.zero,
+                child: TableCalendar(
+                  firstDay: DateTime.now(),
+                  lastDay: DateTime.now().add(const Duration(days: 365)),
+                  focusedDay: focusedDay,
+                  calendarFormat: CalendarFormat.month,
+                  startingDayOfWeek: StartingDayOfWeek.sunday,
+                  headerStyle: headerStyle,
+                  daysOfWeekStyle: daysOfWeekStyle,
+                  calendarStyle: calendarStyle,
+                  selectedDayPredicate: (day) => selectedDays.contains(day),
+                  onDaySelected:
+                      (DateTime selectedDayValue, DateTime focusedDayValue) {
+                    focusedDay = focusedDayValue;
+                    // Update values in a Set
+                    if (selectedDays.contains(selectedDayValue)) {
+                      selectedDays.remove(selectedDayValue);
+                    } else {
+                      selectedDays.add(selectedDayValue);
+                    }
+
+                    setState(() {});
+                  },
+                  onPageChanged: (DateTime date) => focusedDay = date,
+                ),
+              ),
+
+              ///Selected Days
+              CupertinoScrollbar(
+                scrollbarOrientation: ScrollbarOrientation.bottom,
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.only(
+                    bottom: Sizes.spaceMed,
+                    top: Sizes.spaceMed,
+                  ),
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: selectedDays
+                        .map(
+                          (day) => Padding(
+                            padding:
+                                const EdgeInsets.only(right: Sizes.spaceMed),
+                            child: Chip(
+                              shadowColor: AppColors.orange,
+                              side: const BorderSide(color: AppColors.orange),
+                              label: Text(
+                                Utils.instance.formatDateToString(day),
+                                style: const TextStyle(
+                                  color: AppColors.orange,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+              ),
             ],
           ),
-          const SizedBox(height: 25),
-        ],
-      ),
+        );
+      },
     );
   }
 
-  String _getValueText(
-    CalendarDatePicker2Type datePickerType,
-    List<DateTime?> values,
-  ) {
-    values =
-        values.map((e) => e != null ? DateUtils.dateOnly(e) : null).toList();
-    var valueText = (values.isNotEmpty ? values[0] : null)
-        .toString()
-        .replaceAll('00:00:00.000', '');
+  ///HEADER STYLE
+  HeaderStyle get headerStyle => const HeaderStyle(
+        formatButtonVisible: false,
+        titleCentered: true,
+        decoration: BoxDecoration(
+          color: AppColors.appTheme,
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(Sizes.borderRadius),
+          ),
+        ),
+        // leftChevronMargin: EdgeInsets.zero,
+        leftChevronPadding: EdgeInsets.zero,
+        // rightChevronMargin: EdgeInsets.zero,
+        rightChevronPadding: EdgeInsets.zero,
+        headerMargin: EdgeInsets.only(bottom: Sizes.space),
+        leftChevronIcon: Icon(
+          CupertinoIcons.chevron_left,
+          color: AppColors.white,
+        ),
+        rightChevronIcon: Icon(
+          CupertinoIcons.chevron_right,
+          color: AppColors.white,
+        ),
+        titleTextStyle: TextStyle(
+          fontSize: Sizes.fontSize16,
+          color: AppColors.white,
+          fontStyle: FontStyle.italic,
+          fontWeight: FontWeight.w800,
+        ),
+      );
 
-    if (datePickerType == CalendarDatePicker2Type.multi) {
-      valueText = values.isNotEmpty
-          ? values
-              .map((v) => v.toString().replaceAll('00:00:00.000', ''))
-              .join(', ')
-          : 'null';
-    } else if (datePickerType == CalendarDatePicker2Type.range) {
-      if (values.isNotEmpty) {
-        final startDate = values[0].toString().replaceAll('00:00:00.000', '');
-        final endDate = values.length > 1
-            ? values[1].toString().replaceAll('00:00:00.000', '')
-            : 'null';
-        valueText = '$startDate to $endDate';
-      } else {
-        return 'null';
-      }
-    }
+  ///DAYS OF WEEK STYLE
+  DaysOfWeekStyle get daysOfWeekStyle => const DaysOfWeekStyle(
+        weekdayStyle: TextStyle(color: AppColors.blueGrey),
+        weekendStyle: TextStyle(color: AppColors.orange),
+      );
 
-    return valueText;
-  }
+  ///CALENDAR STYLE
+  CalendarStyle get calendarStyle => const CalendarStyle(
+        selectedDecoration: BoxDecoration(
+          color: AppColors.appTheme,
+          shape: BoxShape.circle,
+        ),
+        selectedTextStyle: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: Sizes.fontSize16,
+          color: AppColors.white,
+        ),
+        todayDecoration: BoxDecoration(
+          color: AppColors.blueGrey,
+          shape: BoxShape.circle,
+        ),
+        disabledTextStyle: TextStyle(color: AppColors.grey),
+        holidayTextStyle: TextStyle(color: AppColors.green),
+        weekendTextStyle: TextStyle(color: AppColors.orange),
+      );
 }
 
 ///Available Time Slots
@@ -223,7 +287,7 @@ class _AvailableTimeSlots extends StatelessWidget {
     return FormFiledWidget(
       title: "Available Time Slots",
       isRequired: true,
-      child: ValueListenableBuilder(
+      child: ValueListenableBuilder<String?>(
         valueListenable: selectedTimeSlots,
         builder: (BuildContext context, String? value, Widget? child) {
           return Wrap(
@@ -235,12 +299,13 @@ class _AvailableTimeSlots extends StatelessWidget {
 
                 return ChoiceChip.elevated(
                   labelPadding: const EdgeInsets.symmetric(
-                      horizontal: Sizes.spaceHeight * 2),
+                    horizontal: Sizes.spaceHeight * 1.6,
+                  ),
                   labelStyle: TextStyle(
                     color: isActive ? AppColors.white : null,
                     fontWeight: isActive ? FontWeight.w700 : FontWeight.normal,
                   ),
-                  onSelected: (value) {
+                  onSelected: (data) {
                     onSelectTimeSlot(timeSlots[index]);
                   },
                   avatar: isActive

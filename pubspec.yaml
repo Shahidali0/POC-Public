@@ -62,6 +62,7 @@ dependencies:
 
   #Multiple Dates Picker 
   calendar_date_picker2: ^1.1.9
+  table_calendar: ^3.2.0
 
 
 

@@ -3,14 +3,66 @@ import 'package:flutter/material.dart';
 
 part 'Controller/post_service_controller.dart';
 
-class PostServiceScreen extends ConsumerWidget {
+class PostServiceScreen extends ConsumerStatefulWidget {
   const PostServiceScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _PostServiceScreenState();
+}
+
+class _PostServiceScreenState extends ConsumerState<PostServiceScreen> {
+  late ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  ///MOVE TO TOP
+  void _moveTotop() => _scrollController.animateTo(
+        0,
+        duration: Sizes.duration,
+        curve: Sizes.curve,
+      );
+
+  ///ON STEP CONTINUE
+  void _onStepContinue(int currentStep) {
+    if (currentStep < 2) {
+      ///This is fix ScrollIssues
+      _moveTotop();
+      ref.read(_stepperIndexPr.notifier).update((state) => state += 1);
+    }
+    if (currentStep == 2) {
+      AppRouter.instance.push(
+        context: context,
+        screen: const PostServiceReviewScreen(),
+      );
+    }
+  }
+
+  ///ON STEP CANCEL
+  void _onStepCancel(int currentStep) {
+    if (currentStep > 0) {
+      ///This is fix ScrollIssues
+      _moveTotop();
+      ref.read(_stepperIndexPr.notifier).update((state) => state -= 1);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final currentStep = ref.watch(_stepperIndexPr);
 
     return MyCupertinoPageScaffold(
+      scrollController: _scrollController,
       previousPageTitle: "Home",
       title: "Post Service",
       margin: EdgeInsets.zero,
@@ -24,21 +76,13 @@ class PostServiceScreen extends ConsumerWidget {
             ref.read(_stepperIndexPr.notifier).update((state) => state = step);
           }
         },
-        onStepContinue: () {
-          if (currentStep < 2) {
-            ref.read(_stepperIndexPr.notifier).update((state) => state += 1);
-          }
-        },
-        onStepCancel: () {
-          if (currentStep > 0) {
-            ref.read(_stepperIndexPr.notifier).update((state) => state -= 1);
-          }
-        },
+        onStepContinue: () => _onStepContinue(currentStep),
+        onStepCancel: () => _onStepCancel(currentStep),
         steps: [
           ///Step1
           _buildStep(
             title: "Service\nDetails",
-            content: const ServiceDetailsForm(),
+            content: const PostServiceDetailsForm(),
             isActive: currentStep == 0,
             isCompleted: currentStep > 0,
           ),

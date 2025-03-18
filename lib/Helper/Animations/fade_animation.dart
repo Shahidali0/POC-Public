@@ -5,13 +5,13 @@ class FadeAnimations extends StatefulWidget {
   const FadeAnimations({
     super.key,
     required this.child,
-    this.type = FadeAnimationType.bottomUp,
+    this.type = MyAnimationType.bottomUp,
     this.from = 30,
-    this.delay = 1,
+    this.delay = 2,
   });
 
   final Widget child;
-  final FadeAnimationType type;
+  final MyAnimationType type;
   final double from;
   final double delay;
 
@@ -73,14 +73,14 @@ class _FadeAnimationsState extends State<FadeAnimations>
     );
   }
 
-  Offset _getOffset(FadeAnimationType type) {
-    if (type == FadeAnimationType.leftToRight) {
+  Offset _getOffset(MyAnimationType type) {
+    if (type == MyAnimationType.leftToRight) {
       return Offset(-animation.value, 0);
     }
-    if (type == FadeAnimationType.rightToLeft) {
+    if (type == MyAnimationType.rightToLeft) {
       return Offset(animation.value, 0);
     }
-    if (type == FadeAnimationType.upDown) {
+    if (type == MyAnimationType.upDown) {
       return Offset(0, -animation.value);
     }
     return Offset(0, animation.value);

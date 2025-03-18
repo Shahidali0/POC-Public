@@ -2,18 +2,14 @@ import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class MyServicesScreen extends StatefulWidget {
+class MyServicesScreen extends StatelessWidget {
   const MyServicesScreen({super.key});
 
-  @override
-  State<MyServicesScreen> createState() => _FindServicesScreenState();
-}
-
-class _FindServicesScreenState extends State<MyServicesScreen> {
   ///OnTap Filter Icon
-  Future _onTapFilter() async => AppRouter.instance.animatedPush(
+  Future _onTapFilter(BuildContext context) async =>
+      AppRouter.instance.animatedPush(
         context: context,
-        type: FadeAnimationType.upDown,
+        type: MyAnimationType.upDown,
         screen: const ServiceFilters(),
       );
 
@@ -37,7 +33,7 @@ class _FindServicesScreenState extends State<MyServicesScreen> {
                     CommonCircleButton(
                       backgroundColor: AppColors.indicatorColors[2],
                       iconColor: AppColors.white,
-                      onPressed: _onTapFilter,
+                      onPressed: () => _onTapFilter(context),
                       iconData: CupertinoIcons.slider_horizontal_3,
                     ),
                   ],

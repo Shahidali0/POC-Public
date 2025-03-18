@@ -126,7 +126,7 @@ class SliverPinnedTabBar extends SliverPersistentHeaderDelegate {
         tabAlignment: isScrollable ? TabAlignment.start : null,
         padding: const EdgeInsets.symmetric(horizontal: Sizes.space),
         labelPadding: isScrollable
-            ? const EdgeInsets.symmetric(horizontal: Sizes.space)
+            ? const EdgeInsets.symmetric(horizontal: Sizes.spaceHeight)
             : null,
         tabs: tabList
             .map(
@@ -179,7 +179,12 @@ class MyCupertinoPageScaffold extends StatelessWidget {
     this.previousPageTitle,
     this.trailing,
     this.bottomNavBar,
-    this.margin = Sizes.globalMargin,
+    this.scrollController,
+    this.margin = const EdgeInsets.only(
+      left: Sizes.space,
+      right: Sizes.space,
+      top: Sizes.space,
+    ),
   });
 
   final String title;
@@ -187,12 +192,15 @@ class MyCupertinoPageScaffold extends StatelessWidget {
   final String? previousPageTitle;
   final Widget? trailing;
   final Widget? bottomNavBar;
+  final ScrollController? scrollController;
   final EdgeInsets margin;
 
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       child: NestedScrollView(
+        controller: scrollController,
+        floatHeaderSlivers: true,
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) =>
             [
           CupertinoSliverNavigationBar(
@@ -225,8 +233,9 @@ class MyCupertinoPageScaffold extends StatelessWidget {
         ],
         body: Scaffold(
           bottomNavigationBar: bottomNavBar,
-          body: Padding(
-            padding: margin,
+          body: SafeArea(
+            top: false,
+            minimum: margin,
             child: body,
           ),
         ),

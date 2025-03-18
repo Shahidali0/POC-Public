@@ -31,6 +31,8 @@ class _BookServiceFormState extends State<BookServiceForm> {
   void dispose() {
     _dateController.dispose();
     _nameController.dispose();
+    _selectedTime.dispose();
+    _selectedDuration.dispose();
 
     super.dispose();
   }
