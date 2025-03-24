@@ -1,6 +1,8 @@
-import 'package:cricket_poc/lib_exports.dart';
+part of 'package:cricket_poc/Views/DashboardNavBar/dashboard_navbar_screen.dart';
 
-final navBarIndexPr = StateProvider<int>((ref) => 0);
+final _navBarIndexPr = StateProvider<int>((ref) => 0);
+
+final _showOrHideNavBarPr = StateProvider<bool>((ref) => true);
 
 class NavbarController {
   NavbarController._();

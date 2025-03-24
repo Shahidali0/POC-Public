@@ -2,6 +2,7 @@
 
 export 'Intro/intro_screen.dart';
 export 'Intro/intro_final_screen.dart';
+export 'Intro/location_screen.dart';
 
 export 'Intro/Components/dot_indicator.dart';
 
@@ -25,8 +26,6 @@ export 'Auth/Repository/auth_repository.dart';
 //* Dashboard
 
 export 'DashboardNavBar/dashboard_navbar_screen.dart';
-
-export 'DashboardNavBar/Controller/navbar_controller.dart';
 
 //* Home
 
@@ -83,4 +82,4 @@ export 'Filters/Controller/filters_controller.dart';
 
 //* Commom
 
-export 'Common/common.dart';
+export 'Widgets/widgets.dart';

@@ -61,7 +61,7 @@ class _PostServiceScreenState extends ConsumerState<PostServiceScreen> {
   Widget build(BuildContext context) {
     final currentStep = ref.watch(_stepperIndexPr);
 
-    return MyCupertinoPageScaffold(
+    return MyCupertinoSliverScaffold(
       scrollController: _scrollController,
       previousPageTitle: "Home",
       title: "Post Service",

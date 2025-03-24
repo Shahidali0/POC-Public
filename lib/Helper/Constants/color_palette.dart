@@ -13,6 +13,8 @@ class AppColors {
 
   static const Color black = CupertinoColors.black;
   static const Color blueGrey = Color(0xFF3f556e);
+  static const Color card = CupertinoColors.secondarySystemGroupedBackground;
+  // static const Color card = CupertinoColors.secondarySystemBackground;
   static const Color grey = Color(0xFFABBBCE);
   static Color lightGrey = CupertinoColors.extraLightBackgroundGray;
   static const Color button = Color(0xFF678CEA);
@@ -29,10 +31,6 @@ class AppColors {
   static const LinearGradient homeGradient = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    // stops: [
-    //   0.6,
-    //   0.8,
-    // ],
     colors: [
       Color(0xFF668df0),
       blueLight,
@@ -71,15 +69,6 @@ class AppColors {
       1,
     ],
   );
-
-  ///NavBar Indicator Color
-  static const List<Color> indicatorColors = [
-    Color(0xFF668df0),
-    Color(0xFF29BAED),
-    Color(0xFF752CAF),
-    Color(0xFF333333),
-    Color(0xFFFFD23F),
-  ];
 
   ///Loading Color
   static const List<Color> loadingColors = [

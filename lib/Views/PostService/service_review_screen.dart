@@ -1,4 +1,3 @@
-import 'package:cricket_poc/Views/Common/appbar.dart';
 import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +7,7 @@ class PostServiceReviewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MyCupertinoPageScaffold(
+    return MyCupertinoSliverScaffold(
       title: "Post Service",
       bottomNavBar: SafeArea(
         minimum: Sizes.globalMargin,

@@ -4,6 +4,7 @@ class Sizes {
   Sizes._();
 
   ///Font Sizes
+  static const double fontSize10 = 10.5;
   static const double fontSize12 = 12;
   static const double defaultSize = 14;
   static const double fontSize16 = 16;
@@ -21,7 +22,7 @@ class Sizes {
   static const double buttonHeight = 52.0;
 
   /// Durations
-  static const Duration duration = Duration(milliseconds: 450);
+  static const Duration duration = Duration(milliseconds: 350);
   static const Duration durationS = Duration(milliseconds: 150);
   static const Duration durationL = Duration(milliseconds: 600);
 
@@ -42,5 +43,19 @@ class Sizes {
   static double screenWidth(BuildContext context) => screenSize(context).width;
 
   ///Global App Spacing (Margin)
-  static const EdgeInsets globalMargin = EdgeInsets.all(space);
+  static const EdgeInsets globalMargin = EdgeInsets.only(
+    left: space,
+    right: space,
+    top: space,
+  );
+
+  static const EdgeInsets globalPadding = EdgeInsets.all(space);
+
+  static EdgeInsets cupertinoScaffoldPadding(BuildContext context) =>
+      EdgeInsets.only(
+        top: MediaQuery.of(context).padding.top + kToolbarHeight,
+        left: Sizes.space,
+        bottom: Sizes.space,
+        right: Sizes.space,
+      );
 }

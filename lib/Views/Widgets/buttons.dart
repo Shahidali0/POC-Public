@@ -125,24 +125,19 @@ class CommonTextButton extends _PlatformWidget {
     super.key,
     required this.onPressed,
     required this.text,
-    this.backgroundColor = AppColors.white,
     this.textColor,
     this.decoration,
   });
 
   final void Function()? onPressed;
   final String text;
-  final Color backgroundColor;
   final Color? textColor;
   final TextDecoration? decoration;
 
   @override
   Widget buildCupertinoWidget(BuildContext context) {
     return CupertinoButton(
-      disabledColor: backgroundColor.withOpacity(0.14),
       padding: const EdgeInsets.only(right: Sizes.space),
-      color: backgroundColor,
-      minSize: Sizes.buttonHeight,
       onPressed: onPressed,
       child: FittedBox(
         child: Text(
@@ -157,10 +152,6 @@ class CommonTextButton extends _PlatformWidget {
   @override
   Widget buildMaterialWidget(BuildContext context) {
     return TextButton(
-      style: TextButton.styleFrom(
-        disabledBackgroundColor: backgroundColor.withOpacity(0.14),
-        backgroundColor: backgroundColor,
-      ),
       onPressed: onPressed,
 
       ///FittedBox --> To fix the font-overflow issue on buttons
@@ -238,54 +229,43 @@ class CommonOutlineButton extends StatelessWidget {
   }
 }
 
-///This calss shows common [Circle Button] for IOS and ANDROID
-class CommonCircleButton extends _PlatformWidget {
-  const CommonCircleButton({
+///Common Icon Buttton Widget-- Platform specific widget
+///to show cupertino and material style widgets
+class CommonIconButton extends _PlatformWidget {
+  const CommonIconButton({
     super.key,
     required this.onPressed,
     required this.iconData,
-    this.backgroundColor,
-    this.iconColor,
+    this.iconColor = AppColors.appTheme,
+    this.iconSize = 26,
   });
 
   final void Function()? onPressed;
   final IconData iconData;
-  final Color? backgroundColor;
-  final Color? iconColor;
+  final Color iconColor;
+  final double iconSize;
 
   @override
   Widget buildCupertinoWidget(BuildContext context) {
-    return Padding(
-      padding:
-          const EdgeInsets.only(right: Sizes.space, bottom: Sizes.spaceSmall),
-      child: CupertinoButton(
-        padding: EdgeInsets.zero,
-        color: backgroundColor ?? Theme.of(context).colorScheme.onPrimary,
-        borderRadius: BorderRadius.circular(40),
-        onPressed: onPressed,
-        child: Icon(
-          iconData,
-          color: iconColor ?? AppColors.appTheme,
-        ),
+    return CupertinoButton(
+      padding: EdgeInsets.zero,
+      onPressed: onPressed,
+      child: Icon(
+        iconData,
+        size: iconSize,
+        color: iconColor,
       ),
     );
   }
 
   @override
   Widget buildMaterialWidget(BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        elevation: 0,
-        disabledBackgroundColor: Theme.of(context).colorScheme.onPrimary,
-        backgroundColor: backgroundColor,
-        foregroundColor: AppColors.appTheme,
-        shape: const CircleBorder(),
-      ),
+    return IconButton(
+      padding: EdgeInsets.zero,
       onPressed: onPressed,
-      child: Icon(
-        iconData,
-        color: iconColor ?? AppColors.appTheme,
-      ),
+      color: iconColor,
+      iconSize: iconSize,
+      icon: Icon(iconData),
     );
   }
 }

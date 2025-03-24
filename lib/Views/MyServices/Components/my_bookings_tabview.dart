@@ -14,12 +14,13 @@ class MyBookingsTabview extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 "My Bookings:",
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  fontSize: Sizes.fontSize16,
+                  fontSize: Sizes.fontSize18,
                   color: AppColors.appTheme,
                   fontWeight: FontWeight.bold,
                   decoration: TextDecoration.underline,
@@ -65,6 +66,7 @@ class _MyBookingSegments extends ConsumerWidget {
     return CupertinoSlidingSegmentedControl<MyBookingType>(
       groupValue: selectedSegment,
       thumbColor: AppColors.orange,
+      padding: const EdgeInsets.all(Sizes.spaceMed),
       children: <MyBookingType, Widget>{
         ///UpComing
         MyBookingType.upcoming: Padding(
@@ -141,6 +143,92 @@ class _MyBookingSegments extends ConsumerWidget {
     );
   }
 }
+// class _MyBookingSegments extends ConsumerWidget {
+//   const _MyBookingSegments();
+
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final selectedSegment = ref.watch(myBookingSegemntIndexPr);
+
+//     return CupertinoSlidingSegmentedControl<MyBookingType>(
+//       groupValue: selectedSegment,
+//       thumbColor: AppColors.orange,
+//       children: <MyBookingType, Widget>{
+//         ///UpComing
+//         MyBookingType.upcoming: Padding(
+//           padding: const EdgeInsets.symmetric(
+//             horizontal: Sizes.space,
+//             vertical: Sizes.spaceMed,
+//           ),
+//           child: Row(
+//             children: [
+//               Icon(
+//                 CupertinoIcons.calendar,
+//                 color: selectedSegment == MyBookingType.upcoming
+//                     ? AppColors.white
+//                     : null,
+//                 size: Sizes.fontSize12,
+//               ),
+//               const SizedBox(width: Sizes.space),
+//               Text(
+//                 "UpComing",
+//                 style: TextStyle(
+//                   fontSize: Sizes.fontSize12,
+//                   color: selectedSegment == MyBookingType.upcoming
+//                       ? AppColors.white
+//                       : null,
+//                   fontWeight: selectedSegment == MyBookingType.upcoming
+//                       ? FontWeight.w800
+//                       : null,
+//                 ),
+//               )
+//             ],
+//           ),
+//         ),
+
+//         ///Past
+//         MyBookingType.past: Padding(
+//           padding: const EdgeInsets.symmetric(
+//             horizontal: Sizes.space,
+//             vertical: Sizes.spaceMed,
+//           ),
+//           child: Row(
+//             children: [
+//               Icon(
+//                 Icons.history,
+//                 color: selectedSegment == MyBookingType.past
+//                     ? AppColors.white
+//                     : null,
+//                 size: Sizes.fontSize12,
+//               ),
+//               const SizedBox(width: Sizes.space),
+//               Text(
+//                 "Past",
+//                 style: TextStyle(
+//                   fontSize: Sizes.fontSize12,
+//                   color: selectedSegment == MyBookingType.past
+//                       ? AppColors.white
+//                       : null,
+//                   fontWeight: selectedSegment == MyBookingType.past
+//                       ? FontWeight.w800
+//                       : null,
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       },
+//       onValueChanged: (MyBookingType? value) {
+//         if (value == null) return;
+
+//         ///Update Segment data
+//         ref
+//             .read(myBookingSegemntIndexPr.notifier)
+//             .update((state) => state = value);
+//       },
+//     );
+//   }
+// }
 
 ///Upcoming Bookings Card
 class _UpcomingBookingsCard extends StatelessWidget {

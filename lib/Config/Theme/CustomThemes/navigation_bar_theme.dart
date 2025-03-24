@@ -12,7 +12,7 @@ class MyNavigationBarTheme {
           backgroundColor: AppColors.white,
           indicatorColor: AppColors.appTheme,
           shadowColor: AppColors.black,
-          surfaceTintColor: AppColors.grey,
+          surfaceTintColor: AppColors.white,
           elevation: 20,
           indicatorShape: const CircleBorder(),
           labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
@@ -36,8 +36,8 @@ class MyNavigationBarTheme {
                 return const TextStyle(
                   color: AppColors.appTheme,
                   fontStyle: FontStyle.italic,
-                  fontWeight: FontWeight.w600,
                   fontSize: Sizes.fontSize12,
+                  overflow: TextOverflow.ellipsis,
                 );
               }
               return const TextStyle(
@@ -62,7 +62,23 @@ class MyNavigationBarTheme {
   BottomNavigationBarThemeData lightBottomNavBarTheme(BuildContext context) {
     return Theme.of(context).bottomNavigationBarTheme.copyWith(
           backgroundColor: AppColors.white,
-          elevation: 10,
+          showUnselectedLabels: false,
+          type: BottomNavigationBarType.fixed,
+          elevation: 20,
+          unselectedLabelStyle: const TextStyle(
+            color: AppColors.black,
+            fontSize: Sizes.fontSize12,
+          ),
+          selectedLabelStyle: const TextStyle(
+            color: AppColors.appTheme,
+            fontStyle: FontStyle.italic,
+            fontSize: Sizes.fontSize12,
+            fontWeight: FontWeight.w600,
+            overflow: TextOverflow.ellipsis,
+          ),
+          unselectedIconTheme: const IconThemeData(color: AppColors.black),
+          selectedIconTheme: const IconThemeData(color: AppColors.appTheme),
+          landscapeLayout: BottomNavigationBarLandscapeLayout.centered,
         );
   }
 

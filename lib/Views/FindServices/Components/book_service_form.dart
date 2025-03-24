@@ -52,14 +52,11 @@ class _BookServiceFormState extends State<BookServiceForm> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _DatePickerField(controller: _dateController),
-            const SizedBox(height: Sizes.space),
             const _TimeSlotsField(),
-            const SizedBox(height: Sizes.space),
             _DurationField(
               selectedDuration: _selectedDuration,
               onSelectDuration: _updateSelectedDuration,
             ),
-            const SizedBox(height: Sizes.space),
             _NameField(controller: _nameController),
             const SizedBox(height: Sizes.spaceHeight),
 

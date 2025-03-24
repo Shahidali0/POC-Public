@@ -7,7 +7,7 @@ class FindServiceDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MyCupertinoPageScaffold(
+    return MyCupertinoSliverScaffold(
       previousPageTitle: "Home",
       title: "Elite Match Organization",
 
@@ -34,6 +34,7 @@ class FindServiceDetailsScreen extends StatelessWidget {
 
           ///Location Details
           ..._locationDetails(),
+          const SizedBox(height: Sizes.spaceHeight),
         ],
       ),
     );
@@ -84,7 +85,7 @@ class FindServiceDetailsScreen extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.star,
-                      color: AppColors.orange,
+                      color: AppColors.black,
                     ),
                     SizedBox(width: Sizes.spaceSmall),
                     Text("4.8 (24 reviews)"),
@@ -134,7 +135,7 @@ class FindServiceDetailsScreen extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
             fontSize: Sizes.fontSize18,
-            color: AppColors.orange,
+            color: AppColors.black,
             fontWeight: FontWeight.w800,
           ),
         ),
@@ -160,7 +161,7 @@ Book a session today and take your cricket skills to the next level!''',
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
             fontSize: Sizes.fontSize18,
-            color: AppColors.orange,
+            color: AppColors.black,
             fontWeight: FontWeight.w800,
           ),
         ),
@@ -186,7 +187,7 @@ Book a session today and take your cricket skills to the next level!''',
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
             fontSize: Sizes.fontSize18,
-            color: AppColors.orange,
+            color: AppColors.black,
             fontWeight: FontWeight.w800,
           ),
         ),
@@ -212,7 +213,7 @@ Book a session today and take your cricket skills to the next level!''',
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
             fontSize: Sizes.fontSize18,
-            color: AppColors.orange,
+            color: AppColors.black,
             fontWeight: FontWeight.w800,
           ),
         ),
@@ -247,7 +248,7 @@ class _BookNowButton extends ConsumerWidget {
     return Card(
       margin: EdgeInsets.zero,
       child: SafeArea(
-        minimum: Sizes.globalMargin,
+        minimum: Sizes.globalPadding,
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -270,7 +271,7 @@ class _BookNowButton extends ConsumerWidget {
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontSize: Sizes.fontSize18,
-                      color: AppColors.orange,
+                      color: AppColors.black,
                       fontWeight: FontWeight.w800,
                     ),
                   ),

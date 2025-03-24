@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.lightTheme(context),
       themeMode: ThemeMode.light,
       // home: const IntroScreen(),
+      // home: const LocationScreen(),
       home: const DashboardNavbarScreen(),
       // home: const LoginScreen(),
       // home: const OtpVerificationScreen(

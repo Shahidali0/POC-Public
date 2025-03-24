@@ -25,20 +25,26 @@ class MyAppbarTheme {
 
   ///TabBarTheme ---LIGHT
   TabBarTheme lightTabbarTheme() {
-    return TabBarTheme(
-      dividerColor: AppColors.transparent,
+    return const TabBarTheme(
+      dividerColor: AppColors.border,
       indicatorSize: TabBarIndicatorSize.tab,
       labelPadding: EdgeInsets.zero,
       indicator: BoxDecoration(
-        color: AppColors.appTheme,
-        borderRadius: BorderRadius.circular(Sizes.borderRadius),
-        border: Border.all(color: AppColors.appTheme),
+        color: AppColors.transparent,
+        border: Border(
+          bottom: BorderSide(
+            color: AppColors.appTheme,
+            width: 2,
+          ),
+        ),
       ),
-      labelStyle: const TextStyle(
+      labelColor: AppColors.appTheme,
+      unselectedLabelColor: AppColors.blueGrey,
+      labelStyle: TextStyle(
         fontWeight: FontWeight.w700,
         color: AppColors.white,
       ),
-      unselectedLabelStyle: const TextStyle(
+      unselectedLabelStyle: TextStyle(
         fontWeight: FontWeight.w400,
         color: AppColors.blueGrey,
       ),

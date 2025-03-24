@@ -7,7 +7,7 @@ class NotificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MyCupertinoPageScaffold(
+    return const MyCupertinoSliverScaffold(
       title: "Notifications",
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

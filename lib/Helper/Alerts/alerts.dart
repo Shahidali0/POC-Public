@@ -55,7 +55,7 @@ class LogHelper {
         barrierColor: AppColors.blueGrey.withOpacity(0.2),
         context: context,
         builder: (BuildContext context) {
-          return MyCupertinoPageScaffold(
+          return MyCupertinoSliverScaffold(
             title: title,
             body: child,
           );
@@ -67,7 +67,7 @@ class LogHelper {
       barrierColor: AppColors.blueGrey.withOpacity(0.2),
       context: context,
       builder: (BuildContext context) {
-        return MyCupertinoPageScaffold(
+        return MyCupertinoSliverScaffold(
           title: title,
           body: child,
         );

@@ -28,12 +28,16 @@ class _HomeTitleAppBar extends StatelessWidget {
       ),
       actions: [
         FadeAnimations(
-          child: CommonCircleButton(
-            onPressed: () => AppRouter.instance.push(
-              context: context,
-              screen: const NotificationScreen(),
+          child: Padding(
+            padding: const EdgeInsets.only(right: Sizes.space),
+            child: CommonIconButton(
+              onPressed: () => AppRouter.instance.push(
+                context: context,
+                screen: const NotificationScreen(),
+              ),
+              iconData: CupertinoIcons.bell,
+              iconColor: AppColors.white,
             ),
-            iconData: CupertinoIcons.bell,
           ),
         )
       ],
@@ -126,18 +130,7 @@ class HomeSearchbarWithTabs extends ConsumerWidget {
         onTap: (index) =>
             ref.read(homeTabBarIndexPr.notifier).update((st) => st = index),
         tabAlignment: TabAlignment.start,
-        indicator: const BoxDecoration(
-          color: AppColors.transparent,
-          border: Border(
-            bottom: BorderSide(
-              color: AppColors.appTheme,
-              width: 2,
-            ),
-          ),
-        ),
         labelPadding: const EdgeInsets.all(Sizes.space),
-        labelColor: AppColors.appTheme,
-        unselectedLabelColor: AppColors.blueGrey,
         padding: const EdgeInsets.only(bottom: 8.0),
         tabs: List.generate(
           homeTabbarItems.length,

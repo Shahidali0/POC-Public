@@ -64,6 +64,10 @@ dependencies:
   calendar_date_picker2: ^1.1.9
   table_calendar: ^3.2.0
 
+  # For Location access
+  # geocoding: ^3.0.0
+  # geolocator: ^13.0.3
+
 
 
 dev_dependencies:
@@ -98,9 +102,9 @@ flutter:
       fonts:
         - asset: assets/fonts/proximanova-regular.ttf
         - asset: assets/fonts/proximanova-boldit-webfont.ttf
-          weight: 700
+          weight: 600
         - asset: assets/fonts/proximanova-bold-webfont.ttf
-          weight: 700
+          weight: 500
           
   #   - family: Trajan Pro
   #     fonts:

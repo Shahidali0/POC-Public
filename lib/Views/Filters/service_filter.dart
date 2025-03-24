@@ -6,7 +6,7 @@ class ServiceFilters extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MyCupertinoPageScaffold(
+    return MyCupertinoSliverScaffold(
       title: "Filters",
       previousPageTitle: "Home",
       trailing: Consumer(
@@ -15,7 +15,6 @@ class ServiceFilters extends StatelessWidget {
             onPressed: () =>
                 ref.read(filterCategoryIndexPr.notifier).state = null,
             text: "Clear All",
-            backgroundColor: AppColors.transparent,
           );
         },
       ),
