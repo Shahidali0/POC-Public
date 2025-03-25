@@ -151,29 +151,37 @@ class CupertinoAppbar extends StatelessWidget
     required this.title,
     this.previousPageTitle,
     this.trailing,
+    this.showNotificationIcon = true,
   });
 
   final String title;
   final String? previousPageTitle;
   final Widget? trailing;
+  final bool showNotificationIcon;
 
   @override
   Widget build(BuildContext context) {
     return CupertinoNavigationBar(
+      transitionBetweenRoutes: false,
       backgroundColor: AppColors.transparent,
       border: const Border(
         bottom: BorderSide(color: AppColors.blueGrey, width: 0.1),
       ),
       previousPageTitle: previousPageTitle ?? "Back",
-      trailing: trailing ??
-          CommonIconButton(
-            onPressed: () => AppRouter.instance.push(
-              context: context,
-              screen: const NotificationScreen(),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (trailing != null) trailing!,
+          if (showNotificationIcon)
+            CommonIconButton(
+              onPressed: () => AppRouter.instance.push(
+                context: context,
+                screen: const NotificationScreen(),
+              ),
+              iconData: CupertinoIcons.bell,
             ),
-            iconData: CupertinoIcons.bell,
-          ),
-      transitionBetweenRoutes: false,
+        ],
+      ),
       middle: Text(
         title,
         style: const TextStyle(
@@ -189,7 +197,5 @@ class CupertinoAppbar extends StatelessWidget
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   @override
-  bool shouldFullyObstruct(BuildContext context) {
-    return false;
-  }
+  bool shouldFullyObstruct(BuildContext context) => false;
 }

@@ -43,7 +43,7 @@ class MyCupertinoSliverScaffold extends StatelessWidget {
             trailing: trailing,
             alwaysShowMiddle: false,
             automaticallyImplyTitle: false,
-            transitionBetweenRoutes: false,
+            // transitionBetweenRoutes: false,
             middle: title == null
                 ? null
                 : Text(

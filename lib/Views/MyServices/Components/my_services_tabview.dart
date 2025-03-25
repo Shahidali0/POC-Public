@@ -2,35 +2,106 @@ import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class MyServicesTabview extends StatelessWidget {
+class MyServicesTabview extends ConsumerWidget {
   const MyServicesTabview({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return ListView.separated(
-      key: const PageStorageKey('MyServicesTabview'),
-      physics: const NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.all(Sizes.space),
-      itemCount: 30,
-      itemBuilder: (BuildContext context, int index) {
-        return const _MyServiceCard();
-      },
-      separatorBuilder: (BuildContext context, int index) =>
-          const SizedBox(height: Sizes.spaceHeight),
-    );
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ref.watch(findMyServicesPr).when(
+          data: (data) {
+            if (data == null) {
+              return const EmptyDataWidget();
+            }
+
+            return RefreshIndicator.adaptive(
+              onRefresh: () async => ref.invalidate(findMyServicesPr),
+              child: _body(
+                context: context,
+                myServices: data.services!,
+                ref: ref,
+              ),
+            );
+          },
+          error: (e, st) {
+            final error = e as Failure;
+            return ErrorText(
+              title: error.title,
+              error: error.message,
+            );
+          },
+          loading: () => const ShowDataLoader(),
+        );
+
+    //   return FutureBuilder<AllServicesJson?>(
+    //     future: _futureData,
+    //     builder:
+    //         (BuildContext context, AsyncSnapshot<AllServicesJson?> snapshot) {
+    //       switch (snapshot.connectionState) {
+    //         case ConnectionState.waiting:
+    //           return const ShowDataLoader();
+    //         case ConnectionState.done:
+    //         default:
+    //           //*If SnapData has error
+    //           if (snapshot.hasError) {
+    //             final error = snapshot.error as Failure;
+    //             return ErrorText(
+    //               title: error.title,
+    //               error: error.message,
+    //             );
+    //           }
+    //           //*If SnapData is present
+    //           else if (snapshot.hasData) {
+    //             return _body(
+    //               allServices: snapshot.data!.services!,
+    //               ref: ref,
+    //             );
+    //           }
+    //           //*If No Data Available
+    //           else {
+    //             return const EmptyDataWidget();
+    //           }
+    //       }
+    //     },
+    //   );
   }
+
+  ///Body Widget
+  Widget _body({
+    required List<ServiceJson> myServices,
+    required WidgetRef ref,
+    required BuildContext context,
+  }) =>
+      ListView.separated(
+        key: const PageStorageKey('MyServicesTabview'),
+        physics: const NeverScrollableScrollPhysics(),
+        padding: Sizes.globalMargin.add(
+          const EdgeInsets.only(bottom: Sizes.spaceHeight * 5),
+        ),
+        itemCount: myServices.length,
+        itemBuilder: (BuildContext context, int index) {
+          return _MyServiceCard(
+            serviceJson: myServices[index],
+          );
+        },
+        separatorBuilder: (BuildContext context, int index) =>
+            const SizedBox(height: Sizes.spaceHeight),
+      );
 }
 
 ///Service Card Widget
 class _MyServiceCard extends StatelessWidget {
-  const _MyServiceCard();
+  const _MyServiceCard({
+    required this.serviceJson,
+  });
+
+  final ServiceJson serviceJson;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => AppRouter.instance.push(
         context: context,
-        screen: const FindServiceDetailsScreen(),
+        screen: ServiceDetailsScreen(serviceJson: serviceJson),
       ),
       child: Card(
         margin: EdgeInsets.zero,
@@ -44,15 +115,14 @@ class _MyServiceCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ///Header
-                  ///Header
-                  const Row(
+                  Row(
                     children: [
                       Expanded(
                         child: Text(
-                          "Professional Batting Practice",
+                          serviceJson.title!,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: Sizes.fontSize18,
                             color: AppColors.black,
                             fontWeight: FontWeight.w500,
@@ -62,9 +132,9 @@ class _MyServiceCard extends StatelessWidget {
 
                       ///Price Tag
                       Text(
-                        r"$ 59",
+                        "\$ ${serviceJson.price}",
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: Sizes.fontSize16,
                           fontWeight: FontWeight.w600,
                         ),
@@ -76,20 +146,23 @@ class _MyServiceCard extends StatelessWidget {
                   _buildListTile(
                     iconData: CupertinoIcons.person,
                     text: "John Smith",
-                    color: AppColors.blueGrey,
+                    color: AppColors.black.withOpacity(0.75),
                     context: context,
                   ),
 
                   ///Description
                   const SizedBox(height: Sizes.space),
-                  const Text(
-                    "One-on-one batting practice sessions with experienced players",
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: AppColors.black,
-                      fontWeight: FontWeight.w500,
-                      fontSize: Sizes.fontSize16,
+                  Padding(
+                    padding: const EdgeInsets.only(right: Sizes.space),
+                    child: Text(
+                      serviceJson.description!,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: AppColors.black,
+                        fontWeight: FontWeight.w500,
+                        fontSize: Sizes.fontSize16,
+                      ),
                     ),
                   ),
                   const SizedBox(height: Sizes.space),
@@ -97,12 +170,13 @@ class _MyServiceCard extends StatelessWidget {
                   ///Details
                   _buildListTile(
                     iconData: CupertinoIcons.pin,
-                    text: "Melbourne Cricket Ground",
+                    text: serviceJson.location!,
                     context: context,
                   ),
+
                   _buildListTile(
                     iconData: CupertinoIcons.time,
-                    text: "30 or 60 mins",
+                    text: Utils.instance.getDuration(serviceJson.duration),
                     context: context,
                   ),
 

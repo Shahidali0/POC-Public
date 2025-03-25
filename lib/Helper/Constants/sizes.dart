@@ -55,7 +55,6 @@ class Sizes {
       EdgeInsets.only(
         top: MediaQuery.of(context).padding.top + kToolbarHeight,
         left: Sizes.space,
-        bottom: Sizes.space,
         right: Sizes.space,
       );
 }

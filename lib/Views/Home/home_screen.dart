@@ -77,16 +77,16 @@ class CardWidget extends StatelessWidget {
     super.key,
   });
 
-  ///OnTap BookNow
-  void _onBookNow(BuildContext context) => AppRouter.instance.push(
-        context: context,
-        screen: const FindServiceDetailsScreen(),
-      );
+  // ///OnTap BookNow
+  // void _onBookNow(BuildContext context) => AppRouter.instance.push(
+  //       context: context,
+  //       screen: const ServiceDetailsScreen(),
+  //     );
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => _onBookNow(context),
+      // onTap: () => _onBookNow(context),
       child: Card(
         margin: EdgeInsets.zero,
         child: Padding(
@@ -152,7 +152,7 @@ class CardWidget extends StatelessWidget {
 
               ///View Details Button
               CommonTextButton(
-                onPressed: () => _onBookNow(context),
+                onPressed: () {},
                 text: "View Details",
               ),
             ],

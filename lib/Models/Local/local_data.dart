@@ -67,3 +67,11 @@ List<HomeTabbarItem> homeTabbarItems = [
     title: "Grounds",
   ),
 ];
+
+List<String> filters = [
+  "Sort",
+  "Category",
+  "Sub Category",
+  "Price",
+  "Distance",
+];

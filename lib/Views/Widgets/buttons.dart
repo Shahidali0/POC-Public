@@ -165,7 +165,7 @@ class CommonTextButton extends _PlatformWidget {
   TextStyle get _style => TextStyle(
         fontSize: Sizes.defaultSize,
         fontWeight: FontWeight.w700,
-        color: textColor ?? AppColors.orange,
+        color: textColor ?? AppColors.appTheme,
         decoration: decoration,
       );
 }

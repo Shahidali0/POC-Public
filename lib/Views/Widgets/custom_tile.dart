@@ -7,6 +7,7 @@ class CustomTile extends StatelessWidget {
     super.key,
     required this.iconData,
     required this.text,
+    this.textColor,
     this.fontSize,
     this.iconSize,
     this.fontWeight,
@@ -15,6 +16,7 @@ class CustomTile extends StatelessWidget {
 
   final IconData iconData;
   final String text;
+  final Color? textColor;
   final double? fontSize;
   final double? iconSize;
   final FontWeight? fontWeight;
@@ -39,7 +41,7 @@ class CustomTile extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
           fontSize: fontSize ?? kDefaultFontSize,
-          color: AppColors.black,
+          color: textColor ?? AppColors.black,
           fontWeight: fontWeight ?? FontWeight.w500,
         ),
       ),

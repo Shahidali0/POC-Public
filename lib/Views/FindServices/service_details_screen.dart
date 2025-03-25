@@ -2,24 +2,31 @@ import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class FindServiceDetailsScreen extends StatelessWidget {
-  const FindServiceDetailsScreen({super.key});
+class ServiceDetailsScreen extends ConsumerWidget {
+  const ServiceDetailsScreen({
+    super.key,
+    required this.serviceJson,
+  });
+
+  final ServiceJson serviceJson;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = ref.read(findServicesControllerPr.notifier);
+
     return MyCupertinoSliverScaffold(
       previousPageTitle: "Home",
-      title: "Elite Match Organization",
+      title: serviceJson.title!,
 
       ///Bottom Navbar
-      bottomNavBar: const _BookNowButton(),
+      bottomNavBar: _BookNowButton(serviceJson: serviceJson),
 
       ///Body
       body: ListView(
         padding: EdgeInsets.zero,
         children: [
           ///About the Provider
-          ..._aboutProvider(),
+          ..._aboutProvider(controller),
 
           const Divider(),
 
@@ -41,25 +48,23 @@ class FindServiceDetailsScreen extends StatelessWidget {
   }
 
   ///About the Provider
-  List<Widget> _aboutProvider() => [
+  List<Widget> _aboutProvider(FindServciesController controller) => [
         ///Profile
-        const ListTile(
+        ListTile(
           contentPadding: EdgeInsets.zero,
           horizontalTitleGap: Sizes.spaceMed,
           leading: CircleAvatar(
             radius: 30,
             backgroundColor: AppColors.blueLight,
             child: Text(
-              "PS",
-              style: TextStyle(
+              controller.getInitials(serviceJson.title!),
+              style: const TextStyle(
                 color: AppColors.white,
                 fontWeight: FontWeight.w800,
               ),
             ),
           ),
-          title: Text(
-            "Premium Cricket Solutions",
-          ),
+          title: Text(serviceJson.title!),
           subtitle: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,19 +72,19 @@ class FindServiceDetailsScreen extends StatelessWidget {
               ///Tag
               Flexible(
                 child: Text(
-                  "Match Organizer",
+                  serviceJson.category!,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
+                  style: const TextStyle(
                     // fontSize: Sizes.fontSize12,
                     color: AppColors.appTheme,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
               ),
-              SizedBox(height: Sizes.spaceSmall),
+              const SizedBox(height: Sizes.spaceSmall),
 
               ///Rating
-              Flexible(
+              const Flexible(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
@@ -106,24 +111,25 @@ class FindServiceDetailsScreen extends StatelessWidget {
           ),
         ),
 
-        const CustomTile(
+        CustomTile(
           iconData: CupertinoIcons.person,
-          text: "Member since Jan 2023",
+          text:
+              "Member since ${Utils.instance.formatDateYMMM(serviceJson.createdAt)}",
         ),
 
-        const CustomTile(
+        CustomTile(
           iconData: CupertinoIcons.calendar,
-          text: "2 available dates",
+          text: "${serviceJson.timeSlots!.length} available dates",
         ),
 
-        const CustomTile(
+        CustomTile(
           iconData: CupertinoIcons.map_pin_ellipse,
-          text: "Melbourne Cricket Ground",
+          text: serviceJson.location!,
         ),
 
-        const CustomTile(
+        CustomTile(
           iconData: CupertinoIcons.timer,
-          text: "180, 240 mins",
+          text: Utils.instance.getDuration(serviceJson.duration),
         ),
       ];
 
@@ -140,13 +146,9 @@ class FindServiceDetailsScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(height: Sizes.spaceMed),
-        const Text(
-          '''Premium match organization with top-tier grounds and professional umpires
-
-Our Elite Match Organization service provides professional coaching tailored to your needs. Suitable for players of all ages and skill levels, from beginners to advanced players looking to refine their technique.
-
-Book a session today and take your cricket skills to the next level!''',
-          style: TextStyle(
+        Text(
+          serviceJson.description!,
+          style: const TextStyle(
             color: AppColors.black,
             fontSize: Sizes.fontSize16,
           ),
@@ -192,16 +194,13 @@ Book a session today and take your cricket skills to the next level!''',
           ),
         ),
         const SizedBox(height: Sizes.spaceMed),
-        const Wrap(
+        Wrap(
           spacing: Sizes.space,
-          children: [
-            Chip(
-              label: Text("Mar 20, 2024"),
-            ),
-            Chip(
-              label: Text("Mar 22, 2024"),
-            ),
-          ],
+          children: serviceJson.timeSlots!.entries.map(
+            (entry) {
+              return Chip(label: Text(entry.key));
+            },
+          ).toList(),
         ),
       ];
 
@@ -229,9 +228,9 @@ Book a session today and take your cricket skills to the next level!''',
           ),
         ),
         const SizedBox(height: Sizes.spaceMed),
-        const Text(
-          'This service is available at Melbourne Cricket Ground. Exact location details will be provided after booking confirmation.',
-          style: TextStyle(
+        Text(
+          'This service is available at ${serviceJson.location}. Exact location details will be provided after booking confirmation.',
+          style: const TextStyle(
             color: AppColors.black,
             fontSize: Sizes.fontSize16,
           ),
@@ -241,7 +240,9 @@ Book a session today and take your cricket skills to the next level!''',
 
 ///Book Now Button Widget
 class _BookNowButton extends ConsumerWidget {
-  const _BookNowButton();
+  const _BookNowButton({required this.serviceJson});
+
+  final ServiceJson serviceJson;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -253,12 +254,12 @@ class _BookNowButton extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             ///Cost
-            const Expanded(
+            Expanded(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     "Per Session:",
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -267,9 +268,9 @@ class _BookNowButton extends ConsumerWidget {
                     ),
                   ),
                   Text(
-                    "💲360",
+                    "\$ ${serviceJson.price}",
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: Sizes.fontSize18,
                       color: AppColors.black,
                       fontWeight: FontWeight.w800,

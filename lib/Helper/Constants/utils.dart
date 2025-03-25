@@ -9,7 +9,8 @@ class Utils {
 
   //* Base Api URL
   String get baseUrl =>
-      "https://44lsjdxksc.execute-api.ap-southeast-2.amazonaws.com/staging/";
+      // "https://44lsjdxksc.execute-api.ap-southeast-2.amazonaws.com/staging/";
+      "https://otbkcau8k5.execute-api.ap-southeast-2.amazonaws.com/";
 
   //* Hide Focus of TextFormField
   void hideFoucs(BuildContext context) {
@@ -29,6 +30,22 @@ class Utils {
     if (dateTime == null) return "";
     final formattedDate = DateFormat.yMMMd().format(dateTime);
     return formattedDate;
+  }
+
+  //* FormatDate to Specific String Format (Month, Year)
+  String formatDateYMMM(DateTime? dateTime) {
+    if (dateTime == null) return "";
+
+    final formattedDate = DateFormat.yMMM().format(dateTime);
+    return formattedDate;
+  }
+
+  //* FormatDate to Specific String Format (Month, Year)
+  String getDuration(List<String>? data) {
+    final duration =
+        data!.map((e) => e).toString().replaceAll(RegExp(r"[()]"), "");
+
+    return "$duration mins";
   }
 
   //* Format String to DateTime

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cricket_poc/lib_exports.dart';
+import 'package:flutter/services.dart';
 
 class MyAppbarTheme {
   MyAppbarTheme._();
@@ -20,6 +21,7 @@ class MyAppbarTheme {
         fontSize: Sizes.fontSize18,
         color: AppColors.appTheme,
       ),
+      systemOverlayStyle: SystemUiOverlayStyle.dark,
     );
   }
 
@@ -30,7 +32,7 @@ class MyAppbarTheme {
       indicatorSize: TabBarIndicatorSize.tab,
       labelPadding: EdgeInsets.zero,
       indicator: BoxDecoration(
-        color: AppColors.transparent,
+        color: Colors.transparent,
         border: Border(
           bottom: BorderSide(
             color: AppColors.appTheme,

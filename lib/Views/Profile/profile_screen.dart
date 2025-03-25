@@ -17,28 +17,7 @@ class _FindServicesScreenState extends State<ProfileScreen> {
       child: ListView(
         padding: Sizes.cupertinoScaffoldPadding(context),
         children: [
-          const Text(
-            "ACCOUNT",
-            style: TextStyle(
-              fontSize: Sizes.fontSize18,
-              fontStyle: FontStyle.italic,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const Text(
-            "Login/Create Account to manage orders",
-            style: TextStyle(
-              fontSize: Sizes.fontSize16,
-            ),
-          ),
-          const SizedBox(height: Sizes.space),
-          CommonButton(
-            onPressed: () => AppRouter.instance.push(
-              context: context,
-              screen: const LoginScreen(),
-            ),
-            text: "Login",
-          ),
+          const Authorize(),
           const SizedBox(height: Sizes.spaceMed),
 
           ///Divider

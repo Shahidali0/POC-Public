@@ -24,7 +24,7 @@ class AppColors {
   static const Color green = CupertinoColors.systemGreen;
 
   static const Color red = Color.fromARGB(255, 181, 14, 2);
-  static const Color transparent = Colors.transparent;
+  static Color transparent = CupertinoColors.systemBackground.withOpacity(0);
   static const Color white = CupertinoColors.white;
 
   ///Gradient

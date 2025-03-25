@@ -7,3 +7,4 @@ export 'Exception/app_exceptions.dart';
 export 'Exception/failure.dart';
 
 export 'ServicesImpl/auth_services.dart';
+export 'ServicesImpl/home_services.dart';

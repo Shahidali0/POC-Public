@@ -20,7 +20,7 @@ class LocalStorage {
     // final data = SignedInData.fromRawJson(details);
 
     // return data.jwtToken;
-    return "";
+    return '';
   }
 
   //* Get SignedIn Data
