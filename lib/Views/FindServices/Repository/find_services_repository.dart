@@ -28,11 +28,11 @@ class FindServicesRepository {
 
       return findAllServices;
     } on SocketException catch (_) {
-      throw AppExceptions.handleSocketException();
+      throw AppExceptions.instance.handleSocketException();
     } on MyHttpClientException catch (error) {
-      throw AppExceptions.handleMyHTTPClientException(error);
+      throw AppExceptions.instance.handleMyHTTPClientException(error);
     } catch (e) {
-      throw AppExceptions.handleException(error: e.toString());
+      throw AppExceptions.instance.handleException(error: e.toString());
     }
   }
 }

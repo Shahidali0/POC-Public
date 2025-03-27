@@ -21,7 +21,7 @@ class ErrorText extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              title ?? AppExceptions.normalErrorText,
+              title ?? AppExceptions.instance.normalErrorText,
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: Sizes.fontSize24,

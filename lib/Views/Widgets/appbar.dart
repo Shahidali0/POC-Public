@@ -151,7 +151,7 @@ class CupertinoAppbar extends StatelessWidget
     required this.title,
     this.previousPageTitle,
     this.trailing,
-    this.showNotificationIcon = true,
+    this.showNotificationIcon = false,
   });
 
   final String title;

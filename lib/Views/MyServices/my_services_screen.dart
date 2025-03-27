@@ -5,20 +5,23 @@ import 'package:flutter/material.dart';
 class MyServicesScreen extends StatelessWidget {
   const MyServicesScreen({super.key});
 
-  ///OnTap Filter Icon
-  Future _onTapFilter(BuildContext context) async =>
-      AppRouter.instance.animatedPush(
-        context: context,
-        type: MyAnimationType.upDown,
-        screen: const ServiceFilters(),
-      );
+  // ///OnTap Filter Icon
+  // Future _onTapFilter(BuildContext context) async =>
+  //     AppRouter.instance.animatedPush(
+  //       context: context,
+  //       type: MyAnimationType.upDown,
+  //       screen: const ServiceFilters(),
+  //     );
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
       child: CupertinoPageScaffold(
-        navigationBar: const CupertinoAppbar(title: "My Services"),
+        navigationBar: const CupertinoAppbar(
+          title: "My Services",
+          showNotificationIcon: true,
+        ),
         child: NestedScrollView(
           floatHeaderSlivers: true,
           physics: const ClampingScrollPhysics(),
@@ -44,7 +47,7 @@ class MyServicesScreen extends StatelessWidget {
                   labelColor: AppColors.appTheme,
                   indicatorColor: AppColors.appTheme,
                   padding: const EdgeInsets.symmetric(horizontal: Sizes.space),
-                  tabs: myServicesTabs
+                  tabs: myServicesTabsData
                       .map(
                         (text) => Tab(text: text),
                       )

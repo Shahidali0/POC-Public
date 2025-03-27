@@ -4,8 +4,8 @@ import 'package:cricket_poc/lib_exports.dart';
 
 class ResponseHandler {
   static Failure basicFailure = Failure(
-    title: AppExceptions.serverError,
-    message: AppExceptions.normalErrorText,
+    title: AppExceptions.instance.serverError,
+    message: AppExceptions.instance.normalErrorText,
   );
 
   //! Handle HTTP Responses
@@ -19,7 +19,7 @@ class ResponseHandler {
     else if (response.statusCode == 400) {
       if (response.body.isEmpty) {
         throw MyHttpClientException(
-          failure: AppExceptions.handleUnAuthorizedError(),
+          failure: AppExceptions.instance.handleUnAuthorizedError(),
         );
       }
 
@@ -29,7 +29,7 @@ class ResponseHandler {
       String message = responseData["error"].toString();
       // if (status.toLowerCase().contains("error")) {
       //   basicFailure = Failure(
-      //     title: AppExceptions.serverError,
+      //     title: AppExceptions.instance.serverError,
       //     message: message,
       //   );
       // }
@@ -44,7 +44,7 @@ class ResponseHandler {
     ///Handle Un Authorize Status
     else if (response.statusCode == 401) {
       throw MyHttpClientException(
-        failure: AppExceptions.handleUnAuthorizedError(),
+        failure: AppExceptions.instance.handleUnAuthorizedError(),
       );
     }
 
@@ -54,7 +54,7 @@ class ResponseHandler {
         response.statusCode == 500) {
       if (response.body.isEmpty) {
         throw MyHttpClientException(
-            failure: AppExceptions.handleInternalServerError());
+            failure: AppExceptions.instance.handleInternalServerError());
       }
 
       ///
@@ -74,7 +74,7 @@ class ResponseHandler {
     ///Else if none of above conditions then
     else {
       throw MyHttpClientException(
-          failure: AppExceptions.handleException(error: ""));
+          failure: AppExceptions.instance.handleException(error: ""));
     }
   }
 
@@ -93,7 +93,8 @@ class ResponseHandler {
         final body = jsonDecode(response.body);
         final message = body["message"];
         throw MyHttpClientException(
-          failure: Failure(title: AppExceptions.serverError, message: message),
+          failure: Failure(
+              title: AppExceptions.instance.serverError, message: message),
         );
       }
       throw MyHttpClientException(failure: basicFailure);
@@ -109,7 +110,7 @@ class ResponseHandler {
       return streamData;
     } else if (response.statusCode == 401) {
       throw MyHttpClientException(
-          failure: AppExceptions.handleUnAuthorizedError());
+          failure: AppExceptions.instance.handleUnAuthorizedError());
     } else {
       throw MyHttpClientException(failure: basicFailure);
     }

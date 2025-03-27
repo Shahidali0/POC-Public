@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter/material.dart';
 
@@ -12,49 +13,19 @@ class PostServiceScreen extends ConsumerStatefulWidget {
 }
 
 class _PostServiceScreenState extends ConsumerState<PostServiceScreen> {
-  late ScrollController _scrollController;
+  late PostServiceRepository _controller;
 
   @override
   void initState() {
+    _controller = ref.read(postServiceControllerPr.notifier);
+    _controller.initState();
     super.initState();
-    _scrollController = ScrollController();
   }
 
   @override
   void dispose() {
-    _scrollController.dispose();
+    _controller.dispose();
     super.dispose();
-  }
-
-  ///MOVE TO TOP
-  void _moveTotop() => _scrollController.animateTo(
-        0,
-        duration: Sizes.duration,
-        curve: Sizes.curve,
-      );
-
-  ///ON STEP CONTINUE
-  void _onStepContinue(int currentStep) {
-    if (currentStep < 2) {
-      ///This is fix ScrollIssues
-      _moveTotop();
-      ref.read(_stepperIndexPr.notifier).update((state) => state += 1);
-    }
-    if (currentStep == 2) {
-      AppRouter.instance.push(
-        context: context,
-        screen: const PostServiceReviewScreen(),
-      );
-    }
-  }
-
-  ///ON STEP CANCEL
-  void _onStepCancel(int currentStep) {
-    if (currentStep > 0) {
-      ///This is fix ScrollIssues
-      _moveTotop();
-      ref.read(_stepperIndexPr.notifier).update((state) => state -= 1);
-    }
   }
 
   @override
@@ -62,53 +33,57 @@ class _PostServiceScreenState extends ConsumerState<PostServiceScreen> {
     final currentStep = ref.watch(_stepperIndexPr);
 
     return MyCupertinoSliverScaffold(
-      scrollController: _scrollController,
+      scrollController: _controller.scrollController,
       previousPageTitle: "Home",
       title: "Post Service",
       margin: EdgeInsets.zero,
-      body: Stepper(
-        elevation: 0.3,
-        type: StepperType.horizontal,
-        margin: EdgeInsets.zero,
-        currentStep: currentStep,
-        onStepTapped: (step) {
-          if (currentStep > step) {
-            ref.read(_stepperIndexPr.notifier).update((state) => state = step);
-          }
-        },
-        onStepContinue: () => _onStepContinue(currentStep),
-        onStepCancel: () => _onStepCancel(currentStep),
-        steps: [
-          ///Step1
-          _buildStep(
-            title: "Service\nDetails",
-            content: const PostServiceDetailsForm(),
-            isActive: currentStep == 0,
-            isCompleted: currentStep > 0,
-          ),
-
-          ///Step2
-          _buildStep(
-            title: "Location &\nSchedule",
-            content: const LocationScheduleForm(),
-            isActive: currentStep == 1,
-            isCompleted: currentStep > 1,
-          ),
-
-          ///Step3
-          _buildStep(
-            title: "Pricing",
-            content: const PricingForm(),
-            isActive: currentStep == 2,
-            isCompleted: currentStep > 2,
-          ),
-        ],
-        controlsBuilder: (context, details) {
-          return _StepperControlsButtons(
+      body: SizedBox(
+        height: MediaQuery.of(context).size.height,
+        child: Stepper(
+          elevation: 0.7,
+          type: StepperType.horizontal,
+          currentStep: currentStep,
+          onStepTapped: (step) => _controller.onStepTapped(
             currentStep: currentStep,
-            details: details,
-          );
-        },
+            step: step,
+          ),
+          onStepContinue: () => _controller.onStepContinue(
+            context: context,
+            currentStep: currentStep,
+          ),
+          onStepCancel: () => _controller.onStepCancel(currentStep),
+          steps: [
+            ///Step1
+            _buildStep(
+              title: "Service\nDetails",
+              content: const PostServiceDetailsForm(),
+              isActive: currentStep == 0,
+              isCompleted: currentStep > 0,
+            ),
+
+            ///Step2
+            _buildStep(
+              title: "Location &\nSchedule",
+              content: const LocationScheduleForm(),
+              isActive: currentStep == 1,
+              isCompleted: currentStep > 1,
+            ),
+
+            ///Step3
+            _buildStep(
+              title: "Pricing",
+              content: const PricingForm(),
+              isActive: currentStep == 2,
+              isCompleted: currentStep > 2,
+            ),
+          ],
+          controlsBuilder: (context, details) {
+            return _StepperControlsButtons(
+              currentStep: currentStep,
+              details: details,
+            );
+          },
+        ),
       ),
     );
   }

@@ -9,6 +9,7 @@ class FindServicesScreen extends ConsumerWidget {
     return CupertinoPageScaffold(
       navigationBar: CupertinoAppbar(
         title: "Find Services",
+        showNotificationIcon: true,
         trailing: CommonIconButton(
           onPressed: () => AppRouter.instance.animatedPush(
             context: context,

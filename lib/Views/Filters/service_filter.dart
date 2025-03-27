@@ -3,12 +3,33 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 part 'Controller/filters_controller.dart';
+part 'Components/filter_types.dart';
 
-class ServiceFilters extends ConsumerWidget {
+class ServiceFilters extends ConsumerStatefulWidget {
   const ServiceFilters({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ServiceFilters> createState() => _ServiceFiltersState();
+}
+
+class _ServiceFiltersState extends ConsumerState<ServiceFilters> {
+  late _FiltersController _controller;
+
+  @override
+  void initState() {
+    _controller = ref.read(filtersControllerPr.notifier);
+    _controller.initState();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.disposeMethod();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final selectedIndex = ref.watch(_selectedFilterIndexPr);
 
     return CupertinoPageScaffold(
@@ -19,8 +40,7 @@ class ServiceFilters extends ConsumerWidget {
         trailing: Consumer(
           builder: (_, WidgetRef ref, __) {
             return CommonTextButton(
-              onPressed: () =>
-                  ref.read(filterCategoryIndexPr.notifier).state = null,
+              onPressed: () => _controller.clearFilters(),
               text: "Clear All",
             );
           },
@@ -51,51 +71,25 @@ class ServiceFilters extends ConsumerWidget {
               const VerticalDivider(),
               Expanded(
                 flex: 4,
-                child: _RightMenuItems(
-                  selectedIndex: selectedIndex,
-                  ref: ref,
+                child: AnimatedSwitcher(
+                  duration: Sizes.duration,
+                  key: Key("selectedIndex:$selectedIndex"),
+                  child: IndexedStack(
+                    index: selectedIndex,
+                    children: [
+                      _SortTypeWidget(controller: _controller),
+                      _CategoryTypeWidget(controller: _controller),
+                      _SubCategoryTypeWidget(controller: _controller),
+                      _PriceTypeWidget(controller: _controller),
+                      _DistanceWidget(controller: _controller),
+                    ],
+                  ),
                 ),
               ),
             ],
           ),
         ),
       ),
-      // body: Column(
-      //   crossAxisAlignment: CrossAxisAlignment.start,
-      //   children: [
-      //     const Text(
-      //       "Category:",
-      //       style: TextStyle(
-      //         fontSize: Sizes.fontSize18,
-      //         fontWeight: FontWeight.bold,
-      //         color: AppColors.black,
-      //       ),
-      //     ),
-      //     const SizedBox(height: Sizes.spaceHeight),
-      //     Consumer(
-      //       builder: (_, WidgetRef ref, __) {
-      //         final selected = ref.watch(filterCategoryIndexPr);
-      //         return Wrap(
-      //           spacing: Sizes.space,
-      //           children: List.generate(
-      //             findServicesTabs.length,
-      //             (index) => ChoiceChip.elevated(
-      //
-      // color: selected == index ? AppColors.white : null,
-      //               ),
-      //               onSelected: (value) {
-      //                 ref.read(filterCategoryIndexPr.notifier).state = index;
-      //               },
-      //               label: Text(findServicesTabs[index]),
-      //               selected: selected == index,
-      //             ),
-      //           ),
-      //         );
-      //       },
-      //     ),
-      //     ///
-      //   ],
-      // ),
     );
   }
 }
@@ -115,7 +109,7 @@ class _LeftMenuItems extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: List.generate(
-        filters.length,
+        filtersData.length,
         (index) {
           return InkWell(
             onTap: () => ref
@@ -145,7 +139,7 @@ class _LeftMenuItems extends StatelessWidget {
     return Positioned(
       left: 12,
       child: Text(
-        filters[index],
+        filtersData[index],
         style: const TextStyle(
           color: AppColors.black,
           fontSize: Sizes.fontSize18,

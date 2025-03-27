@@ -207,6 +207,7 @@ class _BookingListView extends StatelessWidget {
     }
 
     return ListView.separated(
+      physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.only(
         top: Sizes.space,
         bottom: Sizes.spaceHeight * 5,

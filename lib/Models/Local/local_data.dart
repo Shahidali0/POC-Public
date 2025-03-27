@@ -2,13 +2,13 @@ import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-List<String> idTypes = [
+List<String> idTypesData = [
   "Passport",
   "Driving License",
   "National Id",
 ];
 
-List<String> specializations = [
+List<String> specializationsData = [
   "Batting Training",
   "Bowling Training",
   "Fielding Practice",
@@ -16,7 +16,7 @@ List<String> specializations = [
   "Mental Training",
 ];
 
-List<String> findServicesTabs = [
+List<String> findServicesTabsData = [
   "All Services",
   "Batting",
   "Bowling",
@@ -26,9 +26,19 @@ List<String> findServicesTabs = [
   "Hire Equipment",
 ];
 
-List<String> duration = ["30 min", "60 min", "90 min", "2 hrs"];
+List<String> serviceCategoriesData = [
+  "Coaching",
+  "Training",
+  "Expert Advice",
+  "Video Analysis",
+  "Skill Development",
+  "Practice Support",
+  "Equipment & Gear Guidance",
+];
 
-List<String> timeSlots = [
+List<String> durationData = ["30 min", "60 min", "90 min", "2 hrs"];
+
+List<String> timeSlotsData = [
   "09:00 Am",
   "10:00 Am",
   "11:00 Am",
@@ -40,12 +50,12 @@ List<String> timeSlots = [
   "05:00 Pm",
 ];
 
-List<String> myServicesTabs = [
+List<String> myServicesTabsData = [
   "My Services",
   "My Booking",
 ];
 
-List<HomeTabbarItem> homeTabbarItems = [
+List<HomeTabbarItem> homeTabbarItemsData = [
   HomeTabbarItem(
     iconData: CupertinoIcons.home,
     title: "All Services",
@@ -68,7 +78,7 @@ List<HomeTabbarItem> homeTabbarItems = [
   ),
 ];
 
-List<String> filters = [
+List<String> filtersData = [
   "Sort",
   "Category",
   "Sub Category",

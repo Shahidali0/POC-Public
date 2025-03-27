@@ -58,3 +58,30 @@ class FormFiledWidget extends StatelessWidget {
     );
   }
 }
+
+///Show Validation Error message
+class ValidationErrorText extends StatelessWidget {
+  const ValidationErrorText({
+    super.key,
+    required this.text,
+    this.padding,
+  });
+
+  final String text;
+  final EdgeInsets? padding;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: padding ??
+          const EdgeInsets.only(top: Sizes.spaceMed, left: Sizes.space),
+      child: Text(
+        text,
+        style: const TextStyle(
+          color: AppColors.red,
+          fontSize: Sizes.fontSize12,
+        ),
+      ),
+    );
+  }
+}

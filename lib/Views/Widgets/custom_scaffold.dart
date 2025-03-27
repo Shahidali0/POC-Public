@@ -29,50 +29,49 @@ class MyCupertinoSliverScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      child: NestedScrollView(
-        controller: scrollController,
-        floatHeaderSlivers: true,
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) =>
-            [
-          CupertinoSliverNavigationBar(
-            key: GlobalKey(),
-            backgroundColor: AppColors.transparent,
-            border: Border(bottom: BorderSide(color: AppColors.lightGrey)),
-            previousPageTitle: previousPageTitle ?? "Back",
-            trailing: trailing,
-            alwaysShowMiddle: false,
-            automaticallyImplyTitle: false,
-            // transitionBetweenRoutes: false,
-            middle: title == null
-                ? null
-                : Text(
-                    title!,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontStyle: FontStyle.italic,
-                      color: AppColors.appTheme,
+    return Scaffold(
+      bottomNavigationBar: bottomNavBar,
+      body: CupertinoPageScaffold(
+        child: NestedScrollView(
+          controller: scrollController,
+          floatHeaderSlivers: true,
+          headerSliverBuilder:
+              (BuildContext context, bool innerBoxIsScrolled) => [
+            CupertinoSliverNavigationBar(
+              key: GlobalKey(),
+              backgroundColor: AppColors.transparent,
+              border: Border(bottom: BorderSide(color: AppColors.lightGrey)),
+              previousPageTitle: previousPageTitle ?? "Back",
+              trailing: trailing,
+              alwaysShowMiddle: false,
+              automaticallyImplyTitle: false,
+              // transitionBetweenRoutes: false,
+              middle: title == null
+                  ? null
+                  : Text(
+                      title!,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                        color: AppColors.appTheme,
+                      ),
                     ),
-                  ),
-            largeTitle: title == null
-                ? null
-                : Text(
-                    title!,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontStyle: FontStyle.italic,
-                      color: AppColors.black,
-                      fontSize: Sizes.fontSize24,
+              largeTitle: title == null
+                  ? null
+                  : Text(
+                      title!,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                        color: AppColors.black,
+                        fontSize: Sizes.fontSize24,
+                      ),
                     ),
-                  ),
-          ),
-        ],
-        body: Scaffold(
-          bottomNavigationBar: bottomNavBar,
-          body: SafeArea(
-            top: false,
-            minimum: margin,
+            ),
+          ],
+          body: Padding(
+            padding: margin,
             child: body,
           ),
         ),

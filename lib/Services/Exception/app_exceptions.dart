@@ -2,20 +2,26 @@ import 'package:flutter/foundation.dart';
 import 'package:cricket_poc/lib_exports.dart';
 
 class AppExceptions {
-  static String get internetTitle => "No Internet";
+  AppExceptions._();
 
-  static String get normalErrorText => 'Something went wrong, Please try again';
+  static AppExceptions get instance => AppExceptions._();
 
-  static String get socketExceptionText =>
-      'Ensure you are connected to the internet';
+  String get internetTitle => "No Internet";
 
-  static String get serverError => 'Server Error';
+  String get normalErrorText => 'Something went wrong, Please try again';
 
-  static get unAuthorizedText =>
+  String get socketExceptionText => 'Ensure you are connected to the internet';
+
+  String get serverError => 'Server Error';
+
+  get unAuthorizedText =>
       "UnAuthorized request, Please restart application or try again after some time";
 
+  get requiredYourInput =>
+      "We need a few more details from you. Please update the required fields before moving forward";
+
   //! UnAuthorized Exception
-  static Failure handleUnAuthorizedError({String? title}) {
+  Failure handleUnAuthorizedError({String? title}) {
     return Failure(
       title: serverError,
       message: title ?? unAuthorizedText,
@@ -23,7 +29,7 @@ class AppExceptions {
   }
 
   //! Socket Exception
-  static Failure handleSocketException() {
+  Failure handleSocketException() {
     return Failure(
       title: internetTitle,
       message: socketExceptionText,
@@ -31,7 +37,7 @@ class AppExceptions {
   }
 
   //! Internal Server Exception
-  static Failure handleInternalServerError({String? message}) {
+  Failure handleInternalServerError({String? message}) {
     debugPrint("Internal ServerError Text");
 
     return Failure(
@@ -41,7 +47,7 @@ class AppExceptions {
   }
 
   //! Bad Request Exception
-  static Failure handleBadRequestException({String? message}) {
+  Failure handleBadRequestException({String? message}) {
     debugPrint("Bad Request Error");
 
     return Failure(
@@ -51,15 +57,15 @@ class AppExceptions {
   }
 
   //! My HTTP Client Exception
-  static Failure handleMyHTTPClientException(MyHttpClientException exception) {
+  Failure handleMyHTTPClientException(MyHttpClientException exception) {
     return exception.failure as Failure;
   }
 
   //! Normal Exception
-  static Failure handleException({required String error}) {
+  Failure handleException({required String error}) {
     ///Check For Socket Exception
     if (error.toString().contains("Socket")) {
-      return AppExceptions.handleSocketException();
+      return AppExceptions.instance.handleSocketException();
     }
 
     ///Only For Debug

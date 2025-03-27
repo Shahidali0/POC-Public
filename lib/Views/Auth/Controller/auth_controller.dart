@@ -168,8 +168,7 @@ class AuthController extends StateNotifier<bool> {
     if (!validate || isGoalEmpty || isUserEmpty) {
       showErrorSnackBar(
         context: context,
-        content:
-            "We need a few more details from you. Please update the required fields before moving forward",
+        content: AppExceptions.instance.requiredYourInput,
       );
       return;
     }

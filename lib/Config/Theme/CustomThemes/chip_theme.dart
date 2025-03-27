@@ -9,25 +9,25 @@ class MyChipTheme {
   ///#### LIGHT CHIP THEME #####
   ChipThemeData lightChipTheme(BuildContext context) {
     return Theme.of(context).chipTheme.copyWith(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(Sizes.borderRadius),
+          ),
           labelStyle: const TextStyle(
             color: AppColors.black,
             fontWeight: FontWeight.w400,
           ),
           checkmarkColor: AppColors.white,
-          surfaceTintColor: AppColors.orange,
+          surfaceTintColor: AppColors.black,
           color: WidgetStateProperty.resolveWith(
             (state) {
               if (state.contains(WidgetState.selected)) {
-                return AppColors.orange;
+                return AppColors.black;
               }
               return AppColors.white;
             },
           ),
           elevation: 2,
           pressElevation: 20,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(Sizes.borderRadiusL),
-          ),
         );
   }
 

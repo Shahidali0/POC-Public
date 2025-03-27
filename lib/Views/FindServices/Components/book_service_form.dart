@@ -146,9 +146,9 @@ class _DurationField extends StatelessWidget {
           return Wrap(
             spacing: Sizes.space,
             children: List.generate(
-              duration.length,
+              durationData.length,
               (index) {
-                bool isActive = value != null && value == duration[index];
+                bool isActive = value != null && value == durationData[index];
 
                 return ChoiceChip.elevated(
                   labelStyle: TextStyle(
@@ -156,7 +156,7 @@ class _DurationField extends StatelessWidget {
                     fontWeight: isActive ? FontWeight.w700 : FontWeight.normal,
                   ),
                   onSelected: (value) {
-                    onSelectDuration(duration[index]);
+                    onSelectDuration(durationData[index]);
                     // ref.read(filterCategoryIndexPr.notifier).state = index;
                   },
                   avatar: isActive
@@ -165,7 +165,7 @@ class _DurationField extends StatelessWidget {
                           CupertinoIcons.timer,
                           color: AppColors.black,
                         ),
-                  label: Text(duration[index]),
+                  label: Text(durationData[index]),
                   selected: isActive,
                 );
               },

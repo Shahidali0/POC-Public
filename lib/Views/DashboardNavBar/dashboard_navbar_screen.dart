@@ -25,6 +25,18 @@ class DashboardNavbarScreen extends ConsumerWidget {
           if (showNavbar) {
             ref.read(_showOrHideNavBarPr.notifier).update((st) => st = false);
           }
+        } else if (notification.direction == ScrollDirection.idle) {
+          ///Show Bottom NavBar
+          Future.delayed(
+            const Duration(seconds: 2, milliseconds: 700),
+            () {
+              if (!showNavbar) {
+                ref
+                    .read(_showOrHideNavBarPr.notifier)
+                    .update((st) => st = true);
+              }
+            },
+          );
         }
 
         return true;
@@ -35,26 +47,14 @@ class DashboardNavbarScreen extends ConsumerWidget {
           children: const [
             HomeScreen(),
             FindServicesScreen(),
+
+            ///This is PostButton(+)
             SizedBox(),
+
             MyServicesScreen(),
             ProfileScreen(),
           ],
         ),
-        // floatingActionButton: SafeArea(
-        //   child: FloatingActionButton(
-        //     onPressed: () {
-        //       AppRouter.instance.animatedPush(
-        //         context: context,
-        //         scaleTransition: true,
-        //         screen: const PostServiceScreen(),
-        //       );
-        //     },
-        //     shape: const CircleBorder(),
-        //     child: const Icon(CupertinoIcons.add),
-        //   ),
-        // ),
-        // floatingActionButtonLocation:
-        //     FloatingActionButtonLocation.miniCenterDocked,
         bottomNavigationBar: AnimatedCrossFade(
           duration: Sizes.duration,
           firstChild: _CustomNavigationBar(ref: ref),

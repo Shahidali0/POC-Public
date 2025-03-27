@@ -16,6 +16,10 @@ sealed class HomeServices {
   Future<String?> getUserBookings({
     required String userId,
   });
+
+  Future<String?> postService({
+    required PostServiceDto postServiceDto,
+  });
 }
 
 class _HomeServicesImpl implements HomeServices {
@@ -63,6 +67,24 @@ class _HomeServicesImpl implements HomeServices {
 
     final response = await BaseHttpClient.getService(
       urlEndPoint: url,
+      headers: _apiHeaders.headers,
+    );
+
+    return response;
+  }
+
+  //* Post the Service
+  @override
+  Future<String?> postService({required PostServiceDto postServiceDto}) async {
+    const url = "services";
+
+    final body = postServiceDto.toRawJson();
+
+    // final headers = await _apiHeaders.getHeadersWithToken();
+
+    final response = await BaseHttpClient.postService(
+      urlEndPoint: url,
+      body: body,
       headers: _apiHeaders.headers,
     );
 

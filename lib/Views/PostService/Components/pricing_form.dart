@@ -3,33 +3,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class PricingForm extends ConsumerStatefulWidget {
+class PricingForm extends ConsumerWidget {
   const PricingForm({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _PricingFormState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = ref.read(postServiceControllerPr.notifier);
 
-class _PricingFormState extends ConsumerState<PricingForm> {
-  late TextEditingController _servicePriceController;
-
-  @override
-  void initState() {
-    _servicePriceController = TextEditingController();
-
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _servicePriceController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Form(
-      key: ref.read(postServiceControllerPr.notifier).pricingFormKey,
+      key: controller.pricingFormKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -43,7 +25,7 @@ class _PricingFormState extends ConsumerState<PricingForm> {
           ),
           const Text("Set your pricing information"),
           const SizedBox(height: Sizes.spaceSmall),
-          _ServicePriceField(controller: _servicePriceController),
+          _ServicePriceField(controller: controller.priceController),
           const SizedBox(height: Sizes.spaceHeight),
         ],
       ),

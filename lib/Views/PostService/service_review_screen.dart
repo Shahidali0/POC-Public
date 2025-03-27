@@ -2,16 +2,21 @@ import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class PostServiceReviewScreen extends StatelessWidget {
+class PostServiceReviewScreen extends ConsumerWidget {
   const PostServiceReviewScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = ref.read(postServiceControllerPr.notifier);
+
     return MyCupertinoSliverScaffold(
       title: "Post Service",
       bottomNavBar: SafeArea(
         minimum: Sizes.globalMargin,
-        child: CommonButton(onPressed: () {}, text: "Post Service"),
+        child: CommonButton(
+          onPressed: () => controller.postService(context),
+          text: "Post Service",
+        ),
       ),
       body: ListView(
         padding: EdgeInsets.zero,
@@ -28,9 +33,9 @@ class PostServiceReviewScreen extends StatelessWidget {
           const SizedBox(height: Sizes.spaceHeight),
 
           ///Service Title
-          const Text(
-            "Professional Batting Practice",
-            style: TextStyle(
+          Text(
+            controller.serviceTitleController.text.trim(),
+            style: const TextStyle(
               fontSize: Sizes.fontSize18,
               fontWeight: FontWeight.bold,
               color: AppColors.appTheme,
@@ -38,9 +43,9 @@ class PostServiceReviewScreen extends StatelessWidget {
           ),
 
           ///Category Tag
-          const Text(
-            "(Coaching)",
-            style: TextStyle(
+          Text(
+            controller.selectedServiceCategory.value ?? "--",
+            style: const TextStyle(
               fontWeight: FontWeight.w600,
               fontStyle: FontStyle.italic,
               color: AppColors.orange,
@@ -48,14 +53,14 @@ class PostServiceReviewScreen extends StatelessWidget {
           ),
 
           ///Location
-          const ListTile(
+          ListTile(
             minVerticalPadding: 0,
             dense: true,
             contentPadding: EdgeInsets.zero,
-            leading: Icon(CupertinoIcons.map_pin_ellipse),
+            leading: const Icon(CupertinoIcons.map_pin_ellipse),
             title: Text(
-              "National Cricket Center",
-              style: TextStyle(
+              controller.locationController.text.trim(),
+              style: const TextStyle(
                 fontWeight: FontWeight.normal,
                 fontSize: Sizes.fontSize16,
               ),
@@ -64,29 +69,30 @@ class PostServiceReviewScreen extends StatelessWidget {
           const Divider(),
 
           ///Description
-          const _VerticalTile(
+          _VerticalTile(
             header: "Description",
-            body:
-                '''High-level batting coaching with former international player.Our Elite Batting Coaching service provides professional coaching tailored to your needs. Suitable for players of all ages and skill levels, from beginners to advanced players looking to refine their technique.
-
-Book a session today and take your cricket skills to the next level!''',
+            body: controller.serviceDescriptionController.text.trim(),
           ),
 
           ///Duration and Price
-          const Row(
+          Row(
             children: [
               Expanded(
                 child: _VerticalTile(
                   header: "Duration",
-                  body: " 180 min",
-                  iconData: CupertinoIcons.timer,
+                  body: Utils.instance.getDuration(
+                    controller.selectedSessionDurationListenable.value,
+                    skipMinutesText: true,
+                  ),
+                  iconData: CupertinoIcons.time,
                 ),
               ),
               Expanded(
                 child: _VerticalTile(
                   header: "Price",
-                  body: "365",
-                  iconData: CupertinoIcons.money_dollar,
+                  body: controller.priceController.text.trim(),
+                  iconData: Icons.attach_money,
+                  // CupertinoIcons.money_dollar_circle,
                   bodyColor: AppColors.appTheme,
                   fontWeight: FontWeight.bold,
                 ),
@@ -105,28 +111,7 @@ Book a session today and take your cricket skills to the next level!''',
             ),
           ),
           const SizedBox(height: Sizes.spaceMed),
-          Wrap(
-            spacing: Sizes.space,
-            children: List.generate(
-              4,
-              (i) => const Chip(
-                padding: EdgeInsets.symmetric(horizontal: Sizes.spaceHeight),
-                shadowColor: AppColors.orange,
-                side: BorderSide(color: AppColors.orange),
-                avatar: Icon(
-                  CupertinoIcons.calendar,
-                  color: AppColors.orange,
-                ),
-                label: Text(
-                  '29-07-2024',
-                  style: TextStyle(
-                    color: AppColors.orange,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ).toList(),
-          ),
+          _AvailableDatesWidget(controller: controller),
 
           ///Available TimeSlots
           const SizedBox(height: Sizes.space),
@@ -142,19 +127,18 @@ Book a session today and take your cricket skills to the next level!''',
           Wrap(
             spacing: Sizes.space,
             children: List.generate(
-              4,
-              (i) => const Chip(
-                padding: EdgeInsets.symmetric(horizontal: Sizes.spaceHeight),
-                shadowColor: AppColors.orange,
-                side: BorderSide(color: AppColors.orange),
-                avatar: Icon(
+              controller.selectedTimeSlotsListenable.value.length,
+              (index) => Chip(
+                labelPadding: const EdgeInsets.all(Sizes.spaceSmall),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: Sizes.spaceHeight),
+                avatar: const Icon(
                   CupertinoIcons.time,
-                  color: AppColors.orange,
+                  color: AppColors.black,
                 ),
                 label: Text(
-                  '10:00 Am',
-                  style: TextStyle(
-                    color: AppColors.orange,
+                  controller.selectedTimeSlotsListenable.value[index],
+                  style: const TextStyle(
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -163,6 +147,43 @@ Book a session today and take your cricket skills to the next level!''',
           )
         ],
       ),
+    );
+  }
+}
+
+///Available Dates Widget
+class _AvailableDatesWidget extends StatelessWidget {
+  const _AvailableDatesWidget({
+    required this.controller,
+  });
+
+  final dynamic controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final selectedDays = controller.selectedDays.toList();
+
+    return Wrap(
+      spacing: Sizes.space,
+      children: List.generate(
+        selectedDays.length,
+        (index) {
+          return Chip(
+            labelPadding: const EdgeInsets.all(Sizes.spaceSmall),
+            padding: const EdgeInsets.symmetric(horizontal: Sizes.spaceHeight),
+            avatar: const Icon(
+              CupertinoIcons.calendar,
+              color: AppColors.black,
+            ),
+            label: Text(
+              Utils.instance.formatDateToString(selectedDays[index]),
+              style: const TextStyle(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          );
+        },
+      ).toList(),
     );
   }
 }

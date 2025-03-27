@@ -1,61 +1,17 @@
-import 'dart:collection';
-
 import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class LocationScheduleForm extends ConsumerStatefulWidget {
+class LocationScheduleForm extends ConsumerWidget {
   const LocationScheduleForm({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _LocationScheduleFormState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = ref.read(postServiceControllerPr.notifier);
 
-class _LocationScheduleFormState extends ConsumerState<LocationScheduleForm> {
-  late TextEditingController _locationController;
-
-  late ValueNotifier<String?> _selectedTimeSlotsListenable;
-  late ValueNotifier<String> _selectedSessionDurationListenable;
-
-  ///For Multi-Dates-Picker
-  // Using a `LinkedHashSet` is recommended due to equality comparison override
-  late Set<DateTime> _selectedDays;
-
-  @override
-  void initState() {
-    _locationController = TextEditingController();
-    _selectedTimeSlotsListenable = ValueNotifier(null);
-    _selectedSessionDurationListenable = ValueNotifier(duration[0]);
-    _selectedDays = LinkedHashSet<DateTime>(
-      equals: isSameDay,
-      hashCode: Utils.instance.getHashCode,
-    );
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _locationController.dispose();
-    _selectedTimeSlotsListenable.dispose();
-
-    super.dispose();
-  }
-
-  ///Update Selected TimeSlot Value
-  void _updateSelectedTimeSlots(String value) =>
-      _selectedTimeSlotsListenable.value = value;
-
-  ///Update Selected Session Duration Value
-  void _updateSelectedSessionDuration(String value) {
-    _selectedSessionDurationListenable.value = value;
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Form(
-      key: ref.read(postServiceControllerPr.notifier).locationScheduleFormKey,
+      key: controller.locationScheduleFormKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -73,21 +29,29 @@ class _LocationScheduleFormState extends ConsumerState<LocationScheduleForm> {
           const SizedBox(height: Sizes.spaceSmall),
 
           ///Location
-          _LocationField(controller: _locationController),
+          _LocationField(controller: controller.locationController),
 
           ///Available Dates
-          _AvailableDates(selectedDays: _selectedDays),
+          _AvailableDates(selectedDays: controller.selectedDays),
+          _ValidationErrorMessage(listenable: controller.datesValidation),
 
           ///Available Time Slots
           _AvailableTimeSlots(
-            selectedTimeSlots: _selectedTimeSlotsListenable,
-            onSelectTimeSlot: _updateSelectedTimeSlots,
+            selectedTimeSlots: controller.selectedTimeSlotsListenable,
+            onSelectTimeSlot: (value) =>
+                controller.updateSelectedTimeSlots(value),
           ),
+          _ValidationErrorMessage(listenable: controller.timeSlotValidation),
 
           ///Session Duration
           _SessionDurationField(
-            selectedSessionDuration: _selectedSessionDurationListenable,
-            onChanged: _updateSelectedSessionDuration,
+            selectedSessionDuration:
+                controller.selectedSessionDurationListenable,
+            onChanged: (value) =>
+                controller.updateSelectedSessionDuration(value),
+          ),
+          _ValidationErrorMessage(
+            listenable: controller.sessionDurationValidation,
           ),
 
           const SizedBox(height: Sizes.spaceHeight),
@@ -116,7 +80,7 @@ class _LocationField extends StatelessWidget {
         validator: FieldValidators.instance.commonValidator,
         textCapitalization: TextCapitalization.words,
         decoration: const InputDecoration(
-          hintText: "e.g., Melbourne Crickett Ground",
+          hintText: "e.g., Melbourne Cricket Ground",
         ),
       ),
     );
@@ -191,12 +155,15 @@ class _AvailableDates extends StatelessWidget {
                             padding:
                                 const EdgeInsets.only(right: Sizes.spaceMed),
                             child: Chip(
-                              shadowColor: AppColors.orange,
-                              side: const BorderSide(color: AppColors.orange),
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.circular(Sizes.borderRadius),
+                                side: const BorderSide(color: AppColors.black),
+                              ),
                               label: Text(
                                 Utils.instance.formatDateToString(day),
                                 style: const TextStyle(
-                                  color: AppColors.orange,
+                                  color: AppColors.black,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -219,14 +186,12 @@ class _AvailableDates extends StatelessWidget {
         formatButtonVisible: false,
         titleCentered: true,
         decoration: BoxDecoration(
-          color: AppColors.appTheme,
+          color: AppColors.blueGrey,
           borderRadius: BorderRadius.vertical(
             top: Radius.circular(Sizes.borderRadius),
           ),
         ),
-        // leftChevronMargin: EdgeInsets.zero,
         leftChevronPadding: EdgeInsets.zero,
-        // rightChevronMargin: EdgeInsets.zero,
         rightChevronPadding: EdgeInsets.zero,
         headerMargin: EdgeInsets.only(bottom: Sizes.space),
         leftChevronIcon: Icon(
@@ -247,14 +212,17 @@ class _AvailableDates extends StatelessWidget {
 
   ///DAYS OF WEEK STYLE
   DaysOfWeekStyle get daysOfWeekStyle => const DaysOfWeekStyle(
-        weekdayStyle: TextStyle(color: AppColors.blueGrey),
-        weekendStyle: TextStyle(color: AppColors.orange),
+        weekdayStyle: TextStyle(color: AppColors.black),
+        weekendStyle: TextStyle(
+          color: AppColors.orange,
+          fontWeight: FontWeight.w600,
+        ),
       );
 
   ///CALENDAR STYLE
   CalendarStyle get calendarStyle => const CalendarStyle(
         selectedDecoration: BoxDecoration(
-          color: AppColors.appTheme,
+          color: AppColors.black,
           shape: BoxShape.circle,
         ),
         selectedTextStyle: TextStyle(
@@ -263,12 +231,14 @@ class _AvailableDates extends StatelessWidget {
           color: AppColors.white,
         ),
         todayDecoration: BoxDecoration(
-          color: AppColors.blueGrey,
+          color: AppColors.grey,
           shape: BoxShape.circle,
         ),
-        disabledTextStyle: TextStyle(color: AppColors.grey),
         holidayTextStyle: TextStyle(color: AppColors.green),
-        weekendTextStyle: TextStyle(color: AppColors.orange),
+        weekendTextStyle: TextStyle(
+          color: AppColors.orange,
+          fontWeight: FontWeight.w600,
+        ),
       );
 }
 
@@ -279,34 +249,43 @@ class _AvailableTimeSlots extends StatelessWidget {
     required this.onSelectTimeSlot,
   });
 
-  final ValueListenable<String?> selectedTimeSlots;
-  final void Function(String) onSelectTimeSlot;
+  final ValueListenable<List<String>> selectedTimeSlots;
+  final ValueChanged onSelectTimeSlot;
 
   @override
   Widget build(BuildContext context) {
+    final width = Sizes.screenWidth(context);
+
     return FormFiledWidget(
       title: "Available Time Slots",
       isRequired: true,
-      child: ValueListenableBuilder<String?>(
-        valueListenable: selectedTimeSlots,
-        builder: (BuildContext context, String? value, Widget? child) {
-          return Wrap(
-            spacing: Sizes.space,
-            children: List.generate(
-              timeSlots.length,
-              (index) {
-                bool isActive = value != null && value == timeSlots[index];
+      child: SizedBox(
+        width: width,
+        height: 160,
+        child: ValueListenableBuilder<List<String>>(
+          valueListenable: selectedTimeSlots,
+          builder: (BuildContext context, List<String> value, Widget? child) {
+            return GridView.builder(
+              padding: const EdgeInsets.symmetric(vertical: Sizes.spaceMed),
+              primary: false,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                childAspectRatio: 2.5,
+                // mainAxisSpacing: 8,
+                crossAxisSpacing: 8,
+              ),
+              itemCount: timeSlotsData.length,
+              itemBuilder: (BuildContext context, int index) {
+                bool isActive = value.contains(timeSlotsData[index]);
 
-                return ChoiceChip.elevated(
-                  labelPadding: const EdgeInsets.symmetric(
-                    horizontal: Sizes.spaceHeight * 1.6,
-                  ),
+                return ChoiceChip(
+                  labelPadding: const EdgeInsets.all(Sizes.spaceSmall),
                   labelStyle: TextStyle(
                     color: isActive ? AppColors.white : null,
                     fontWeight: isActive ? FontWeight.w700 : FontWeight.normal,
                   ),
                   onSelected: (data) {
-                    onSelectTimeSlot(timeSlots[index]);
+                    onSelectTimeSlot(timeSlotsData[index]);
                   },
                   avatar: isActive
                       ? null
@@ -314,13 +293,13 @@ class _AvailableTimeSlots extends StatelessWidget {
                           CupertinoIcons.timer,
                           color: AppColors.black,
                         ),
-                  label: Text(timeSlots[index]),
+                  label: Text(timeSlotsData[index]),
                   selected: isActive,
                 );
               },
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
@@ -333,42 +312,109 @@ class _SessionDurationField extends StatelessWidget {
     required this.onChanged,
   });
 
-  final ValueNotifier<String?> selectedSessionDuration;
-  final void Function(String) onChanged;
+  final ValueNotifier<List<String>> selectedSessionDuration;
+  final ValueChanged onChanged;
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<String?>(
-      valueListenable: selectedSessionDuration,
-      builder: (BuildContext context, String? value, Widget? child) {
-        return FormFiledWidget(
-          title: "Session Duration",
-          isRequired: true,
-          child: DropdownButtonFormField<String>(
-            padding: EdgeInsets.zero,
-            menuMaxHeight: 300,
-            alignment: Alignment.centerLeft,
-            isExpanded: true,
-            value: value,
-            validator: FieldValidators.instance.commonValidator,
-            items: duration.map((String valueItem) {
-              return DropdownMenuItem<String>(
-                value: valueItem,
-                child: Text(
-                  valueItem,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: AppColors.blueGrey,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-              );
-            }).toList(),
-            onChanged: (value) {
-              if (value != null) onChanged(value);
-            },
-            decoration: const InputDecoration(),
-          ),
+    return FormFiledWidget(
+      title: "Session Duration",
+      isRequired: true,
+      child: ValueListenableBuilder<List<String>>(
+        valueListenable: selectedSessionDuration,
+        builder: (BuildContext context, List<String> value, Widget? child) {
+          return Padding(
+            padding: const EdgeInsets.only(top: Sizes.spaceMed),
+            child: Wrap(
+              spacing: Sizes.spaceMed,
+              alignment: WrapAlignment.spaceAround,
+              children: List.generate(
+                durationData.length,
+                (index) {
+                  bool isActive = value.contains(durationData[index]);
+
+                  return ChoiceChip(
+                    labelPadding: const EdgeInsets.symmetric(
+                      vertical: Sizes.spaceSmall,
+                      horizontal: Sizes.spaceHeight,
+                    ),
+                    labelStyle: TextStyle(
+                      color: isActive ? AppColors.white : null,
+                      fontWeight:
+                          isActive ? FontWeight.w700 : FontWeight.normal,
+                    ),
+                    onSelected: (data) {
+                      onChanged(durationData[index]);
+                    },
+                    avatar: isActive
+                        ? null
+                        : const Icon(
+                            CupertinoIcons.timer,
+                            color: AppColors.black,
+                          ),
+                    label: Text(durationData[index]),
+                    selected: isActive,
+                  );
+                },
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  //  return ValueListenableBuilder<String?>(
+  //   valueListenable: selectedSessionDuration,
+  //   builder: (BuildContext context, String? value, Widget? child) {
+  // return FormFiledWidget(
+  //       title: "Session Duration",
+  //       isRequired: true,
+  //       child: DropdownButtonFormField<String>(
+  //         padding: EdgeInsets.zero,
+  //         alignment: Alignment.centerLeft,
+  //         isExpanded: true,
+  //         value: value,
+  //         validator: FieldValidators.instance.commonValidator,
+  //         items: duration.map((String valueItem) {
+  //           return DropdownMenuItem<String>(
+  //             value: valueItem,
+  //             child: Text(
+  //               valueItem,
+  //               overflow: TextOverflow.ellipsis,
+  //               style: const TextStyle(
+  //                 color: AppColors.blueGrey,
+  //                 fontWeight: FontWeight.w800,
+  //               ),
+  //             ),
+  //           );
+  //         }).toList(),
+  //         onChanged: (value) {
+  //           if (value != null) onChanged(value);
+  //         },
+  //         decoration: const InputDecoration(),
+  //       ),
+  //     );
+  //  },
+  // );
+}
+
+///Validation Error Message
+class _ValidationErrorMessage extends StatelessWidget {
+  const _ValidationErrorMessage({required this.listenable});
+
+  final ValueNotifier<String> listenable;
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder(
+      valueListenable: listenable,
+      builder: (BuildContext context, String value, Widget? child) {
+        if (value.isEmpty) return const SizedBox.shrink();
+
+        return ValidationErrorText(
+          padding: EdgeInsets.zero,
+          text: value,
         );
       },
     );

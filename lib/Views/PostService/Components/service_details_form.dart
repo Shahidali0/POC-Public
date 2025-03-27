@@ -1,54 +1,15 @@
 import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter/material.dart';
 
-class PostServiceDetailsForm extends ConsumerStatefulWidget {
+class PostServiceDetailsForm extends ConsumerWidget {
   const PostServiceDetailsForm({super.key});
 
   @override
-  ConsumerState<PostServiceDetailsForm> createState() =>
-      _ServiceDetailsFormState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = ref.read(postServiceControllerPr.notifier);
 
-class _ServiceDetailsFormState extends ConsumerState<PostServiceDetailsForm> {
-  late TextEditingController _serviceTitleController;
-  late TextEditingController _serviceDescriptionController;
-  late TextEditingController _serviceCategoryController;
-
-  ValueNotifier<String?> _selectedServiceCategory = ValueNotifier(null);
-
-  @override
-  void initState() {
-    _serviceTitleController = TextEditingController();
-    _serviceDescriptionController = TextEditingController();
-    _serviceCategoryController = TextEditingController();
-
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _serviceTitleController.dispose();
-    _serviceDescriptionController.dispose();
-    _serviceCategoryController.dispose();
-    _selectedServiceCategory.dispose();
-    super.dispose();
-  }
-
-  ///Service Category Update Function
-  void _handleServiceCategoryChanged(String? value) {
-    if (value == null) {
-      _selectedServiceCategory = ValueNotifier(null);
-      return;
-    }
-
-    _selectedServiceCategory = ValueNotifier(value);
-    debugPrint("_selectedIdType:${_selectedServiceCategory.value}");
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Form(
-      key: ref.read(postServiceControllerPr.notifier).serviceDetailsFormKey,
+      key: controller.serviceDetailsFormKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -64,12 +25,13 @@ class _ServiceDetailsFormState extends ConsumerState<PostServiceDetailsForm> {
             "Provide basic information about your service",
           ),
           const SizedBox(height: Sizes.spaceSmall),
-          _ServiceTitleField(controller: _serviceTitleController),
+          _ServiceTitleField(controller: controller.serviceTitleController),
           _ServiceCategoryField(
-            selectedServiceCategory: _selectedServiceCategory,
-            onChanged: _handleServiceCategoryChanged,
+            selectedServiceCategory: controller.selectedServiceCategory,
+            onChanged: controller.handleServiceCategoryChanged,
           ),
-          _ServiceDescriptionField(controller: _serviceDescriptionController),
+          _ServiceDescriptionField(
+              controller: controller.serviceDescriptionController),
           const SizedBox(height: Sizes.spaceHeight),
         ],
       ),
@@ -154,7 +116,6 @@ class _ServiceCategoryField extends StatelessWidget {
           isRequired: true,
           child: DropdownButtonFormField<String>(
             padding: EdgeInsets.zero,
-            menuMaxHeight: 300,
             alignment: Alignment.centerLeft,
             isExpanded: true,
             value: value,
@@ -170,7 +131,7 @@ class _ServiceCategoryField extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              ...specializations.map((String valueItem) {
+              ...serviceCategoriesData.map((String valueItem) {
                 return DropdownMenuItem<String>(
                   value: valueItem,
                   child: Text(

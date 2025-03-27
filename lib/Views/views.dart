@@ -65,6 +65,8 @@ export 'PostService/Components/service_details_form.dart';
 export 'PostService/Components/location_schedule_form.dart';
 export 'PostService/Components/pricing_form.dart';
 
+export 'PostService/Repository/post_service_repository.dart';
+
 export 'PostService/post_service_screen.dart';
 export 'PostService/service_review_screen.dart';
 

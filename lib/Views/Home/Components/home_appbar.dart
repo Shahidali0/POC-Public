@@ -133,15 +133,15 @@ class HomeSearchbarWithTabs extends ConsumerWidget {
         labelPadding: const EdgeInsets.all(Sizes.space),
         padding: const EdgeInsets.only(bottom: 8.0),
         tabs: List.generate(
-          homeTabbarItems.length,
+          homeTabbarItemsData.length,
           (index) => FadeAnimations(
             child: Tab(
-              text: homeTabbarItems[index].title,
+              text: homeTabbarItemsData[index].title,
               icon: CircleAvatar(
                 backgroundColor: AppColors.white,
                 radius: 25,
                 child: Icon(
-                  homeTabbarItems[index].iconData,
+                  homeTabbarItemsData[index].iconData,
                   color: currentIndex == index
                       ? AppColors.appTheme
                       : AppColors.blueGrey,

@@ -135,7 +135,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   updateData: _updateSelectedGoal,
                 ),
                 if (mainGoalErrorText.isNotEmpty)
-                  _EmptyFiledErrorText(text: mainGoalErrorText),
+                  ValidationErrorText(text: mainGoalErrorText),
 
                 ///About Yourself
                 _AboutYourSelfWidget(
@@ -143,7 +143,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   updateData: _updateAboutYourSelf,
                 ),
                 if (aboutYourSelfErrorText.isNotEmpty)
-                  _EmptyFiledErrorText(text: aboutYourSelfErrorText),
+                  ValidationErrorText(text: aboutYourSelfErrorText),
 
                 ///ABN
                 _ABNField(controller: _abnController),
@@ -446,30 +446,6 @@ class _ABNField extends StatelessWidget {
             );
           },
           decoration: const InputDecoration(hintText: "Enter a suburb"),
-        ),
-      ),
-    );
-  }
-}
-
-///Show Error -- If any SegmentCotrol Data is Not Selected
-///Based on [SignUpFieldsError] Type
-
-class _EmptyFiledErrorText extends StatelessWidget {
-  const _EmptyFiledErrorText({
-    required this.text,
-  });
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: Sizes.spaceMed, left: Sizes.space),
-      child: Text(
-        text,
-        style: const TextStyle(
-          color: AppColors.red,
-          fontSize: Sizes.fontSize12,
         ),
       ),
     );

@@ -13,7 +13,10 @@ class _FindServicesScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: const CupertinoAppbar(title: "Profile"),
+      navigationBar: const CupertinoAppbar(
+        title: "Profile",
+        showNotificationIcon: true,
+      ),
       child: ListView(
         padding: Sizes.cupertinoScaffoldPadding(context),
         children: [
