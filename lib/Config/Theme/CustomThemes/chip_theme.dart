@@ -11,13 +11,14 @@ class MyChipTheme {
     return Theme.of(context).chipTheme.copyWith(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(Sizes.borderRadius),
+            side: const BorderSide(color: AppColors.border),
           ),
           labelStyle: const TextStyle(
             color: AppColors.black,
             fontWeight: FontWeight.w400,
           ),
           checkmarkColor: AppColors.white,
-          surfaceTintColor: AppColors.black,
+          surfaceTintColor: AppColors.appTheme,
           color: WidgetStateProperty.resolveWith(
             (state) {
               if (state.contains(WidgetState.selected)) {

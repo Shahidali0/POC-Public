@@ -1,8 +1,9 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'package:cricket_poc/Views/PostService/post_service_screen.dart';
 
-final postServiceControllerPr =
-    StateNotifierProvider<PostServiceRepository, bool>(
-  (ref) => PostServiceRepository(
+final postServiceControllerPr = StateNotifierProvider.autoDispose<
+    PostServiceController, _PostServiceStatus>(
+  (ref) => PostServiceController(
     ref: ref,
     postServiceRepo: ref.read(postServicesRepositoryPr),
   ),
@@ -10,16 +11,32 @@ final postServiceControllerPr =
 
 final _stepperIndexPr = StateProvider.autoDispose<int>((ref) => 0);
 
-class PostServiceRepository extends StateNotifier<bool> {
+class PostServiceController extends StateNotifier<_PostServiceStatus> {
   final Ref _ref;
   final PostServicesRepository _repository;
 
-  PostServiceRepository({
+  PostServiceController({
     required Ref ref,
     required PostServicesRepository postServiceRepo,
   })  : _ref = ref,
         _repository = postServiceRepo,
-        super(false);
+        super(
+          _PostServiceStatus(
+            selectedSport: "",
+            selectedCategory: "",
+            selectedSubCategory: "",
+            selectedTimeSlots: [],
+            selectedSessionDuration: [],
+
+            /// For MULTI-DATE_PICKER:
+            /// Using a `LinkedHashSet` is recommended due to equality comparison override
+            selectedDates: LinkedHashSet<DateTime>(
+              equals: isSameDay,
+              hashCode: Utils.instance.getHashCode,
+            ),
+            loading: false,
+          ),
+        );
 
   ///FormKeys
   GlobalKey<FormState> serviceDetailsFormKey = GlobalKey<FormState>();
@@ -28,6 +45,8 @@ class PostServiceRepository extends StateNotifier<bool> {
 
   late ScrollController scrollController;
 
+  List<CategoryJson> allCategories = [];
+
   ///Editing Controller
   late TextEditingController serviceTitleController;
   late TextEditingController serviceDescriptionController;
@@ -35,14 +54,19 @@ class PostServiceRepository extends StateNotifier<bool> {
   late TextEditingController priceController;
 
   ///Listenables
-  late ValueNotifier<String?> selectedServiceCategory;
-  late ValueNotifier<List<String>> selectedTimeSlotsListenable;
-  late ValueNotifier<List<String>> selectedSessionDurationListenable;
+  // late ValueNotifier<String?> selectedServiceSport;
+  // late ValueNotifier<String?> selectedServiceCategory;
+  // late ValueNotifier<String?> selectedServiceSubCategory;
+  // late ValueNotifier<List<String>> selectedTimeSlotsListenable;
+  // late ValueNotifier<List<String>> selectedSessionDurationListenable;
 
-  ///For Multi-Dates-Picker
-  late Set<DateTime> selectedDays;
+  // ///For Multi-Dates-Picker
+  // late Set<DateTime> selectedDays;
 
   ///Error Validations
+  late ValueNotifier<String> sportValidation;
+  late ValueNotifier<String> categoryValidation;
+  late ValueNotifier<String> subCategoryValidation;
   late ValueNotifier<String> datesValidation;
   late ValueNotifier<String> timeSlotValidation;
   late ValueNotifier<String> sessionDurationValidation;
@@ -50,24 +74,30 @@ class PostServiceRepository extends StateNotifier<bool> {
   //* Initialize the data
   void initState() {
     scrollController = ScrollController();
+    allCategories = _ref.read(allCategoriesPr);
 
     serviceTitleController = TextEditingController();
     serviceDescriptionController = TextEditingController();
     priceController = TextEditingController();
     locationController = TextEditingController();
 
-    selectedServiceCategory = ValueNotifier(null);
-    selectedTimeSlotsListenable = ValueNotifier([]);
-    selectedSessionDurationListenable = ValueNotifier([]);
+    // selectedServiceSport = ValueNotifier(null);
+    // selectedServiceCategory = ValueNotifier(null);
+    // selectedServiceSubCategory = ValueNotifier(null);
+    // selectedTimeSlotsListenable = ValueNotifier([]);
+    // selectedSessionDurationListenable = ValueNotifier([]);
 
-    /// For MULTI-DATE_PICKER:
-    /// Using a `LinkedHashSet` is recommended due to equality comparison override
-    selectedDays = LinkedHashSet<DateTime>(
-      equals: isSameDay,
-      hashCode: Utils.instance.getHashCode,
-    );
+    // /// For MULTI-DATE_PICKER:
+    // /// Using a `LinkedHashSet` is recommended due to equality comparison override
+    // selectedDays = LinkedHashSet<DateTime>(
+    //   equals: isSameDay,
+    //   hashCode: Utils.instance.getHashCode,
+    // );
 
     ///For Validations
+    sportValidation = ValueNotifier("");
+    categoryValidation = ValueNotifier("");
+    subCategoryValidation = ValueNotifier("");
     datesValidation = ValueNotifier("");
     timeSlotValidation = ValueNotifier("");
     sessionDurationValidation = ValueNotifier("");
@@ -83,10 +113,15 @@ class PostServiceRepository extends StateNotifier<bool> {
     priceController.dispose();
     locationController.dispose();
 
-    selectedServiceCategory.dispose();
-    selectedTimeSlotsListenable.dispose();
-    selectedSessionDurationListenable.dispose();
+    // selectedServiceSport.dispose();
+    // selectedServiceCategory.dispose();
+    // selectedServiceSubCategory.dispose();
+    // selectedTimeSlotsListenable.dispose();
+    // selectedSessionDurationListenable.dispose();
 
+    sportValidation.dispose();
+    categoryValidation.dispose();
+    subCategoryValidation.dispose();
     datesValidation.dispose();
     timeSlotValidation.dispose();
     sessionDurationValidation.dispose();
@@ -94,45 +129,123 @@ class PostServiceRepository extends StateNotifier<bool> {
     super.dispose();
   }
 
-  //* Service Category Update Function
-  void handleServiceCategoryChanged(String? value) {
-    if (value == null) {
-      selectedServiceCategory = ValueNotifier(null);
-      return;
-    }
+  //* Get All Categories
+  FutureVoid loadAllCategories() async {
+    if (!mounted) return;
+    state.loading = true;
 
-    selectedServiceCategory = ValueNotifier(value);
-    debugPrint("_selectedIdType:${selectedServiceCategory.value}");
+    allCategories =
+        await _ref.read(homeControllerPr.notifier).getAllCategories();
+
+    state.loading = false;
+  }
+
+  //*Get Sports List
+  List<String> get getSportsData =>
+      allCategories.map((e) => e.sport!).toSet().toList();
+
+  //*Get Categories List
+  List<String> get getCategoriesData {
+    final filteredCategories = allCategories
+        .where((item) => item.sport == state.selectedSport)
+        .toList();
+
+    return filteredCategories.map((e) => e.category!).toSet().toList();
+  }
+
+  //*Get SubCategories List
+  List<String> get getSubCategoriesData {
+    final filteredList = allCategories
+        .where((item) =>
+            item.category == state.selectedCategory &&
+            item.sport == state.selectedSport)
+        .firstOrNull;
+
+    return filteredList?.subcategories ?? [];
+  }
+
+  //* Service Sport Update Function
+  void updateSelectedSport(String? value) {
+    state = state.copyWith(
+      selectedSport: value,
+      selectedCategory: "",
+      selectedSubCategory: "",
+    );
+    debugPrint("SelectedSport:${state.selectedCategory}");
+  }
+
+  //* Service Category Update Function
+  void updateSelectedCategory(String? value) {
+    state = state.copyWith(
+      selectedCategory: value,
+      selectedSubCategory: "",
+    );
+    debugPrint("SelectedCategory:${state.selectedCategory}");
+  }
+
+  //* Service Sub-Category Update Function
+  void updateSelectedSubCategory(String? value) {
+    state = state.copyWith(
+      selectedSubCategory: value,
+    );
+    debugPrint("SelectedSubCategory:${state.selectedCategory}");
   }
 
   //* Update Selected TimeSlot Value
   void updateSelectedTimeSlots(String value) {
+    final timeSlots = state.selectedTimeSlots;
+    List<String> selectedList = [];
+
     ///Check if value already exist , if [yes] remove the item
-    if (selectedTimeSlotsListenable.value.contains(value)) {
-      selectedTimeSlotsListenable.value =
-          List.from(selectedTimeSlotsListenable.value)..remove(value);
+    if (timeSlots.contains(value)) {
+      selectedList =
+          state.selectedTimeSlots.where((item) => item != value).toList();
     }
 
     /// if [No] add that item to list
     else {
-      selectedTimeSlotsListenable.value =
-          List.from(selectedTimeSlotsListenable.value)..add(value);
+      selectedList = [...state.selectedTimeSlots, value];
     }
+
+    /// Define a DateFormat for 12-hour time parsing
+    DateFormat inputFormat = DateFormat("hh:mm a");
+
+    ///Sort Method
+    selectedList.sort((a, b) {
+      DateTime timeA = inputFormat.parse(a); // Convert to DateTime
+      DateTime timeB = inputFormat.parse(b);
+      return timeA.compareTo(timeB); // Compare times
+    });
+
+    ///Update State
+    state = state.copyWith(selectedTimeSlots: selectedList);
   }
 
   //* Update Selected Session Duration Value
   void updateSelectedSessionDuration(String value) {
+    final sessionDuration = state.selectedSessionDuration;
+    List<String> selectedList = [];
+
     ///Check if value already exist , if [yes] remove the item
-    if (selectedSessionDurationListenable.value.contains(value)) {
-      selectedSessionDurationListenable.value =
-          List.from(selectedSessionDurationListenable.value)..remove(value);
+    if (sessionDuration.contains(value)) {
+      selectedList =
+          state.selectedSessionDuration.where((item) => item != value).toList();
     }
 
     /// if [No] add that item to list
     else {
-      selectedSessionDurationListenable.value =
-          List.from(selectedSessionDurationListenable.value)..add(value);
+      selectedList = [...state.selectedSessionDuration, value];
     }
+
+    /// Sort Method
+    selectedList.sort((a, b) {
+      int numA = int.parse(a.split(" ")[0]); // Extract number from string
+      int numB = int.parse(b.split(" ")[0]);
+      return numA.compareTo(numB); // Compare numbers
+    });
+
+    ///Update State
+    state = state.copyWith(selectedSessionDuration: selectedList);
   }
 
   ///MOVE TO TOP
@@ -163,7 +276,7 @@ class PostServiceRepository extends StateNotifier<bool> {
     ///Handle Validations
     switch (currentStep) {
       case 0:
-        _handleServiceDetailsFromValidation();
+        _handleServiceDetailsFromValidation(context);
         break;
 
       case 1:
@@ -191,10 +304,30 @@ class PostServiceRepository extends StateNotifier<bool> {
   //###############################################################
 
   ///Handle Service Details Page Validations
-  void _handleServiceDetailsFromValidation() {
+  void _handleServiceDetailsFromValidation(BuildContext context) {
     final validate = validateForm(serviceDetailsFormKey);
+    final isSportEmpty = state.selectedSport.isEmpty;
+    final isCategoryEmpty = state.selectedCategory.isEmpty;
+    final isSubCategoryEmpty = state.selectedSubCategory.isEmpty;
 
-    if (validate) {
+    ///Update Specific Validation Error Message
+    sportValidation.value = isSportEmpty ? "Kindly select the Sport" : "";
+    categoryValidation.value =
+        isCategoryEmpty ? "Kindly select your preferred Category" : "";
+    subCategoryValidation.value =
+        isSubCategoryEmpty ? "Kindly select your preferred SubCategory" : "";
+
+    //! Common Error Message
+    if (!validate || isSportEmpty || isCategoryEmpty || isSubCategoryEmpty) {
+      showErrorSnackBar(
+        context: context,
+        content: AppExceptions.instance.requiredYourInput,
+      );
+      return;
+    }
+
+    ///Else Update the Stepper Index to move forward
+    else {
       _ref.read(_stepperIndexPr.notifier).update((state) => state += 1);
     }
   }
@@ -202,10 +335,9 @@ class PostServiceRepository extends StateNotifier<bool> {
   ///Handle Location Schedule Page Validations
   void _handleLocationFromValidation(BuildContext context) {
     final validate = validateForm(locationScheduleFormKey);
-    final isDaysEmpty = selectedDays.isEmpty;
-    final isTimeSlotsEmpty = selectedTimeSlotsListenable.value.isEmpty;
-    final isSessionDurationEmpty =
-        selectedSessionDurationListenable.value.isEmpty;
+    final isDaysEmpty = state.selectedDates.isEmpty;
+    final isTimeSlotsEmpty = state.selectedTimeSlots.isEmpty;
+    final isSessionDurationEmpty = state.selectedSessionDuration.isEmpty;
 
     ///Update Specific Validation Error Message
     datesValidation.value =
@@ -216,7 +348,7 @@ class PostServiceRepository extends StateNotifier<bool> {
         ? "Kindly select your preferred Session Duration"
         : "";
 
-    ///Common Error Message
+    //! Common Error Message
     if (!validate ||
         isDaysEmpty ||
         isTimeSlotsEmpty ||
@@ -247,52 +379,46 @@ class PostServiceRepository extends StateNotifier<bool> {
   }
 
   ///Get TimeSlots Data
-  Map<String, List<String>> _getTimeSlotsData(List<DateTime> sortedDates) {
+  Map<String, List<String>> _getTimeSlotsData() {
+    ///Sort Selected Dates
+    List<DateTime> sortedDates = state.selectedDates.toList();
+    sortedDates.sort((a, b) => a.compareTo(b));
+
     Map<String, List<String>> data = {};
 
     for (var day in sortedDates) {
       final currentDay = Utils.instance.formatDateToString(day);
 
-      data[currentDay] = selectedTimeSlotsListenable.value;
+      data[currentDay] = state.selectedTimeSlots;
     }
 
     return data;
   }
 
-//* Post the Service to API
+  //* Post the Service to API
   void postService(BuildContext context) async {
-    state = true;
-
-    ///Sort Selected TimeSlots
-    selectedTimeSlotsListenable.value.sort();
-
-    ///Sort Session Durations
-    selectedSessionDurationListenable.value.sort();
-
-    ///Sort Selected Dates
-    List<DateTime> sortedDates = selectedDays.toList();
-    sortedDates.sort((a, b) => a.compareTo(b));
+    state.loading = true;
 
     ///Get Time Slots
-    final timeSlots = _getTimeSlotsData(sortedDates);
+    final timeSlots = _getTimeSlotsData();
 
     final postServiceDto = PostServiceDto(
       providerId: "123asf234234",
       title: serviceTitleController.text.trim(),
-      sport: "Cricket",
+      sport: state.selectedSport,
       description: serviceDescriptionController.text.trim(),
-      duration: selectedSessionDurationListenable.value,
+      duration: state.selectedSessionDuration,
       location: locationController.text.trim(),
       price: int.parse(priceController.text.trim()),
-      category: selectedServiceCategory.value!,
-      subcategory: "battingCoaching",
+      category: state.selectedCategory,
+      subcategory: state.selectedSubCategory,
       timeSlots: timeSlots,
     );
 
     final response =
         await _repository.postService(postServiceDto: postServiceDto);
 
-    state = false;
+    state.loading = false;
 
     response.fold(
       (failure) => showErrorSnackBar(
@@ -310,6 +436,48 @@ class PostServiceRepository extends StateNotifier<bool> {
           screen: const DashboardNavbarScreen(),
         );
       },
+    );
+  }
+}
+
+///PostService Model for holding and updating status
+class _PostServiceStatus {
+  String selectedSport;
+  String selectedCategory;
+  String selectedSubCategory;
+  List<String> selectedTimeSlots;
+  List<String> selectedSessionDuration;
+  Set<DateTime> selectedDates;
+  bool loading;
+
+  _PostServiceStatus({
+    required this.selectedSport,
+    required this.selectedCategory,
+    required this.selectedSubCategory,
+    required this.selectedTimeSlots,
+    required this.selectedSessionDuration,
+    required this.selectedDates,
+    required this.loading,
+  });
+
+  _PostServiceStatus copyWith({
+    String? selectedSport,
+    String? selectedCategory,
+    String? selectedSubCategory,
+    List<String>? selectedTimeSlots,
+    List<String>? selectedSessionDuration,
+    Set<DateTime>? selectedDay,
+    bool? loading,
+  }) {
+    return _PostServiceStatus(
+      selectedSport: selectedSport ?? this.selectedSport,
+      selectedCategory: selectedCategory ?? this.selectedCategory,
+      selectedSubCategory: selectedSubCategory ?? this.selectedSubCategory,
+      selectedTimeSlots: selectedTimeSlots ?? this.selectedTimeSlots,
+      selectedSessionDuration:
+          selectedSessionDuration ?? this.selectedSessionDuration,
+      selectedDates: selectedDay ?? selectedDates,
+      loading: loading ?? this.loading,
     );
   }
 }

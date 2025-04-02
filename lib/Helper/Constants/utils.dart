@@ -41,17 +41,11 @@ class Utils {
   }
 
   //* FormatDate to Specific String Format (Month, Year)
-  String getDuration(List<String>? data, {bool skipMinutesText = false}) {
+  String getDuration(List<String>? data) {
     final duration =
         data!.map((e) => e).toString().replaceAll(RegExp(r"[()]"), "");
 
-    ///Just skip the minute word if not needed
-    if (skipMinutesText) {
-      return duration;
-    }
-
     return duration;
-    // return "$duration mins";
   }
 
   //* Format String to DateTime

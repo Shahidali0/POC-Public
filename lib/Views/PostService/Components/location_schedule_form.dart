@@ -1,6 +1,5 @@
 import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class LocationScheduleForm extends ConsumerWidget {
@@ -32,23 +31,20 @@ class LocationScheduleForm extends ConsumerWidget {
           _LocationField(controller: controller.locationController),
 
           ///Available Dates
-          _AvailableDates(selectedDays: controller.selectedDays),
+          _AvailableDates(ref: ref),
           _ValidationErrorMessage(listenable: controller.datesValidation),
 
           ///Available Time Slots
           _AvailableTimeSlots(
-            selectedTimeSlots: controller.selectedTimeSlotsListenable,
-            onSelectTimeSlot: (value) =>
-                controller.updateSelectedTimeSlots(value),
+            controller: controller,
+            ref: ref,
           ),
           _ValidationErrorMessage(listenable: controller.timeSlotValidation),
 
           ///Session Duration
           _SessionDurationField(
-            selectedSessionDuration:
-                controller.selectedSessionDurationListenable,
-            onChanged: (value) =>
-                controller.updateSelectedSessionDuration(value),
+            controller: controller,
+            ref: ref,
           ),
           _ValidationErrorMessage(
             listenable: controller.sessionDurationValidation,
@@ -90,13 +86,15 @@ class _LocationField extends StatelessWidget {
 ///Available Dates
 class _AvailableDates extends StatelessWidget {
   const _AvailableDates({
-    required this.selectedDays,
+    required this.ref,
   });
 
-  final Set<DateTime> selectedDays;
+  final WidgetRef ref;
 
   @override
   Widget build(BuildContext context) {
+    final selectedDays = ref.watch(postServiceControllerPr).selectedDates;
+
     DateTime focusedDay = DateTime.now();
 
     return StatefulBuilder(
@@ -139,39 +137,36 @@ class _AvailableDates extends StatelessWidget {
               ),
 
               ///Selected Days
-              CupertinoScrollbar(
-                scrollbarOrientation: ScrollbarOrientation.bottom,
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.only(
-                    bottom: Sizes.spaceMed,
-                    top: Sizes.spaceMed,
-                  ),
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: selectedDays
-                        .map(
-                          (day) => Padding(
-                            padding:
-                                const EdgeInsets.only(right: Sizes.spaceMed),
-                            child: Chip(
-                              shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.circular(Sizes.borderRadius),
-                                side: const BorderSide(color: AppColors.black),
-                              ),
-                              label: Text(
-                                Utils.instance.formatDateToString(day),
-                                style: const TextStyle(
-                                  color: AppColors.black,
-                                  fontWeight: FontWeight.w600,
-                                ),
+              SingleChildScrollView(
+                padding: const EdgeInsets.only(
+                  bottom: Sizes.spaceMed,
+                  top: Sizes.spaceMed,
+                ),
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: selectedDays
+                      .map(
+                        (day) => Padding(
+                          padding: const EdgeInsets.only(right: Sizes.spaceMed),
+                          child: Chip(
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(Sizes.borderRadius),
+                              side:
+                                  const BorderSide(color: AppColors.blueLight),
+                            ),
+                            label: Text(
+                              Utils.instance.formatDateToString(day),
+                              style: const TextStyle(
+                                color: AppColors.black,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ),
-                        )
-                        .toList(),
-                  ),
+                        ),
+                      )
+                      .toList(),
                 ),
               ),
             ],
@@ -245,15 +240,16 @@ class _AvailableDates extends StatelessWidget {
 ///Available Time Slots
 class _AvailableTimeSlots extends StatelessWidget {
   const _AvailableTimeSlots({
-    required this.selectedTimeSlots,
-    required this.onSelectTimeSlot,
+    required this.controller,
+    required this.ref,
   });
 
-  final ValueListenable<List<String>> selectedTimeSlots;
-  final ValueChanged onSelectTimeSlot;
+  final PostServiceController controller;
+  final WidgetRef ref;
 
   @override
   Widget build(BuildContext context) {
+    final timeSlots = ref.watch(postServiceControllerPr).selectedTimeSlots;
     final width = Sizes.screenWidth(context);
 
     return FormFiledWidget(
@@ -262,41 +258,36 @@ class _AvailableTimeSlots extends StatelessWidget {
       child: SizedBox(
         width: width,
         height: 160,
-        child: ValueListenableBuilder<List<String>>(
-          valueListenable: selectedTimeSlots,
-          builder: (BuildContext context, List<String> value, Widget? child) {
-            return GridView.builder(
-              padding: const EdgeInsets.symmetric(vertical: Sizes.spaceMed),
-              primary: false,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                childAspectRatio: 2.5,
-                // mainAxisSpacing: 8,
-                crossAxisSpacing: 8,
-              ),
-              itemCount: timeSlotsData.length,
-              itemBuilder: (BuildContext context, int index) {
-                bool isActive = value.contains(timeSlotsData[index]);
+        child: GridView.builder(
+          padding: const EdgeInsets.symmetric(vertical: Sizes.spaceMed),
+          primary: false,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            childAspectRatio: 2.5,
+            crossAxisSpacing: 8,
+          ),
+          itemCount: timeSlotsData.length,
+          itemBuilder: (BuildContext context, int index) {
+            final item = timeSlotsData[index];
+            bool isActive = timeSlots.contains(item);
 
-                return ChoiceChip(
-                  labelPadding: const EdgeInsets.all(Sizes.spaceSmall),
-                  labelStyle: TextStyle(
-                    color: isActive ? AppColors.white : null,
-                    fontWeight: isActive ? FontWeight.w700 : FontWeight.normal,
-                  ),
-                  onSelected: (data) {
-                    onSelectTimeSlot(timeSlotsData[index]);
-                  },
-                  avatar: isActive
-                      ? null
-                      : const Icon(
-                          CupertinoIcons.timer,
-                          color: AppColors.black,
-                        ),
-                  label: Text(timeSlotsData[index]),
-                  selected: isActive,
-                );
-              },
+            return ChoiceChip.elevated(
+              padding: const EdgeInsets.all(Sizes.spaceSmall),
+              labelStyle: TextStyle(
+                color: isActive ? AppColors.white : null,
+                fontWeight: isActive ? FontWeight.w700 : FontWeight.normal,
+              ),
+              onSelected: (v) => ref
+                  .read(postServiceControllerPr.notifier)
+                  .updateSelectedTimeSlots(item),
+              avatar: isActive
+                  ? null
+                  : const Icon(
+                      CupertinoIcons.timer,
+                      color: AppColors.black,
+                    ),
+              label: Text(item),
+              selected: isActive,
             );
           },
         ),
@@ -308,95 +299,58 @@ class _AvailableTimeSlots extends StatelessWidget {
 ///Session Duration
 class _SessionDurationField extends StatelessWidget {
   const _SessionDurationField({
-    required this.selectedSessionDuration,
-    required this.onChanged,
+    required this.controller,
+    required this.ref,
   });
 
-  final ValueNotifier<List<String>> selectedSessionDuration;
-  final ValueChanged onChanged;
+  final PostServiceController controller;
+  final WidgetRef ref;
 
   @override
   Widget build(BuildContext context) {
+    final duration = ref.watch(postServiceControllerPr).selectedSessionDuration;
+
     return FormFiledWidget(
       title: "Session Duration",
       isRequired: true,
-      child: ValueListenableBuilder<List<String>>(
-        valueListenable: selectedSessionDuration,
-        builder: (BuildContext context, List<String> value, Widget? child) {
-          return Padding(
-            padding: const EdgeInsets.only(top: Sizes.spaceMed),
-            child: Wrap(
-              spacing: Sizes.spaceMed,
-              alignment: WrapAlignment.spaceAround,
-              children: List.generate(
-                durationData.length,
-                (index) {
-                  bool isActive = value.contains(durationData[index]);
+      child: Padding(
+        padding: const EdgeInsets.only(top: Sizes.spaceMed),
+        child: Wrap(
+          spacing: Sizes.spaceMed,
+          alignment: WrapAlignment.spaceAround,
+          children: List.generate(
+            durationData.length,
+            (index) {
+              final item = durationData[index];
+              bool isActive = duration.contains(item);
 
-                  return ChoiceChip(
-                    labelPadding: const EdgeInsets.symmetric(
-                      vertical: Sizes.spaceSmall,
-                      horizontal: Sizes.spaceHeight,
-                    ),
-                    labelStyle: TextStyle(
-                      color: isActive ? AppColors.white : null,
-                      fontWeight:
-                          isActive ? FontWeight.w700 : FontWeight.normal,
-                    ),
-                    onSelected: (data) {
-                      onChanged(durationData[index]);
-                    },
-                    avatar: isActive
-                        ? null
-                        : const Icon(
-                            CupertinoIcons.timer,
-                            color: AppColors.black,
-                          ),
-                    label: Text(durationData[index]),
-                    selected: isActive,
-                  );
-                },
-              ),
-            ),
-          );
-        },
+              return ChoiceChip.elevated(
+                labelPadding: const EdgeInsets.symmetric(
+                  vertical: Sizes.spaceSmall,
+                  horizontal: Sizes.spaceHeight,
+                ),
+                labelStyle: TextStyle(
+                  color: isActive ? AppColors.white : null,
+                  fontWeight: isActive ? FontWeight.w700 : FontWeight.normal,
+                ),
+                onSelected: (v) => ref
+                    .read(postServiceControllerPr.notifier)
+                    .updateSelectedSessionDuration(item),
+                avatar: isActive
+                    ? null
+                    : const Icon(
+                        CupertinoIcons.timer,
+                        color: AppColors.black,
+                      ),
+                label: Text(item),
+                selected: isActive,
+              );
+            },
+          ),
+        ),
       ),
     );
   }
-
-  //  return ValueListenableBuilder<String?>(
-  //   valueListenable: selectedSessionDuration,
-  //   builder: (BuildContext context, String? value, Widget? child) {
-  // return FormFiledWidget(
-  //       title: "Session Duration",
-  //       isRequired: true,
-  //       child: DropdownButtonFormField<String>(
-  //         padding: EdgeInsets.zero,
-  //         alignment: Alignment.centerLeft,
-  //         isExpanded: true,
-  //         value: value,
-  //         validator: FieldValidators.instance.commonValidator,
-  //         items: duration.map((String valueItem) {
-  //           return DropdownMenuItem<String>(
-  //             value: valueItem,
-  //             child: Text(
-  //               valueItem,
-  //               overflow: TextOverflow.ellipsis,
-  //               style: const TextStyle(
-  //                 color: AppColors.blueGrey,
-  //                 fontWeight: FontWeight.w800,
-  //               ),
-  //             ),
-  //           );
-  //         }).toList(),
-  //         onChanged: (value) {
-  //           if (value != null) onChanged(value);
-  //         },
-  //         decoration: const InputDecoration(),
-  //       ),
-  //     );
-  //  },
-  // );
 }
 
 ///Validation Error Message

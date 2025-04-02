@@ -29,9 +29,7 @@ export 'DashboardNavBar/dashboard_navbar_screen.dart';
 
 //* Home
 
-export 'Home/Controller/home_controller.dart';
-
-// export 'Home/Components/home_appbar.dart';
+export 'Home/Repository/home_repository.dart';
 
 export 'Home/home_screen.dart';
 

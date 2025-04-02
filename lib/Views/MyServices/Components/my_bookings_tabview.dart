@@ -8,6 +8,7 @@ class MyBookingsTabview extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(getMyBookingsPr).when(
+          skipLoadingOnRefresh: false,
           data: (data) {
             return RefreshIndicator.adaptive(
               onRefresh: () async => ref.invalidate(getMyBookingsPr),
@@ -23,6 +24,7 @@ class MyBookingsTabview extends ConsumerWidget {
             return ErrorText(
               title: error.title,
               error: error.message,
+              onRefresh: () async => ref.invalidate(getMyBookingsPr),
             );
           },
           loading: () => const ShowDataLoader(),

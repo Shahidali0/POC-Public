@@ -114,7 +114,7 @@ class HomeSearchbarWithTabs extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentIndex = ref.watch(homeTabBarIndexPr);
+    final currentIndex = ref.watch(_homeTabBarIndexPr);
 
     return SliverAppBar(
       pinned: true,
@@ -128,7 +128,7 @@ class HomeSearchbarWithTabs extends ConsumerWidget {
         controller: tabController,
         isScrollable: true,
         onTap: (index) =>
-            ref.read(homeTabBarIndexPr.notifier).update((st) => st = index),
+            ref.read(_homeTabBarIndexPr.notifier).update((st) => st = index),
         tabAlignment: TabAlignment.start,
         labelPadding: const EdgeInsets.all(Sizes.space),
         padding: const EdgeInsets.only(bottom: 8.0),

@@ -6,43 +6,45 @@ class FindServicesScreen extends ConsumerWidget {
   const FindServicesScreen({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoAppbar(
-        title: "Find Services",
-        showNotificationIcon: true,
-        trailing: CommonIconButton(
-          onPressed: () => AppRouter.instance.animatedPush(
-            context: context,
-            type: MyAnimationType.upDown,
-            screen: const ServiceFilters(),
+    return RefreshIndicator.adaptive(
+      onRefresh: () async => ref.invalidate(findAllServciesPr),
+      child: CupertinoPageScaffold(
+        navigationBar: CupertinoAppbar(
+          title: "Find Services",
+          showNotificationIcon: true,
+          trailing: CommonIconButton(
+            onPressed: () => AppRouter.instance.animatedPush(
+              context: context,
+              type: MyAnimationType.upDown,
+              screen: const ServiceFilters(),
+            ),
+            iconData: CupertinoIcons.slider_horizontal_3,
           ),
-          iconData: CupertinoIcons.slider_horizontal_3,
         ),
-      ),
-      child: ref.watch(findAllServciesPr).when(
-            data: (data) {
-              if (data == null) {
-                return const EmptyDataWidget();
-              }
+        child: ref.watch(findAllServciesPr).when(
+              skipLoadingOnRefresh: false,
+              data: (data) {
+                if (data == null) {
+                  return const EmptyDataWidget();
+                }
 
-              return RefreshIndicator.adaptive(
-                onRefresh: () async => ref.invalidate(findAllServciesPr),
-                child: _body(
+                return _body(
                   context: context,
                   allServices: data.services!,
                   ref: ref,
-                ),
-              );
-            },
-            error: (e, st) {
-              final error = e as Failure;
-              return ErrorText(
-                title: error.title,
-                error: error.message,
-              );
-            },
-            loading: () => const ShowDataLoader(),
-          ),
+                );
+              },
+              error: (e, st) {
+                final error = e as Failure;
+                return ErrorText(
+                  title: error.title,
+                  error: error.message,
+                  onRefresh: () async => ref.invalidate(findAllServciesPr),
+                );
+              },
+              loading: () => const ShowDataLoader(),
+            ),
+      ),
     );
   }
 

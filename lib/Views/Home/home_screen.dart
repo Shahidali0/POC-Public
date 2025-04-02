@@ -3,21 +3,27 @@ import 'package:flutter/material.dart';
 import 'package:cricket_poc/lib_exports.dart';
 
 part 'Components/home_appbar.dart';
+part 'Controller/home_controller.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+class _HomeScreenState extends ConsumerState<HomeScreen>
+    with TickerProviderStateMixin {
   late TabController _tabController;
+  late _HomeController _controller;
 
   @override
   void initState() {
     _tabController =
         TabController(length: homeTabbarItemsData.length, vsync: this);
+
+    _controller = ref.read(homeControllerPr.notifier);
+    _controller.getAllCategories();
     super.initState();
   }
 

@@ -8,6 +8,7 @@ class MyServicesTabview extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(findMyServicesPr).when(
+          skipLoadingOnRefresh: false,
           data: (data) {
             if (data == null) {
               return const EmptyDataWidget();
@@ -27,6 +28,7 @@ class MyServicesTabview extends ConsumerWidget {
             return ErrorText(
               title: error.title,
               error: error.message,
+              onRefresh: () async => ref.invalidate(findMyServicesPr),
             );
           },
           loading: () => const ShowDataLoader(),

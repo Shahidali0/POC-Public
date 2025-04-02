@@ -2,12 +2,7 @@ import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-List<String> idTypesData = [
-  "Passport",
-  "Driving License",
-  "National Id",
-];
-
+///These are sub Categories
 List<String> specializationsData = [
   "Batting Training",
   "Bowling Training",
@@ -16,45 +11,29 @@ List<String> specializationsData = [
   "Mental Training",
 ];
 
-List<String> findServicesTabsData = [
-  "All Services",
-  "Batting",
-  "Bowling",
-  "Fielding",
-  "Match Organization",
-  "Find Teams",
-  "Hire Equipment",
-];
+///Duration Count
+List<String> durationData = ["30 min", "60 min", "90 min", "120 min"];
 
-List<String> serviceCategoriesData = [
-  "Coaching",
-  "Training",
-  "Expert Advice",
-  "Video Analysis",
-  "Skill Development",
-  "Practice Support",
-  "Equipment & Gear Guidance",
-];
-
-List<String> durationData = ["30 min", "60 min", "90 min", "2 hrs"];
-
+///Time Slot Data
 List<String> timeSlotsData = [
-  "09:00 Am",
-  "10:00 Am",
-  "11:00 Am",
-  "12:00 Pm",
-  "01:00 Pm",
-  "02:00 Pm",
-  "03:00 Pm",
-  "04:00 Pm",
-  "05:00 Pm",
+  "09:00 AM",
+  "10:00 AM",
+  "11:00 AM",
+  "12:00 PM",
+  "01:00 PM",
+  "02:00 PM",
+  "03:00 PM",
+  "04:00 PM",
+  "05:00 PM",
 ];
 
+///My Service Tabs
 List<String> myServicesTabsData = [
   "My Services",
   "My Booking",
 ];
 
+///HomePage Tabs Data
 List<HomeTabbarItem> homeTabbarItemsData = [
   HomeTabbarItem(
     iconData: CupertinoIcons.home,
@@ -70,18 +49,10 @@ List<HomeTabbarItem> homeTabbarItemsData = [
   ),
   HomeTabbarItem(
     iconData: Icons.car_rental,
-    title: "Equipment Rental",
+    title: "EquiPMent Rental",
   ),
   HomeTabbarItem(
     iconData: CupertinoIcons.location,
     title: "Grounds",
   ),
-];
-
-List<String> filtersData = [
-  "Sort",
-  "Category",
-  "Sub Category",
-  "Price",
-  "Distance",
 ];

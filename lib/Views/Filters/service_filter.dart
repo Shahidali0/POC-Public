@@ -23,16 +23,42 @@ class _ServiceFiltersState extends ConsumerState<ServiceFilters> {
   }
 
   @override
-  void dispose() {
-    _controller.disposeMethod();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final selectedIndex = ref.watch(_selectedFilterIndexPr);
+    final isLoading = ref.watch(filtersControllerPr).loading;
+
+    return Scaffold(
+      bottomNavigationBar: _controller.allCategories.isEmpty
+          ? null
+          : SafeArea(
+              minimum: Sizes.globalMargin,
+              child: CommonButton(
+                onPressed: () {
+                  AppRouter.instance.pop(context);
+                },
+                text: "Apply Filters",
+              ),
+            ),
+      body: _bodyView(
+        context: context,
+        selectedIndex: selectedIndex,
+        isLoading: isLoading,
+      ),
+    );
+  }
+
+  ///BodyView
+  Widget _bodyView({
+    required BuildContext context,
+    required int selectedIndex,
+    required bool isLoading,
+  }) {
+    if (isLoading) {
+      return const ShowDataLoader();
+    }
 
     return CupertinoPageScaffold(
+      ///AppBar
       navigationBar: CupertinoAppbar(
         title: "Filters",
         previousPageTitle: "Home",
@@ -42,54 +68,68 @@ class _ServiceFiltersState extends ConsumerState<ServiceFilters> {
             return CommonTextButton(
               onPressed: () => _controller.clearFilters(),
               text: "Clear All",
+              textColor: AppColors.red,
             );
           },
         ),
       ),
-      child: Scaffold(
-        bottomNavigationBar: SafeArea(
-          minimum: Sizes.globalMargin,
-          child: CommonButton(
-            onPressed: () {
-              AppRouter.instance.pop(context);
-            },
-            text: "Apply Filters",
-          ),
-        ),
-        body: Padding(
-          padding: Sizes.cupertinoScaffoldPadding(context),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                flex: 2,
-                child: _LeftMenuItems(
-                  selectedIndex: selectedIndex,
-                  ref: ref,
-                ),
-              ),
-              const VerticalDivider(),
-              Expanded(
-                flex: 4,
-                child: AnimatedSwitcher(
-                  duration: Sizes.duration,
-                  key: Key("selectedIndex:$selectedIndex"),
-                  child: IndexedStack(
-                    index: selectedIndex,
-                    children: [
-                      _SortTypeWidget(controller: _controller),
-                      _CategoryTypeWidget(controller: _controller),
-                      _SubCategoryTypeWidget(controller: _controller),
-                      _PriceTypeWidget(controller: _controller),
-                      _DistanceWidget(controller: _controller),
-                    ],
+
+      ///Body
+      child: _controller.allCategories.isEmpty
+          ? ErrorText(
+              title: "Something went wrong",
+              error: "Please try to refresh the page",
+              onRefresh: _controller.loadAllCategories,
+            )
+          : Padding(
+              padding: Sizes.cupertinoScaffoldPadding(context),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: _LeftMenuItems(
+                      selectedIndex: selectedIndex,
+                      ref: ref,
+                      controller: _controller,
+                    ),
                   ),
-                ),
+                  const VerticalDivider(),
+                  Expanded(
+                    flex: 4,
+                    child: AnimatedSwitcher(
+                      duration: Sizes.duration,
+                      key: Key("selectedIndex:$selectedIndex"),
+                      child: IndexedStack(
+                        index: selectedIndex,
+                        children: [
+                          _SportTypeWidget(
+                            controller: _controller,
+                            ref: ref,
+                          ),
+                          _CategoryTypeWidget(
+                            controller: _controller,
+                            ref: ref,
+                          ),
+                          _SubCategoryTypeWidget(
+                            controller: _controller,
+                            ref: ref,
+                          ),
+                          _PriceTypeWidget(
+                            controller: _controller,
+                            ref: ref,
+                          ),
+                          _DistanceWidget(
+                            controller: _controller,
+                            ref: ref,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 }
@@ -99,18 +139,27 @@ class _LeftMenuItems extends StatelessWidget {
   const _LeftMenuItems({
     required this.selectedIndex,
     required this.ref,
+    required this.controller,
   });
 
   final int selectedIndex;
   final WidgetRef ref;
+  final _FiltersController controller;
 
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(filtersControllerPr);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: List.generate(
-        filtersData.length,
+        controller.filtersData.length,
         (index) {
+          if ((state.selectedCategory.isEmpty || state.selectedSport.isEmpty) &&
+              index == 2) {
+            return const SizedBox.shrink();
+          }
+
           return InkWell(
             onTap: () => ref
                 .read(_selectedFilterIndexPr.notifier)
@@ -118,7 +167,6 @@ class _LeftMenuItems extends StatelessWidget {
             child: SizedBox(
               height: 60,
               child: Stack(
-                // clipBehavior: Clip.none,
                 alignment: Alignment.center,
                 children: [
                   ///Header Title
@@ -135,11 +183,11 @@ class _LeftMenuItems extends StatelessWidget {
   }
 
   ///Header Widget
-  Positioned _buildHeader(int index) {
+  Widget _buildHeader(int index) {
     return Positioned(
       left: 12,
       child: Text(
-        filtersData[index],
+        controller.filtersData[index],
         style: const TextStyle(
           color: AppColors.black,
           fontSize: Sizes.fontSize18,
@@ -150,7 +198,7 @@ class _LeftMenuItems extends StatelessWidget {
   }
 
   ///Indicator Widget
-  AnimatedPositioned _buildIndicator(int index) {
+  Widget _buildIndicator(int index) {
     return AnimatedPositioned(
       duration: Sizes.duration,
       left: -3,

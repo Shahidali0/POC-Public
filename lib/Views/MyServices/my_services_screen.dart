@@ -29,20 +29,7 @@ class MyServicesScreen extends StatelessWidget {
             return [
               ///Appbar
               SliverAppBar(
-                floating: true,
-                scrolledUnderElevation: 0,
-                surfaceTintColor: AppColors.white,
-                titleSpacing: Sizes.space,
-                foregroundColor: AppColors.black,
-                title: const Text(
-                  "John Smith - Former state player with 10 years of coaching experience\n",
-                  maxLines: 3,
-                  style: TextStyle(
-                    color: AppColors.blueGrey,
-                    fontWeight: FontWeight.w500,
-                    fontStyle: FontStyle.normal,
-                  ),
-                ),
+                toolbarHeight: 0,
                 bottom: TabBar(
                   labelColor: AppColors.appTheme,
                   indicatorColor: AppColors.appTheme,

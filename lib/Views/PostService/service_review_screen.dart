@@ -8,144 +8,140 @@ class PostServiceReviewScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.read(postServiceControllerPr.notifier);
+    final state = ref.read(postServiceControllerPr);
 
-    return MyCupertinoSliverScaffold(
-      title: "Post Service",
-      bottomNavBar: SafeArea(
-        minimum: Sizes.globalMargin,
-        child: CommonButton(
-          onPressed: () => controller.postService(context),
-          text: "Post Service",
+    return LoadingProgressBar(
+      isLoading: state.loading,
+      child: MyCupertinoSliverScaffold(
+        title: "Post Service",
+        bottomNavBar: SafeArea(
+          minimum: Sizes.globalMargin,
+          child: CommonButton(
+            onPressed: () => controller.postService(context),
+            text: "Post Service",
+          ),
         ),
-      ),
-      body: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          const Text(
-            "Review & Submit",
-            style: TextStyle(
-              fontSize: Sizes.fontSize18,
-              fontWeight: FontWeight.bold,
-              color: AppColors.black,
+        body: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const Text(
+              "Review & Submit",
+              style: TextStyle(
+                fontSize: Sizes.fontSize18,
+                fontWeight: FontWeight.bold,
+                color: AppColors.black,
+              ),
             ),
-          ),
-          const Text("Review your service details before posting"),
-          const SizedBox(height: Sizes.spaceHeight),
+            const Text("Review your service details before posting"),
 
-          ///Service Title
-          Text(
-            controller.serviceTitleController.text.trim(),
-            style: const TextStyle(
-              fontSize: Sizes.fontSize18,
-              fontWeight: FontWeight.bold,
-              color: AppColors.appTheme,
+            ///Service Title, Category Tag, Price Tag
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text(
+                controller.serviceTitleController.text.trim().capitalizeFirst,
+                style: const TextStyle(
+                  fontSize: Sizes.fontSize18,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.appTheme,
+                ),
+              ),
+              subtitle: Text(
+                "${state.selectedCategory} - (${state.selectedSubCategory})",
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontStyle: FontStyle.italic,
+                  color: AppColors.orange,
+                  fontSize: Sizes.fontSize12,
+                ),
+              ),
+              trailing: Text(
+                "\$ ${controller.priceController.text.trim()}",
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: kDefaultFontSize,
+                ),
+              ),
             ),
-          ),
 
-          ///Category Tag
-          Text(
-            controller.selectedServiceCategory.value ?? "--",
-            style: const TextStyle(
-              fontWeight: FontWeight.w600,
-              fontStyle: FontStyle.italic,
-              color: AppColors.orange,
+            ///Location
+            ListTile(
+              minVerticalPadding: 0,
+              dense: true,
+              contentPadding: EdgeInsets.zero,
+              leading: const Icon(CupertinoIcons.map_pin_ellipse),
+              title: Text(
+                controller.locationController.text.trim(),
+                style: const TextStyle(
+                  fontWeight: FontWeight.normal,
+                  fontSize: Sizes.fontSize16,
+                ),
+              ),
             ),
-          ),
+            const Divider(),
 
-          ///Location
-          ListTile(
-            minVerticalPadding: 0,
-            dense: true,
-            contentPadding: EdgeInsets.zero,
-            leading: const Icon(CupertinoIcons.map_pin_ellipse),
-            title: Text(
-              controller.locationController.text.trim(),
-              style: const TextStyle(
-                fontWeight: FontWeight.normal,
+            ///Description
+            _VerticalTile(
+              header: "Description",
+              body: controller.serviceDescriptionController.text.trim(),
+            ),
+
+            ///Duration and Price
+            _VerticalTile(
+              header: "Duration",
+              body: Utils.instance.getDuration(
+                state.selectedSessionDuration,
+              ),
+              iconData: CupertinoIcons.time,
+            ),
+
+            ///Available Dates
+            const SizedBox(height: Sizes.space),
+            const Text(
+              "Available Dates:",
+              style: TextStyle(
+                fontWeight: FontWeight.w800,
+                color: AppColors.black,
                 fontSize: Sizes.fontSize16,
               ),
             ),
-          ),
-          const Divider(),
+            const SizedBox(height: Sizes.spaceMed),
+            _AvailableDatesWidget(ref: ref),
 
-          ///Description
-          _VerticalTile(
-            header: "Description",
-            body: controller.serviceDescriptionController.text.trim(),
-          ),
-
-          ///Duration and Price
-          Row(
-            children: [
-              Expanded(
-                child: _VerticalTile(
-                  header: "Duration",
-                  body: Utils.instance.getDuration(
-                    controller.selectedSessionDurationListenable.value,
-                    skipMinutesText: true,
+            ///Available TimeSlots
+            const SizedBox(height: Sizes.space),
+            const Text(
+              "Available Times:",
+              style: TextStyle(
+                fontWeight: FontWeight.w800,
+                color: AppColors.black,
+                fontSize: Sizes.fontSize16,
+              ),
+            ),
+            const SizedBox(height: Sizes.spaceMed),
+            Wrap(
+              spacing: Sizes.space,
+              children: List.generate(
+                state.selectedTimeSlots.length,
+                (index) => ActionChip.elevated(
+                  onPressed: () {},
+                  labelPadding: const EdgeInsets.all(Sizes.spaceSmall),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: Sizes.spaceHeight),
+                  avatar: const Icon(
+                    CupertinoIcons.time,
+                    color: AppColors.black,
                   ),
-                  iconData: CupertinoIcons.time,
-                ),
-              ),
-              Expanded(
-                child: _VerticalTile(
-                  header: "Price",
-                  body: controller.priceController.text.trim(),
-                  iconData: Icons.attach_money,
-                  // CupertinoIcons.money_dollar_circle,
-                  bodyColor: AppColors.appTheme,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-
-          ///Available Dates
-          const SizedBox(height: Sizes.space),
-          const Text(
-            "Available Dates:",
-            style: TextStyle(
-              fontWeight: FontWeight.w800,
-              color: AppColors.black,
-              fontSize: Sizes.fontSize16,
-            ),
-          ),
-          const SizedBox(height: Sizes.spaceMed),
-          _AvailableDatesWidget(controller: controller),
-
-          ///Available TimeSlots
-          const SizedBox(height: Sizes.space),
-          const Text(
-            "Available Times:",
-            style: TextStyle(
-              fontWeight: FontWeight.w800,
-              color: AppColors.black,
-              fontSize: Sizes.fontSize16,
-            ),
-          ),
-          const SizedBox(height: Sizes.spaceMed),
-          Wrap(
-            spacing: Sizes.space,
-            children: List.generate(
-              controller.selectedTimeSlotsListenable.value.length,
-              (index) => Chip(
-                labelPadding: const EdgeInsets.all(Sizes.spaceSmall),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: Sizes.spaceHeight),
-                avatar: const Icon(
-                  CupertinoIcons.time,
-                  color: AppColors.black,
-                ),
-                label: Text(
-                  controller.selectedTimeSlotsListenable.value[index],
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
+                  label: Text(
+                    state.selectedTimeSlots[index],
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
-              ),
-            ).toList(),
-          )
-        ],
+              ).toList(),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -154,21 +150,23 @@ class PostServiceReviewScreen extends ConsumerWidget {
 ///Available Dates Widget
 class _AvailableDatesWidget extends StatelessWidget {
   const _AvailableDatesWidget({
-    required this.controller,
+    required this.ref,
   });
 
-  final dynamic controller;
+  final WidgetRef ref;
 
   @override
   Widget build(BuildContext context) {
-    final selectedDays = controller.selectedDays.toList();
+    final selectedDays =
+        ref.read(postServiceControllerPr).selectedDates.toList();
 
     return Wrap(
       spacing: Sizes.space,
       children: List.generate(
         selectedDays.length,
         (index) {
-          return Chip(
+          return ActionChip.elevated(
+            onPressed: () {},
             labelPadding: const EdgeInsets.all(Sizes.spaceSmall),
             padding: const EdgeInsets.symmetric(horizontal: Sizes.spaceHeight),
             avatar: const Icon(
@@ -224,7 +222,7 @@ class _VerticalTile extends StatelessWidget {
             contentPadding: EdgeInsets.zero,
             minVerticalPadding: Sizes.spaceMed,
             minTileHeight: 0,
-            horizontalTitleGap: 3,
+            horizontalTitleGap: 8,
             dense: true,
             iconColor: bodyColor,
             textColor: bodyColor,

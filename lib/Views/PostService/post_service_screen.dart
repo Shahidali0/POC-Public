@@ -13,19 +13,13 @@ class PostServiceScreen extends ConsumerStatefulWidget {
 }
 
 class _PostServiceScreenState extends ConsumerState<PostServiceScreen> {
-  late PostServiceRepository _controller;
+  late PostServiceController _controller;
 
   @override
   void initState() {
     _controller = ref.read(postServiceControllerPr.notifier);
     _controller.initState();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 
   @override
@@ -37,54 +31,57 @@ class _PostServiceScreenState extends ConsumerState<PostServiceScreen> {
       previousPageTitle: "Home",
       title: "Post Service",
       margin: EdgeInsets.zero,
-      body: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        child: Stepper(
-          elevation: 0.7,
-          type: StepperType.horizontal,
-          currentStep: currentStep,
-          onStepTapped: (step) => _controller.onStepTapped(
-            currentStep: currentStep,
-            step: step,
-          ),
-          onStepContinue: () => _controller.onStepContinue(
-            context: context,
-            currentStep: currentStep,
-          ),
-          onStepCancel: () => _controller.onStepCancel(currentStep),
-          steps: [
-            ///Step1
-            _buildStep(
-              title: "Service\nDetails",
-              content: const PostServiceDetailsForm(),
-              isActive: currentStep == 0,
-              isCompleted: currentStep > 0,
-            ),
-
-            ///Step2
-            _buildStep(
-              title: "Location &\nSchedule",
-              content: const LocationScheduleForm(),
-              isActive: currentStep == 1,
-              isCompleted: currentStep > 1,
-            ),
-
-            ///Step3
-            _buildStep(
-              title: "Pricing",
-              content: const PricingForm(),
-              isActive: currentStep == 2,
-              isCompleted: currentStep > 2,
-            ),
-          ],
-          controlsBuilder: (context, details) {
-            return _StepperControlsButtons(
+      body: _controller.allCategories.isEmpty
+          ? ErrorText(
+              title: "Something went wrong",
+              error: "Please try to refresh the page",
+              onRefresh: _controller.loadAllCategories,
+            )
+          : Stepper(
+              elevation: 0.7,
+              type: StepperType.horizontal,
               currentStep: currentStep,
-              details: details,
-            );
-          },
-        ),
-      ),
+              onStepTapped: (step) => _controller.onStepTapped(
+                currentStep: currentStep,
+                step: step,
+              ),
+              onStepContinue: () => _controller.onStepContinue(
+                context: context,
+                currentStep: currentStep,
+              ),
+              onStepCancel: () => _controller.onStepCancel(currentStep),
+              steps: [
+                ///Step1
+                _buildStep(
+                  title: "Service\nDetails",
+                  content: const PostServiceDetailsForm(),
+                  isActive: currentStep == 0,
+                  isCompleted: currentStep > 0,
+                ),
+
+                ///Step2
+                _buildStep(
+                  title: "Location &\nSchedule",
+                  content: const LocationScheduleForm(),
+                  isActive: currentStep == 1,
+                  isCompleted: currentStep > 1,
+                ),
+
+                ///Step3
+                _buildStep(
+                  title: "Pricing",
+                  content: const PricingForm(),
+                  isActive: currentStep == 2,
+                  isCompleted: currentStep > 2,
+                ),
+              ],
+              controlsBuilder: (context, details) {
+                return _StepperControlsButtons(
+                  currentStep: currentStep,
+                  details: details,
+                );
+              },
+            ),
     );
   }
 

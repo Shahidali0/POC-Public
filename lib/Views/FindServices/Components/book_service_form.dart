@@ -37,8 +37,8 @@ class _BookServiceFormState extends State<BookServiceForm> {
     super.dispose();
   }
 
-  ///Update Selected Time Value
-  void _updateSelectedTime(String value) => _selectedTime.value = value;
+  // ///Update Selected Time Value
+  // void _updateSelectedTime(String value) => _selectedTime.value = value;
 
   ///Update Selected Duration Value
   void _updateSelectedDuration(String value) => _selectedDuration.value = value;

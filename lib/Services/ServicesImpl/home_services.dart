@@ -9,17 +9,13 @@ final homeServicesPr = Provider<HomeServices>(
 sealed class HomeServices {
   Future<String?> findAllServices();
 
-  Future<String?> findUserServices({
-    required String userId,
-  });
+  Future<String?> findUserServices({required String userId});
 
-  Future<String?> getUserBookings({
-    required String userId,
-  });
+  Future<String?> getUserBookings({required String userId});
 
-  Future<String?> postService({
-    required PostServiceDto postServiceDto,
-  });
+  Future<String?> postService({required PostServiceDto postServiceDto});
+
+  Future<String?> getAllCategories();
 }
 
 class _HomeServicesImpl implements HomeServices {
@@ -85,6 +81,21 @@ class _HomeServicesImpl implements HomeServices {
     final response = await BaseHttpClient.postService(
       urlEndPoint: url,
       body: body,
+      headers: _apiHeaders.headers,
+    );
+
+    return response;
+  }
+
+  //* Get All Categories
+  @override
+  Future<String?> getAllCategories() async {
+    const url = "category";
+
+    // final headers = await _apiHeaders.getHeadersWithToken();
+
+    final response = await BaseHttpClient.getService(
+      urlEndPoint: url,
       headers: _apiHeaders.headers,
     );
 
