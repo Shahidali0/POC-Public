@@ -74,6 +74,12 @@
       "languageVersion": "3.3"
     },
     {
+      "name": "font_awesome_flutter",
+      "rootUri": "file:///Users/apple/.pub-cache/hosted/pub.dev/font_awesome_flutter-10.8.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
       "name": "fpdart",
       "rootUri": "file:///Users/apple/.pub-cache/hosted/pub.dev/fpdart-1.1.1",
       "packageUri": "lib/",
@@ -254,7 +260,7 @@
       "languageVersion": "3.5"
     }
   ],
-  "generated": "2025-03-27T08:49:28.036239Z",
+  "generated": "2025-04-03T11:19:24.274919Z",
   "generator": "pub",
   "generatorVersion": "3.5.2",
   "flutterRoot": "file:///Users/apple/Developer/flutter",

@@ -1,9 +1,7 @@
-import 'package:cricket_poc/lib_exports.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+part of 'package:cricket_poc/Views/PostService/post_service_screen.dart';
 
-class LocationScheduleForm extends ConsumerWidget {
-  const LocationScheduleForm({super.key});
+class _LocationScheduleForm extends ConsumerWidget {
+  const _LocationScheduleForm();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

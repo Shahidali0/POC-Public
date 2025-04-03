@@ -98,7 +98,7 @@ class _FiltersController extends StateNotifier<_FiltersControllerState> {
     state.loading = true;
 
     allCategories =
-        await _ref.read(homeControllerPr.notifier).getAllCategories();
+        await _ref.read(navbarControllerPr.notifier).getAllCategories();
 
     state.loading = false;
   }

@@ -1,8 +1,13 @@
 import 'dart:collection';
 import 'package:cricket_poc/lib_exports.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 part 'Controller/post_service_controller.dart';
+part 'Components/location_schedule_form.dart';
+part 'Components/pricing_form.dart';
+part 'Components/service_details_form.dart';
 
 class PostServiceScreen extends ConsumerStatefulWidget {
   const PostServiceScreen({super.key});
@@ -54,7 +59,7 @@ class _PostServiceScreenState extends ConsumerState<PostServiceScreen> {
                 ///Step1
                 _buildStep(
                   title: "Service\nDetails",
-                  content: const PostServiceDetailsForm(),
+                  content: const _ServiceDetailsForm(),
                   isActive: currentStep == 0,
                   isCompleted: currentStep > 0,
                 ),
@@ -62,7 +67,7 @@ class _PostServiceScreenState extends ConsumerState<PostServiceScreen> {
                 ///Step2
                 _buildStep(
                   title: "Location &\nSchedule",
-                  content: const LocationScheduleForm(),
+                  content: const _LocationScheduleForm(),
                   isActive: currentStep == 1,
                   isCompleted: currentStep > 1,
                 ),
@@ -70,7 +75,7 @@ class _PostServiceScreenState extends ConsumerState<PostServiceScreen> {
                 ///Step3
                 _buildStep(
                   title: "Pricing",
-                  content: const PricingForm(),
+                  content: const _PricingForm(),
                   isActive: currentStep == 2,
                   isCompleted: currentStep > 2,
                 ),

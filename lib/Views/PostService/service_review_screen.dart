@@ -192,15 +192,11 @@ class _VerticalTile extends StatelessWidget {
     required this.header,
     required this.body,
     this.iconData,
-    this.bodyColor = AppColors.black,
-    this.fontWeight = FontWeight.normal,
   });
 
   final String header;
   final String body;
   final IconData? iconData;
-  final Color bodyColor;
-  final FontWeight fontWeight;
 
   @override
   Widget build(BuildContext context) {
@@ -224,15 +220,10 @@ class _VerticalTile extends StatelessWidget {
             minTileHeight: 0,
             horizontalTitleGap: 8,
             dense: true,
-            iconColor: bodyColor,
-            textColor: bodyColor,
             leading: iconData != null ? Icon(iconData) : null,
             title: Text(
               body,
-              style: TextStyle(
-                fontSize: Sizes.fontSize16,
-                fontWeight: fontWeight,
-              ),
+              style: const TextStyle(fontSize: Sizes.fontSize16),
             ),
           ),
         ),

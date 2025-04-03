@@ -31,19 +31,27 @@ class AppColors {
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
     colors: [
-      Color(0xFF668df0),
+      appTheme,
       blueLight,
-      // white,
     ],
   );
-  static const LinearGradient homeGradient2 = LinearGradient(
-    begin: Alignment.topCenter,
-    end: Alignment.bottomCenter,
-    colors: [
-      blueLight,
-      white,
-    ],
-  );
+  // static const LinearGradient homeGradient = LinearGradient(
+  //   begin: Alignment.topCenter,
+  //   end: Alignment.bottomCenter,
+  //   colors: [
+  //     Color(0xFF668df0),
+  //     blueLight,
+  //     // white,
+  //   ],
+  // );
+  // static const LinearGradient homeGradient2 = LinearGradient(
+  //   begin: Alignment.topCenter,
+  //   end: Alignment.bottomCenter,
+  //   colors: [
+  //     blueLight,
+  //     white,
+  //   ],
+  // );
 
   static const RadialGradient authGradient1 = RadialGradient(
     radius: 1,

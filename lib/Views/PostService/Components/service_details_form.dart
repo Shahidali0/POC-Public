@@ -1,10 +1,7 @@
-import 'package:cricket_poc/lib_exports.dart';
-import 'package:flutter/cupertino.dart';
+part of 'package:cricket_poc/Views/PostService/post_service_screen.dart';
 
-import 'package:flutter/material.dart';
-
-class PostServiceDetailsForm extends ConsumerWidget {
-  const PostServiceDetailsForm({super.key});
+class _ServiceDetailsForm extends ConsumerWidget {
+  const _ServiceDetailsForm();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -32,27 +29,19 @@ class PostServiceDetailsForm extends ConsumerWidget {
           _ServiceTitleField(controller: controller.serviceTitleController),
 
           ///Service Sport
-          _ServiceSport(
-            controller: controller,
-            ref: ref,
-          ),
+          const _ServiceSport(),
           _ValidationErrorMessage(listenable: controller.sportValidation),
 
           ///Service Category
-          _ServiceCategory(
-            controller: controller,
-            ref: ref,
-          ),
+          const _ServiceCategory(),
 
           ///Service Sub-Category
-          _ServiceSubCategory(
-            controller: controller,
-            ref: ref,
-          ),
+          const _ServiceSubCategory(),
 
           ///Service Description
           _ServiceDescriptionField(
-              controller: controller.serviceDescriptionController),
+            controller: controller.serviceDescriptionController,
+          ),
           const SizedBox(height: Sizes.spaceHeight),
         ],
       ),
@@ -118,17 +107,12 @@ class _ServiceDescriptionField extends StatelessWidget {
 }
 
 ///Service Sport Type
-class _ServiceSport extends StatelessWidget {
-  const _ServiceSport({
-    required this.controller,
-    required this.ref,
-  });
-
-  final PostServiceController controller;
-  final WidgetRef ref;
+class _ServiceSport extends ConsumerWidget {
+  const _ServiceSport();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = ref.read(postServiceControllerPr.notifier);
     final sport = ref.watch(postServiceControllerPr).selectedSport;
 
     return FormFiledWidget(
@@ -175,29 +159,26 @@ class _ServiceSport extends StatelessWidget {
 }
 
 ///Service Category Type
-class _ServiceCategory extends StatelessWidget {
-  const _ServiceCategory({
-    required this.controller,
-    required this.ref,
-  });
-
-  final PostServiceController controller;
-  final WidgetRef ref;
+class _ServiceCategory extends ConsumerWidget {
+  const _ServiceCategory();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = ref.read(postServiceControllerPr.notifier);
+
     final sport = ref.watch(postServiceControllerPr).selectedSport;
     final category = ref.watch(postServiceControllerPr).selectedCategory;
 
-    return AnimatedCrossFade(
-      duration: Sizes.duration,
-      crossFadeState:
-          sport.isEmpty ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-      firstChild: const SizedBox.shrink(),
-      secondChild: FormFiledWidget(
-        title: "Service Category",
-        isRequired: true,
-        child: Padding(
+    return FormFiledWidget(
+      title: "Service Category",
+      isRequired: true,
+      child: AnimatedCrossFade(
+        duration: Sizes.durationS,
+        crossFadeState: sport.isEmpty
+            ? CrossFadeState.showFirst
+            : CrossFadeState.showSecond,
+        firstChild: const SizedBox.shrink(),
+        secondChild: Padding(
           padding: const EdgeInsets.symmetric(vertical: Sizes.spaceMed),
           child: Column(
             children: [
@@ -247,31 +228,26 @@ class _ServiceCategory extends StatelessWidget {
 }
 
 ///Service SubCategory Type
-class _ServiceSubCategory extends StatelessWidget {
-  const _ServiceSubCategory({
-    required this.controller,
-    required this.ref,
-  });
-
-  final PostServiceController controller;
-  final WidgetRef ref;
+class _ServiceSubCategory extends ConsumerWidget {
+  const _ServiceSubCategory();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = ref.read(postServiceControllerPr.notifier);
     final sport = ref.watch(postServiceControllerPr).selectedSport;
     final category = ref.watch(postServiceControllerPr).selectedCategory;
     final subCategory = ref.watch(postServiceControllerPr).selectedSubCategory;
 
-    return AnimatedCrossFade(
-      duration: Sizes.duration,
-      crossFadeState: sport.isEmpty || category.isEmpty
-          ? CrossFadeState.showFirst
-          : CrossFadeState.showSecond,
-      firstChild: const SizedBox.shrink(),
-      secondChild: FormFiledWidget(
-        title: "Service Sub-Category",
-        isRequired: true,
-        child: Padding(
+    return FormFiledWidget(
+      title: "Service Sub-Category",
+      isRequired: true,
+      child: AnimatedCrossFade(
+        duration: Sizes.durationS,
+        crossFadeState: sport.isEmpty || category.isEmpty
+            ? CrossFadeState.showFirst
+            : CrossFadeState.showSecond,
+        firstChild: const SizedBox.shrink(),
+        secondChild: Padding(
           padding: const EdgeInsets.symmetric(vertical: Sizes.spaceMed),
           child: Column(
             children: [
@@ -312,33 +288,12 @@ class _ServiceSubCategory extends StatelessWidget {
 
               ///Validation
               _ValidationErrorMessage(
-                  listenable: controller.subCategoryValidation),
+                listenable: controller.subCategoryValidation,
+              ),
             ],
           ),
         ),
       ),
-    );
-  }
-}
-
-///Validation Error Message
-class _ValidationErrorMessage extends StatelessWidget {
-  const _ValidationErrorMessage({required this.listenable});
-
-  final ValueNotifier<String> listenable;
-
-  @override
-  Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: listenable,
-      builder: (BuildContext context, String value, Widget? child) {
-        if (value.isEmpty) return const SizedBox.shrink();
-
-        return ValidationErrorText(
-          padding: EdgeInsets.zero,
-          text: value,
-        );
-      },
     );
   }
 }

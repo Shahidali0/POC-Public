@@ -25,6 +25,8 @@ export 'Auth/Repository/auth_repository.dart';
 
 //* Dashboard
 
+export 'DashboardNavBar/Repository/navbar_repository.dart';
+
 export 'DashboardNavBar/dashboard_navbar_screen.dart';
 
 //* Home
@@ -58,10 +60,6 @@ export 'MyServices/Repository/my_services_repository.dart';
 export 'MyServices/Controller/my_servcies_controller.dart';
 
 //* Post Service
-
-export 'PostService/Components/service_details_form.dart';
-export 'PostService/Components/location_schedule_form.dart';
-export 'PostService/Components/pricing_form.dart';
 
 export 'PostService/Repository/post_service_repository.dart';
 

@@ -1,10 +1,7 @@
-import 'package:cricket_poc/lib_exports.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+part of 'package:cricket_poc/Views/PostService/post_service_screen.dart';
 
-class PricingForm extends ConsumerWidget {
-  const PricingForm({super.key});
+class _PricingForm extends ConsumerWidget {
+  const _PricingForm();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

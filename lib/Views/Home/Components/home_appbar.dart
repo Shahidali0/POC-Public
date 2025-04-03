@@ -6,26 +6,11 @@ class _HomeTitleAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const bottomHeight = kToolbarHeight + Sizes.space;
-
     return SliverAppBar(
-      floating: true,
       pinned: true,
-      expandedHeight: 145,
-
+      centerTitle: false,
       scrolledUnderElevation: 0,
-      // flexibleSpace: const FlexibleSpaceBar(
-      //   collapseMode: CollapseMode.parallax,
-      //   background: DecoratedBox(
-      //     decoration: BoxDecoration(gradient: AppColors.homeGradient),
-      //   ),
-      // ),
-      flexibleSpace: const DecoratedBox(
-        decoration: BoxDecoration(gradient: AppColors.homeGradient),
-        child: FlexibleSpaceBar(
-          collapseMode: CollapseMode.parallax,
-        ),
-      ),
+      backgroundColor: AppColors.appTheme,
       actions: [
         FadeAnimations(
           child: Padding(
@@ -41,64 +26,13 @@ class _HomeTitleAppBar extends StatelessWidget {
           ),
         )
       ],
-      bottom: const PreferredSize(
-        preferredSize: Size.fromHeight(bottomHeight),
-        child: FadeAnimations(
-          child: Padding(
-            padding: EdgeInsets.only(
-              left: Sizes.space,
-              right: Sizes.space,
-              bottom: Sizes.space,
-            ),
-            child: TextField(
-              readOnly: true,
-              decoration: InputDecoration(
-                hintText: "Search",
-                prefixIcon: Icon(CupertinoIcons.search),
-              ),
-            ),
+      title: const FadeAnimations(
+        child: Text(
+          "GameMate",
+          style: TextStyle(
+            color: AppColors.white,
+            fontWeight: FontWeight.w600,
           ),
-        ),
-      ),
-      title: FadeAnimations(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            /// Title
-            GestureDetector(
-              onTap: () {
-                debugPrint("MY LIOCATION");
-              },
-              child: Row(
-                children: [
-                  Text(
-                    "My Location",
-                    style: TextStyle(
-                      color: AppColors.white.withOpacity(0.7),
-                      fontWeight: FontWeight.w500,
-                      fontSize: Sizes.defaultSize,
-                    ),
-                  ),
-                  Icon(
-                    Icons.keyboard_arrow_down,
-                    color: AppColors.white.withOpacity(0.7),
-                  ),
-                ],
-              ),
-            ),
-
-            ///Location ---User
-            const Text(
-              "Pietersburg,ST",
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: AppColors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: Sizes.fontSize18,
-              ),
-            ),
-          ],
         ),
       ),
     );
@@ -107,138 +41,87 @@ class _HomeTitleAppBar extends StatelessWidget {
 
 ///This Class shows homepage appbar with search button followed by tabs
 
-class HomeSearchbarWithTabs extends ConsumerWidget {
-  const HomeSearchbarWithTabs({super.key, required this.tabController});
-
-  final TabController tabController;
+class _HomeSearchbarWithCategories extends ConsumerWidget {
+  const _HomeSearchbarWithCategories();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentIndex = ref.watch(_homeTabBarIndexPr);
+    // final currentIndex = ref.watch(_homeTabBarIndexPr);
 
-    return SliverAppBar(
-      pinned: true,
-      primary: false,
-      toolbarHeight: 90,
-      expandedHeight: 90,
-      scrolledUnderElevation: 2,
-      titleSpacing: 0,
-      surfaceTintColor: AppColors.white,
-      title: TabBar(
-        controller: tabController,
-        isScrollable: true,
-        onTap: (index) =>
-            ref.read(_homeTabBarIndexPr.notifier).update((st) => st = index),
-        tabAlignment: TabAlignment.start,
-        labelPadding: const EdgeInsets.all(Sizes.space),
-        padding: const EdgeInsets.only(bottom: 8.0),
-        tabs: List.generate(
-          homeTabbarItemsData.length,
-          (index) => FadeAnimations(
-            child: Tab(
-              text: homeTabbarItemsData[index].title,
-              icon: CircleAvatar(
-                backgroundColor: AppColors.white,
-                radius: 25,
-                child: Icon(
-                  homeTabbarItemsData[index].iconData,
-                  color: currentIndex == index
-                      ? AppColors.appTheme
-                      : AppColors.blueGrey,
-                ),
+    return SliverToBoxAdapter(
+      child: Container(
+        padding: Sizes.globalPadding,
+        decoration: const BoxDecoration(gradient: AppColors.homeGradient),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ///Wish
+            const Text(
+              "Good evening, User",
+              style: TextStyle(
+                color: AppColors.white,
+                fontWeight: FontWeight.normal,
               ),
             ),
-          ),
-        ),
-      ),
-      flexibleSpace: const FlexibleSpaceBar(
-        collapseMode: CollapseMode.pin,
-        background: DecoratedBox(
-          decoration: BoxDecoration(gradient: AppColors.homeGradient2),
+
+            ///Header
+            const SizedBox(height: Sizes.spaceHeight),
+            const Text(
+              "Post a Task. Get it Done",
+              style: TextStyle(
+                color: AppColors.white,
+                fontWeight: FontWeight.w600,
+                fontStyle: FontStyle.italic,
+                fontSize: Sizes.fontSize22,
+              ),
+            ),
+
+            ///Search Field
+            const SizedBox(height: Sizes.spaceHeightSm),
+            const TextField(
+              readOnly: true,
+              decoration: InputDecoration(
+                hintText: "In a few words, What do you need done?",
+                prefixIcon: Icon(CupertinoIcons.search),
+              ),
+            ),
+
+            ///Buttons
+            const SizedBox(height: Sizes.spaceHeight * 1.5),
+            CommonButton(
+              onPressed: () => AppRouter.instance.animatedPush(
+                context: context,
+                scaleTransition: true,
+                screen: const PostServiceScreen(),
+              ),
+              text: "Post your task for free",
+              backgroundColor: AppColors.white,
+              textColor: AppColors.appTheme,
+            ),
+
+            ///Categories
+            const SizedBox(height: Sizes.spaceHeight * 2),
+            SizedBox(
+              height: 50,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: 10,
+                separatorBuilder: (BuildContext context, int index) =>
+                    const SizedBox(width: Sizes.space),
+                itemBuilder: (BuildContext context, int index) {
+                  return ActionChip.elevated(
+                    onPressed: () {},
+                    padding: Sizes.globalPadding,
+                    label: Text("Category:${index + 1}"),
+                  );
+                },
+              ),
+            ),
+
+            const SizedBox(height: Sizes.spaceHeight),
+          ],
         ),
       ),
     );
   }
 }
-
-
-
-
-
-
-// class HomeSearchbarWithTabs extends SliverPersistentHeaderDelegate {
-//   HomeSearchbarWithTabs({required this.tabController});
-
-//   final TabController tabController;
-
-//   double get _maxHeight => 110;
-//   double get _minHeight => 90;
-
-//   @override
-//   Widget build(
-//       BuildContext context, double shrinkOffset, bool overlapsContent) {
-//     final opacity = 1 - (shrinkOffset / _maxHeight);
-//     print("opacity:$opacity");
-//     return Card(
-//       margin: EdgeInsets.zero,
-//       color: AppColors.white,
-//       child: Stack(
-//         fit: StackFit.expand,
-//         children: [
-//           ///Gradient
-//           AnimatedOpacity(
-//             duration: Sizes.durationS,
-//             opacity: opacity < 1 ? 0 : opacity,
-//             child: const DecoratedBox(
-//               decoration: BoxDecoration(gradient: AppColors.homeGradient2),
-//             ),
-//           ),
-
-//           ///Tabbar
-//           Consumer(
-//             builder: (_, WidgetRef ref, __) {
-//               final currentIndex = ref.watch(homeTabBarIndexPr);
-//               return TabBar(
-//                 controller: tabController,
-//                 isScrollable: true,
-//                 onTap: (index) => ref
-//                     .read(homeTabBarIndexPr.notifier)
-//                     .update((st) => st = index),
-//                 tabAlignment: TabAlignment.start,
-//                 indicator: const BoxDecoration(color: AppColors.transparent),
-//                 labelPadding: const EdgeInsets.symmetric(horizontal: 20),
-//                 padding: const EdgeInsets.only(bottom: 8.0),
-//                 tabs: List.generate(
-//                   2,
-//                   (index) => Tab(
-//                     text: "Home",
-//                     icon: CircleAvatar(
-//                       backgroundColor: AppColors.white,
-//                       radius: 24,
-//                       child: Icon(
-//                         Icons.home,
-//                         color: currentIndex == index
-//                             ? AppColors.appTheme
-//                             : AppColors.grey,
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//               );
-//             },
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-
-//   @override
-//   double get maxExtent => _maxHeight;
-
-//   @override
-//   double get minExtent => _minHeight;
-
-//   @override
-//   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
-//       false;
-// }

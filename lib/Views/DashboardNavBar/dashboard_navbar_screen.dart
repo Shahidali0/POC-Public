@@ -13,58 +13,92 @@ class DashboardNavbarScreen extends ConsumerWidget {
     final currentIndex = ref.watch(_navBarIndexPr);
     final showNavbar = ref.watch(_showOrHideNavBarPr);
 
-    return NotificationListener<UserScrollNotification>(
-      onNotification: (notification) {
-        if (notification.direction == ScrollDirection.forward) {
-          ///Show Bottom NavBar
-          if (!showNavbar) {
-            ref.read(_showOrHideNavBarPr.notifier).update((st) => st = true);
-          }
-        } else if (notification.direction == ScrollDirection.reverse) {
-          ///Hide Bottom NavBar
-          if (showNavbar) {
-            ref.read(_showOrHideNavBarPr.notifier).update((st) => st = false);
-          }
-        } else if (notification.direction == ScrollDirection.idle) {
-          ///Show Bottom NavBar
-          Future.delayed(
-            const Duration(seconds: 2, milliseconds: 700),
-            () {
-              if (!showNavbar) {
-                ref
-                    .read(_showOrHideNavBarPr.notifier)
-                    .update((st) => st = true);
+    return Material(
+      child: ref.watch(_getAllCategoriesListPr).when(
+            data: (data) {
+              if (data.isEmpty) {
+                return const EmptyDataWidget();
               }
+
+              return _bodyView(
+                showNavbar: showNavbar,
+                ref: ref,
+                currentIndex: currentIndex,
+              );
             },
-          );
-        }
+            error: (e, st) {
+              final error = e as Failure;
+              return ErrorText(
+                title: error.title,
+                error: error.message,
+                onRefresh: () async => ref.invalidate(findAllServciesPr),
+              );
+            },
+            loading: () => const ShowDataLoader(),
+          ),
+    );
+  }
 
-        return true;
-      },
-      child: Scaffold(
-        body: IndexedStack(
-          index: currentIndex,
-          children: const [
-            HomeScreen(),
-            FindServicesScreen(),
+  ///BodyView
+  Widget _bodyView({
+    required bool showNavbar,
+    required WidgetRef ref,
+    required int currentIndex,
+  }) {
+    return Scaffold(
+      body: IndexedStack(
+        index: currentIndex,
+        children: const [
+          HomeScreen(),
+          FindServicesScreen(),
 
-            ///This is PostButton(+)
-            SizedBox(),
+          ///This is PostButton(+)
+          SizedBox(),
 
-            MyServicesScreen(),
-            ProfileScreen(),
-          ],
-        ),
-        bottomNavigationBar: AnimatedCrossFade(
-          duration: Sizes.duration,
-          firstChild: _CustomNavigationBar(ref: ref),
-          secondChild: const SizedBox.shrink(),
-          crossFadeState:
-              showNavbar ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-        ),
+          MyServicesScreen(),
+          ProfileScreen(),
+        ],
+      ),
+      bottomNavigationBar: AnimatedCrossFade(
+        duration: Sizes.duration,
+        firstChild: _CustomNavigationBar(ref: ref),
+        secondChild: const SizedBox.shrink(),
+        crossFadeState:
+            showNavbar ? CrossFadeState.showFirst : CrossFadeState.showSecond,
       ),
     );
   }
+
+  // ///OnNotification Update
+  // bool _onNotification({
+  //   required UserScrollNotification notification,
+  //   required bool showNavbar,
+  //   required WidgetRef ref,
+  // }) {
+  //   if (notification.direction == ScrollDirection.forward) {
+  //     ///Show Bottom NavBar
+  //     if (!showNavbar) {
+  //       ref.read(_showOrHideNavBarPr.notifier).update((st) => st = true);
+  //     }
+  //   } else if (notification.direction == ScrollDirection.reverse) {
+  //     ///Hide Bottom NavBar
+  //     if (showNavbar) {
+  //       ref.read(_showOrHideNavBarPr.notifier).update((st) => st = false);
+  //     }
+  //   } else if (notification.direction == ScrollDirection.idle) {
+  //     ///Show Bottom NavBar
+  //     Future.delayed(
+  //       const Duration(seconds: 1, milliseconds: 500),
+  //       () {
+  //         if (!showNavbar) {
+  //           ref.read(_showOrHideNavBarPr.notifier).update((st) => st = true);
+  //         }
+  //       },
+  //     );
+  //   }
+
+  //   return true;
+  // }
 }
 
 ///This Class shows Custom Bottom Navigation bar

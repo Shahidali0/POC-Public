@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'package:cricket_poc/Views/PostService/post_service_screen.dart';
 
 final postServiceControllerPr = StateNotifierProvider.autoDispose<
@@ -135,7 +134,7 @@ class PostServiceController extends StateNotifier<_PostServiceStatus> {
     state.loading = true;
 
     allCategories =
-        await _ref.read(homeControllerPr.notifier).getAllCategories();
+        await _ref.read(navbarControllerPr.notifier).getAllCategories();
 
     state.loading = false;
   }
