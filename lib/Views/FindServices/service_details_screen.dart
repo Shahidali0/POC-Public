@@ -75,41 +75,15 @@ class ServiceDetailsScreen extends ConsumerWidget {
                   serviceJson.category!,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    // fontSize: Sizes.fontSize12,
                     color: AppColors.appTheme,
                     fontWeight: FontWeight.w700,
                   ),
-                ),
-              ),
-              const SizedBox(height: Sizes.spaceSmall),
-
-              ///Rating
-              const Flexible(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Icon(
-                      Icons.star,
-                      color: AppColors.black,
-                    ),
-                    SizedBox(width: Sizes.spaceSmall),
-                    Text("4.8 (24 reviews)"),
-                  ],
                 ),
               ),
             ],
           ),
         ),
         const SizedBox(height: Sizes.spaceMed),
-
-        ///Experience
-        const Text(
-          "10+ years organizing international matches",
-          style: TextStyle(
-            color: AppColors.black,
-            fontSize: Sizes.fontSize16,
-          ),
-        ),
 
         CustomTile(
           iconData: CupertinoIcons.person,

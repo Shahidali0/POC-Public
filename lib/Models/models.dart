@@ -7,3 +7,4 @@ export 'Local/local_models.dart';
 export 'Json/services_json.dart';
 export 'Json/bookings_json.dart';
 export 'Json/category_json.dart';
+export 'Json/users_json.dart';

@@ -7,10 +7,10 @@ class Utils {
 
   static Utils get instance => Utils._();
 
-  //* Base Api URL
-  String get baseUrl =>
-      // "https://44lsjdxksc.execute-api.ap-southeast-2.amazonaws.com/staging/";
-      "https://otbkcau8k5.execute-api.ap-southeast-2.amazonaws.com/";
+  //* Base Api URL'S
+  String baseUrl(bool isAuthUrl) => isAuthUrl
+      ? "https://44lsjdxksc.execute-api.ap-southeast-2.amazonaws.com/staging/"
+      : "https://otbkcau8k5.execute-api.ap-southeast-2.amazonaws.com/";
 
   //* Hide Focus of TextFormField
   void hideFoucs(BuildContext context) {

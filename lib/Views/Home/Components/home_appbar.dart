@@ -8,13 +8,13 @@ class _HomeTitleAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverAppBar(
       pinned: true,
-      centerTitle: false,
+      centerTitle: true,
       scrolledUnderElevation: 0,
-      backgroundColor: AppColors.appTheme,
+      backgroundColor: AppColors.blueLight,
       actions: [
         FadeAnimations(
           child: Padding(
-            padding: const EdgeInsets.only(right: Sizes.space),
+            padding: const EdgeInsets.only(right: Sizes.spaceMed),
             child: CommonIconButton(
               onPressed: () => AppRouter.instance.push(
                 context: context,
@@ -26,13 +26,29 @@ class _HomeTitleAppBar extends StatelessWidget {
           ),
         )
       ],
-      title: const FadeAnimations(
-        child: Text(
-          "GameMate",
-          style: TextStyle(
-            color: AppColors.white,
-            fontWeight: FontWeight.w600,
-          ),
+      title: FadeAnimations(
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            ///App Logo Header
+            Image.asset(
+              AppImages.logoTitle,
+              color: AppColors.white,
+              width: Sizes.screenWidth(context) * 0.6,
+            ),
+
+            ///Running Logo
+            Positioned(
+              left: -40,
+              top: -10,
+              bottom: 0,
+              child: Image.asset(
+                AppImages.logoHeader,
+                fit: BoxFit.fitHeight,
+                filterQuality: FilterQuality.high,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -46,7 +62,10 @@ class _HomeSearchbarWithCategories extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final currentIndex = ref.watch(_homeTabBarIndexPr);
+    final categories =
+        ref.watch(homeControllerPr.notifier).getAllCattegoriesList;
+
+    final user = ref.watch(userJsonPr)?.user;
 
     return SliverToBoxAdapter(
       child: Container(
@@ -55,19 +74,23 @@ class _HomeSearchbarWithCategories extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(height: Sizes.spaceHeightSm),
+
             ///Wish
-            const Text(
-              "Good evening, User",
-              style: TextStyle(
+            Text(
+              user == null
+                  ? "Good evening"
+                  : "Good evening, ${user.firstName} ${user.lastName}",
+              style: const TextStyle(
                 color: AppColors.white,
                 fontWeight: FontWeight.normal,
               ),
             ),
 
             ///Header
-            const SizedBox(height: Sizes.spaceHeight),
+            const SizedBox(height: Sizes.spaceHeightSm),
             const Text(
-              "Post a Task. Get it Done",
+              "Discover. Book. Get SportZReady",
               style: TextStyle(
                 color: AppColors.white,
                 fontWeight: FontWeight.w600,
@@ -87,38 +110,37 @@ class _HomeSearchbarWithCategories extends ConsumerWidget {
             ),
 
             ///Buttons
-            const SizedBox(height: Sizes.spaceHeight * 1.5),
+            const SizedBox(height: Sizes.spaceHeight),
             CommonButton(
               onPressed: () => AppRouter.instance.animatedPush(
                 context: context,
                 scaleTransition: true,
                 screen: const PostServiceScreen(),
               ),
-              text: "Post your task for free",
+              text: "Post Your Service for free",
               backgroundColor: AppColors.white,
               textColor: AppColors.appTheme,
             ),
 
             ///Categories
-            const SizedBox(height: Sizes.spaceHeight * 2),
+            const SizedBox(height: Sizes.spaceHeight * 1.4),
             SizedBox(
               height: 50,
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
-                itemCount: 10,
+                itemCount: categories.length,
                 separatorBuilder: (BuildContext context, int index) =>
                     const SizedBox(width: Sizes.space),
                 itemBuilder: (BuildContext context, int index) {
+                  final item = categories[index];
                   return ActionChip.elevated(
                     onPressed: () {},
                     padding: Sizes.globalPadding,
-                    label: Text("Category:${index + 1}"),
+                    label: Text(item),
                   );
                 },
               ),
             ),
-
-            const SizedBox(height: Sizes.spaceHeight),
           ],
         ),
       ),

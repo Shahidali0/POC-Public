@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:cricket_poc/lib_exports.dart';
 
 part "Controller/navbar_controller.dart";
@@ -15,6 +14,7 @@ class DashboardNavbarScreen extends ConsumerWidget {
 
     return Material(
       child: ref.watch(_getAllCategoriesListPr).when(
+            skipLoadingOnRefresh: false,
             data: (data) {
               if (data.isEmpty) {
                 return const EmptyDataWidget();
@@ -31,7 +31,7 @@ class DashboardNavbarScreen extends ConsumerWidget {
               return ErrorText(
                 title: error.title,
                 error: error.message,
-                onRefresh: () async => ref.invalidate(findAllServciesPr),
+                onRefresh: () async => ref.invalidate(_getAllCategoriesListPr),
               );
             },
             loading: () => const ShowDataLoader(),

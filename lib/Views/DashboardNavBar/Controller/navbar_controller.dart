@@ -8,8 +8,12 @@ final allCategoriesPr = StateProvider<List<CategoryJson>>((ref) {
   return [];
 });
 
+final userJsonPr = StateProvider<UsersJson?>((ref) {
+  return null;
+});
+
 final _getAllCategoriesListPr = FutureProvider<List<CategoryJson>>((ref) async {
-  return ref.watch(navbarControllerPr.notifier).getAllCategories();
+  return ref.watch(navbarControllerPr.notifier).loadData();
 });
 
 final navbarControllerPr = StateNotifierProvider<NavbarController, bool>(
@@ -29,6 +33,26 @@ class NavbarController extends StateNotifier<bool> {
   })  : _navBarRepository = navBarRepository,
         _ref = ref,
         super(false);
+
+  ///Load all required api's
+  Future<List<CategoryJson>> loadData() async {
+    final response = await Future.wait([
+      _navBarRepository.getAllCategories(),
+      _navBarRepository.getUser(),
+    ]);
+
+    //* Update Categories List
+    _ref
+        .read(allCategoriesPr.notifier)
+        .update((state) => state = response[0] as List<CategoryJson>);
+
+    //* Update User Json
+    _ref
+        .read(userJsonPr.notifier)
+        .update((state) => state = response[1] as UsersJson);
+
+    return response[0] as List<CategoryJson>;
+  }
 
   ///Get all Categories
   Future<List<CategoryJson>> getAllCategories() async {

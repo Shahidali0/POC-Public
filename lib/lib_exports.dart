@@ -22,5 +22,6 @@ export 'package:intl/intl.dart';
 export 'package:pin_code_fields/pin_code_fields.dart';
 export 'package:table_calendar/table_calendar.dart';
 export 'package:font_awesome_flutter/font_awesome_flutter.dart';
+export 'package:shimmer/shimmer.dart';
 // export 'package:geocoding/geocoding.dart';
 // export 'package:geolocator/geolocator.dart';

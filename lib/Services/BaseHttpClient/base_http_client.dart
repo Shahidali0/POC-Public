@@ -18,8 +18,9 @@ class BaseHttpClient {
     required String urlEndPoint,
     required Map<String, String> headers,
     bool hideDialogs = false,
+    bool isAuthUrl = false,
   }) async {
-    Uri uri = Uri.parse(Utils.instance.baseUrl + urlEndPoint);
+    Uri uri = Uri.parse(Utils.instance.baseUrl(isAuthUrl) + urlEndPoint);
 
     final response = await http.get(uri, headers: headers);
 
@@ -33,8 +34,9 @@ class BaseHttpClient {
     required String urlEndPoint,
     required Map<String, String> headers,
     bool hideDialogs = false,
+    bool isAuthUrl = false,
   }) async {
-    Uri uri = Uri.parse(Utils.instance.baseUrl + urlEndPoint);
+    Uri uri = Uri.parse(Utils.instance.baseUrl(isAuthUrl) + urlEndPoint);
 
     final response = await http.delete(uri, headers: headers);
 
@@ -49,8 +51,9 @@ class BaseHttpClient {
     Object? body,
     required Map<String, String> headers,
     bool hideDialogs = false,
+    bool isAuthUrl = false,
   }) async {
-    Uri uri = Uri.parse(Utils.instance.baseUrl + urlEndPoint);
+    Uri uri = Uri.parse(Utils.instance.baseUrl(isAuthUrl) + urlEndPoint);
 
     final response = await http.post(
       uri,
@@ -69,8 +72,9 @@ class BaseHttpClient {
     required Object body,
     required Map<String, String> headers,
     bool hideDialogs = false,
+    bool isAuthUrl = false,
   }) async {
-    Uri uri = Uri.parse(Utils.instance.baseUrl + urlEndPoint);
+    Uri uri = Uri.parse(Utils.instance.baseUrl(isAuthUrl) + urlEndPoint);
     final response = await http.put(
       uri,
       body: body,
@@ -88,8 +92,9 @@ class BaseHttpClient {
     required String filePath,
     required Map<String, String> headers,
     bool hideDialogs = false,
+    bool isAuthUrl = false,
   }) async {
-    Uri uri = Uri.parse(Utils.instance.baseUrl + urlEndPoint);
+    Uri uri = Uri.parse(Utils.instance.baseUrl(isAuthUrl) + urlEndPoint);
 
     final request = mhttp.MultipartRequest('POST', uri);
 

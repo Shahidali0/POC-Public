@@ -33,6 +33,8 @@ export 'DashboardNavBar/dashboard_navbar_screen.dart';
 
 export 'Home/Repository/home_repository.dart';
 
+export 'Home/Components/featured_services.dart';
+
 export 'Home/home_screen.dart';
 
 //* Find Services

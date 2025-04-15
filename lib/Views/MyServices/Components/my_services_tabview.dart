@@ -144,13 +144,13 @@ class _MyServiceCard extends StatelessWidget {
                     ],
                   ),
 
-                  ///Tag
-                  _buildListTile(
-                    iconData: CupertinoIcons.person,
-                    text: "John Smith",
-                    color: AppColors.black.withOpacity(0.75),
-                    context: context,
-                  ),
+                  // ///Tag
+                  // _buildListTile(
+                  //   iconData: CupertinoIcons.person,
+                  //   text: "John Smith",
+                  //   color: AppColors.black.withOpacity(0.75),
+                  //   context: context,
+                  // ),
 
                   ///Description
                   const SizedBox(height: Sizes.space),

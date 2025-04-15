@@ -9,6 +9,8 @@ final homeServicesPr = Provider<HomeServices>(
 sealed class HomeServices {
   Future<String?> findAllServices();
 
+  Future<String?> getFeaturedServices();
+
   Future<String?> findUserServices({required String userId});
 
   Future<String?> getUserBookings({required String userId});
@@ -28,6 +30,21 @@ class _HomeServicesImpl implements HomeServices {
   @override
   Future<String?> findAllServices() async {
     const url = "services";
+
+    // final headers = await _apiHeaders.getHeadersWithToken();
+
+    final response = await BaseHttpClient.getService(
+      urlEndPoint: url,
+      headers: _apiHeaders.headers,
+    );
+
+    return response;
+  }
+
+  //* Get Featured Services List
+  @override
+  Future<String?> getFeaturedServices() async {
+    const url = "services?featured=true";
 
     // final headers = await _apiHeaders.getHeadersWithToken();
 

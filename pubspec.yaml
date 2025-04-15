@@ -65,6 +65,9 @@ dependencies:
   calendar_date_picker2: ^1.1.9
   table_calendar: ^3.2.0
 
+  # Shimmer Effect Loading
+  shimmer: ^3.0.0
+
   # For Location access
   # geocoding: ^3.0.0
   # geolocator: ^13.0.3

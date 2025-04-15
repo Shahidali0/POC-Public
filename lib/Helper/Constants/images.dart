@@ -7,4 +7,7 @@ class AppImages {
   static const String verifyOtp = "assets/images/verify_otp.png";
 
   ///LOGO
+  static const String appLogo = "assets/logos/app_logo.png";
+  static const String logoTitle = "assets/logos/logo_title.png";
+  static const String logoHeader = "assets/logos/logo_header.png";
 }

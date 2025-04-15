@@ -48,6 +48,7 @@ class _AuthServicesImpl extends AuthServices {
       urlEndPoint: url,
       body: body,
       headers: _apiHeaders.headers,
+      isAuthUrl: true,
     );
 
     return response;
@@ -64,6 +65,7 @@ class _AuthServicesImpl extends AuthServices {
       urlEndPoint: url,
       body: body,
       headers: _apiHeaders.headers,
+      isAuthUrl: true,
     );
 
     return response;
@@ -86,6 +88,7 @@ class _AuthServicesImpl extends AuthServices {
       urlEndPoint: url,
       body: body,
       headers: _apiHeaders.headers,
+      isAuthUrl: true,
     );
 
     return response;

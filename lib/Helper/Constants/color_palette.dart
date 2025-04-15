@@ -31,8 +31,9 @@ class AppColors {
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
     colors: [
-      appTheme,
+      // appTheme,
       blueLight,
+      white,
     ],
   );
   // static const LinearGradient homeGradient = LinearGradient(
