@@ -12,7 +12,7 @@ List<String> specializationsData = [
 ];
 
 ///Duration Count
-List<String> durationData = ["30 min", "60 min", "90 min", "120 min"];
+List<String> durationData = ["30", "60", "90", "120"];
 
 ///Time Slot Data
 List<String> timeSlotsData = [

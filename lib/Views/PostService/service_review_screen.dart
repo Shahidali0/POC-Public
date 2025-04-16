@@ -105,7 +105,7 @@ class PostServiceReviewScreen extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: Sizes.spaceMed),
-            _AvailableDatesWidget(ref: ref),
+            _AvailableDatesWidget(selectedDays: state.selectedDates.toList()),
 
             ///Available TimeSlots
             const SizedBox(height: Sizes.space),
@@ -150,16 +150,13 @@ class PostServiceReviewScreen extends ConsumerWidget {
 ///Available Dates Widget
 class _AvailableDatesWidget extends StatelessWidget {
   const _AvailableDatesWidget({
-    required this.ref,
+    required this.selectedDays,
   });
 
-  final WidgetRef ref;
+  final List<DateTime> selectedDays;
 
   @override
   Widget build(BuildContext context) {
-    final selectedDays =
-        ref.read(postServiceControllerPr).selectedDates.toList();
-
     return Wrap(
       spacing: Sizes.space,
       children: List.generate(
@@ -223,7 +220,10 @@ class _VerticalTile extends StatelessWidget {
             leading: iconData != null ? Icon(iconData) : null,
             title: Text(
               body,
-              style: const TextStyle(fontSize: Sizes.fontSize16),
+              style: const TextStyle(
+                fontSize: Sizes.fontSize16,
+                fontWeight: FontWeight.normal,
+              ),
             ),
           ),
         ),

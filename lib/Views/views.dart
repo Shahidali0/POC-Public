@@ -40,7 +40,6 @@ export 'Home/home_screen.dart';
 //* Find Services
 
 export 'FindServices/find_services_screen.dart';
-export 'FindServices/service_details_screen.dart';
 
 export 'FindServices/Components/all_services_tabview.dart';
 export 'FindServices/Components/common_service_tabview.dart';
@@ -67,6 +66,12 @@ export 'PostService/Repository/post_service_repository.dart';
 
 export 'PostService/post_service_screen.dart';
 export 'PostService/service_review_screen.dart';
+
+//* Service Details
+
+export 'ServiceDetails/service_details_screen.dart';
+
+export 'ServiceDetails/Controller/service_details_controller.dart';
 
 //* Profile
 

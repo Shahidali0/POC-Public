@@ -1,5 +1,4 @@
 import 'package:cricket_poc/lib_exports.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FeaturedServicesList extends ConsumerWidget {
@@ -24,7 +23,7 @@ class FeaturedServicesList extends ConsumerWidget {
             return ErrorText(
               title: error.title,
               error: error.message,
-              onRefresh: () async => ref.invalidate(findAllServciesPr),
+              onRefresh: () async => ref.invalidate(getAllServciesPr),
             );
           },
           loading: () => const _ShimmerCard(),
@@ -37,14 +36,20 @@ class FeaturedServicesList extends ConsumerWidget {
     required List<ServiceJson> featuredServices,
   }) =>
       SizedBox(
-        height: 240,
+        height: 220,
         child: ListView.separated(
           scrollDirection: Axis.horizontal,
           padding: const EdgeInsets.symmetric(vertical: Sizes.spaceHeightSm),
           itemCount: featuredServices.length,
           itemBuilder: (BuildContext context, int index) {
             final item = featuredServices[index];
-            return _FeaturedServiceCard(item: item);
+
+            final size = Sizes.screenSize(context);
+
+            return SizedBox(
+              width: size.width * 0.75,
+              child: ServiceCardWidget(serviceJson: item),
+            );
           },
           separatorBuilder: (BuildContext context, int index) =>
               const SizedBox(width: Sizes.spaceHeight),
@@ -150,93 +155,4 @@ class _ShimmerCard extends StatelessWidget {
           ),
         ),
       );
-}
-
-///Common Card Widget
-class _FeaturedServiceCard extends StatelessWidget {
-  const _FeaturedServiceCard({required this.item});
-
-  final ServiceJson item;
-
-  ///OnTap BookNow
-  void _onTap(BuildContext context) => AppRouter.instance.push(
-        context: context,
-        screen: ServiceDetailsScreen(serviceJson: item),
-      );
-
-  @override
-  Widget build(BuildContext context) {
-    final size = Sizes.screenSize(context);
-
-    return SizedBox(
-      width: size.width * 0.75,
-      child: GestureDetector(
-        onTap: () => _onTap(context),
-        child: Card(
-          margin: EdgeInsets.zero,
-          child: Padding(
-            padding: Sizes.globalMargin,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ///Header
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        item.title!,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: Sizes.fontSize16,
-                          color: AppColors.black,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: Sizes.spaceMed),
-
-                    ///Price Tag
-                    Text(
-                      "\$ ${item.price}",
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: Sizes.fontSize16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-
-                const SizedBox(height: Sizes.spaceMed),
-
-                ///Tag
-                CustomTile(
-                  iconData: CupertinoIcons.link,
-                  text: item.category?.capitalize ?? "--",
-                ),
-
-                ///Details
-                CustomTile(
-                  iconData: CupertinoIcons.map_pin_ellipse,
-                  text: item.location?.capitalize ?? "--",
-                ),
-                CustomTile(
-                  iconData: CupertinoIcons.timer,
-                  text: "${Utils.instance.getDuration(item.duration)} minutes",
-                ),
-
-                ///View Details Button
-                CommonTextButton(
-                  onPressed: () => _onTap(context),
-                  text: "View Details",
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 }

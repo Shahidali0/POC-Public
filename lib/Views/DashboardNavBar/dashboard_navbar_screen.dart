@@ -120,9 +120,9 @@ class _CustomNavigationBar extends StatelessWidget {
       ),
       child: BottomNavigationBar(
         currentIndex: selectedIndex,
-        onTap: (value) {
+        onTap: (index) {
           ///This is for Post Service Buttton
-          if (value == 2) {
+          if (index == 2) {
             AppRouter.instance.animatedPush(
               context: context,
               scaleTransition: true,
@@ -132,7 +132,9 @@ class _CustomNavigationBar extends StatelessWidget {
 
           ///For Other Icons
           else {
-            ref.read(_navBarIndexPr.notifier).update((st) => st = value);
+            ref
+                .read(navbarControllerPr.notifier)
+                .updateNavbarIndex(index: index);
           }
         },
         items: [

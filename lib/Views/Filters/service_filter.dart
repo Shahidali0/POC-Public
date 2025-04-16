@@ -34,6 +34,7 @@ class _ServiceFiltersState extends ConsumerState<ServiceFilters> {
               minimum: Sizes.globalMargin,
               child: CommonButton(
                 onPressed: () {
+                  ref.invalidate(getAllServciesPr);
                   AppRouter.instance.pop(context);
                 },
                 text: "Apply Filters",
@@ -115,14 +116,14 @@ class _ServiceFiltersState extends ConsumerState<ServiceFilters> {
                             controller: _controller,
                             ref: ref,
                           ),
-                          _PriceTypeWidget(
-                            controller: _controller,
-                            ref: ref,
-                          ),
-                          _DistanceWidget(
-                            controller: _controller,
-                            ref: ref,
-                          ),
+                          // _PriceTypeWidget(
+                          //   controller: _controller,
+                          //   ref: ref,
+                          // ),
+                          // _DistanceWidget(
+                          //   controller: _controller,
+                          //   ref: ref,
+                          // ),
                         ],
                       ),
                     ),
@@ -188,9 +189,11 @@ class _LeftMenuItems extends StatelessWidget {
       left: 12,
       child: Text(
         controller.filtersData[index],
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
         style: const TextStyle(
           color: AppColors.black,
-          fontSize: Sizes.fontSize18,
+          fontSize: Sizes.fontSize16,
           fontWeight: FontWeight.w700,
         ),
       ),
@@ -206,7 +209,6 @@ class _LeftMenuItems extends StatelessWidget {
       top: 0,
       width: selectedIndex == index ? 10 : 0,
       child: Container(
-        // width: 8,
         decoration: const BoxDecoration(
           color: AppColors.orange,
           borderRadius: BorderRadius.horizontal(
@@ -214,87 +216,6 @@ class _LeftMenuItems extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-///Right Menu Items
-class _RightMenuItems extends StatefulWidget {
-  const _RightMenuItems({
-    required this.selectedIndex,
-    required this.ref,
-  });
-
-  final int selectedIndex;
-  final WidgetRef ref;
-
-  @override
-  State<_RightMenuItems> createState() => _RightMenuItemsState();
-}
-
-class _RightMenuItemsState extends State<_RightMenuItems> {
-  String? selectedGroupValue;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: Sizes.spaceHeight),
-        const Text(
-          "SORT BY",
-          style: TextStyle(letterSpacing: 1),
-        ),
-        const SizedBox(height: Sizes.spaceHeight),
-
-        ///Relevance
-        RadioListTile<String>.adaptive(
-          value: "Relevance (Default)",
-          groupValue: selectedGroupValue,
-          onChanged: (String? value) {
-            setState(() {
-              selectedGroupValue = value;
-            });
-          },
-          title: const Text("Relevance (Default)"),
-        ),
-
-        ///Cost: Low to High
-        RadioListTile<String>.adaptive(
-          value: "Cost: Low to High",
-          groupValue: selectedGroupValue,
-          onChanged: (String? value) {
-            setState(() {
-              selectedGroupValue = value;
-            });
-          },
-          title: const Text("Cost: Low to High"),
-        ),
-
-        ///Cost: High to Low
-        RadioListTile<String>.adaptive(
-          value: "Cost: High to Low",
-          groupValue: selectedGroupValue,
-          onChanged: (String? value) {
-            setState(() {
-              selectedGroupValue = value;
-            });
-          },
-          title: const Text("Cost: High to Low"),
-        ),
-
-        ///Rating
-        RadioListTile<String>.adaptive(
-          value: "Rating",
-          groupValue: selectedGroupValue,
-          onChanged: (String? value) {
-            setState(() {
-              selectedGroupValue = value;
-            });
-          },
-          title: const Text("Rating"),
-        ),
-      ],
     );
   }
 }

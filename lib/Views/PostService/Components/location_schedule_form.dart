@@ -91,86 +91,78 @@ class _AvailableDates extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final selectedDays = ref.watch(postServiceControllerPr).selectedDates;
+    final selectedDates = ref.watch(postServiceControllerPr).selectedDates;
 
     DateTime focusedDay = DateTime.now();
 
-    return StatefulBuilder(
-      builder: (BuildContext context, void Function(void Function()) setState) {
-        return FormFiledWidget(
-          title: "Available Dates",
-          isRequired: true,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(height: Sizes.spaceMed),
+    return FormFiledWidget(
+      title: "Available Dates",
+      isRequired: true,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(height: Sizes.spaceMed),
 
-              ///DatePicker--Multi
-              Card(
-                margin: EdgeInsets.zero,
-                child: TableCalendar(
-                  firstDay: DateTime.now(),
-                  lastDay: DateTime.now().add(const Duration(days: 365)),
-                  focusedDay: focusedDay,
-                  calendarFormat: CalendarFormat.month,
-                  startingDayOfWeek: StartingDayOfWeek.sunday,
-                  headerStyle: headerStyle,
-                  daysOfWeekStyle: daysOfWeekStyle,
-                  calendarStyle: calendarStyle,
-                  selectedDayPredicate: (day) => selectedDays.contains(day),
-                  onDaySelected:
-                      (DateTime selectedDayValue, DateTime focusedDayValue) {
-                    focusedDay = focusedDayValue;
-                    // Update values in a Set
-                    if (selectedDays.contains(selectedDayValue)) {
-                      selectedDays.remove(selectedDayValue);
-                    } else {
-                      selectedDays.add(selectedDayValue);
-                    }
+          ///DatePicker--Multi
+          Card(
+            margin: EdgeInsets.zero,
+            child: TableCalendar(
+              firstDay: DateTime.now(),
+              lastDay: DateTime.now().add(const Duration(days: 365)),
+              focusedDay: focusedDay,
+              calendarFormat: CalendarFormat.month,
+              startingDayOfWeek: StartingDayOfWeek.sunday,
+              headerStyle: headerStyle,
+              daysOfWeekStyle: daysOfWeekStyle,
+              calendarStyle: calendarStyle,
+              selectedDayPredicate: (day) => selectedDates.contains(day),
+              onDaySelected:
+                  (DateTime selectedDayValue, DateTime focusedDayValue) {
+                focusedDay = focusedDayValue;
 
-                    setState(() {});
-                  },
-                  onPageChanged: (DateTime date) => focusedDay = date,
-                ),
-              ),
+                ///Update Status
+                ref
+                    .read(postServiceControllerPr.notifier)
+                    .updateSelectedDates(selectedDayValue);
+              },
+              onPageChanged: (DateTime date) => focusedDay = date,
+            ),
+          ),
 
-              ///Selected Days
-              SingleChildScrollView(
-                padding: const EdgeInsets.only(
-                  bottom: Sizes.spaceMed,
-                  top: Sizes.spaceMed,
-                ),
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: selectedDays
-                      .map(
-                        (day) => Padding(
-                          padding: const EdgeInsets.only(right: Sizes.spaceMed),
-                          child: Chip(
-                            shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.circular(Sizes.borderRadius),
-                              side:
-                                  const BorderSide(color: AppColors.blueLight),
-                            ),
-                            label: Text(
-                              Utils.instance.formatDateToString(day),
-                              style: const TextStyle(
-                                color: AppColors.black,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
+          ///Selected Days
+          SingleChildScrollView(
+            padding: const EdgeInsets.only(
+              bottom: Sizes.spaceMed,
+              top: Sizes.spaceMed,
+            ),
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: selectedDates
+                  .map(
+                    (day) => Padding(
+                      padding: const EdgeInsets.only(right: Sizes.spaceMed),
+                      child: Chip(
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(Sizes.borderRadius),
+                          side: const BorderSide(color: AppColors.blueLight),
+                        ),
+                        label: Text(
+                          Utils.instance.formatDateToString(day),
+                          style: const TextStyle(
+                            color: AppColors.black,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
-                      )
-                      .toList(),
-                ),
-              ),
-            ],
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 
@@ -270,7 +262,6 @@ class _AvailableTimeSlots extends StatelessWidget {
             bool isActive = timeSlots.contains(item);
 
             return ChoiceChip.elevated(
-              padding: const EdgeInsets.all(Sizes.spaceSmall),
               labelStyle: TextStyle(
                 color: isActive ? AppColors.white : null,
                 fontWeight: isActive ? FontWeight.w700 : FontWeight.normal,
@@ -281,10 +272,10 @@ class _AvailableTimeSlots extends StatelessWidget {
               avatar: isActive
                   ? null
                   : const Icon(
-                      CupertinoIcons.timer,
+                      CupertinoIcons.time,
                       color: AppColors.black,
                     ),
-              label: Text(item),
+              label: FittedBox(child: Text(item)),
               selected: isActive,
             );
           },
@@ -325,7 +316,7 @@ class _SessionDurationField extends StatelessWidget {
               return ChoiceChip.elevated(
                 labelPadding: const EdgeInsets.symmetric(
                   vertical: Sizes.spaceSmall,
-                  horizontal: Sizes.spaceHeight,
+                  horizontal: Sizes.space,
                 ),
                 labelStyle: TextStyle(
                   color: isActive ? AppColors.white : null,
@@ -340,7 +331,7 @@ class _SessionDurationField extends StatelessWidget {
                         CupertinoIcons.timer,
                         color: AppColors.black,
                       ),
-                label: Text(item),
+                label: Text("$item min"),
                 selected: isActive,
               );
             },

@@ -7,6 +7,8 @@ class _HomeTitleAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
+      titleSpacing: 0,
+      leadingWidth: 0,
       pinned: true,
       centerTitle: true,
       scrolledUnderElevation: 0,
@@ -76,14 +78,28 @@ class _HomeSearchbarWithCategories extends ConsumerWidget {
           children: [
             const SizedBox(height: Sizes.spaceHeightSm),
 
-            ///Wish
-            Text(
-              user == null
-                  ? "Good evening"
-                  : "Good evening, ${user.firstName} ${user.lastName}",
-              style: const TextStyle(
-                color: AppColors.white,
-                fontWeight: FontWeight.normal,
+            ///User Wish
+            RichText(
+              text: TextSpan(
+                style: const TextStyle(
+                  color: AppColors.white,
+                  fontWeight: FontWeight.normal,
+                ),
+                text: "Good evening",
+                children: [
+                  ///Comma
+                  if (user != null) const TextSpan(text: ", "),
+
+                  ///UserName
+                  if (user != null)
+                    TextSpan(
+                      text: "${user.firstName} ${user.lastName}",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: Sizes.fontSize16,
+                      ),
+                    ),
+                ],
               ),
             ),
 
@@ -134,7 +150,9 @@ class _HomeSearchbarWithCategories extends ConsumerWidget {
                 itemBuilder: (BuildContext context, int index) {
                   final item = categories[index];
                   return ActionChip.elevated(
-                    onPressed: () {},
+                    onPressed: () => ref
+                        .read(homeControllerPr.notifier)
+                        .onTapCategory(category: item),
                     padding: Sizes.globalPadding,
                     label: Text(item),
                   );

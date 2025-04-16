@@ -33,4 +33,23 @@ class _HomeController extends StateNotifier<bool> {
   //* Get Featured Services
   Future<AllServicesJson?> getFeaturedServices() =>
       _repository.getFeaturedServices();
+
+  //* onTap Category
+
+  void onTapCategory({
+    required String category,
+  }) {
+    ///Clears the Filter Controller Data
+    _ref.invalidate(filtersControllerPr);
+
+    ///Now update the category value in FiltersController
+    _ref.read(filtersControllerPr.notifier).updateCategoryValue(category);
+
+    ///Now to fetch the services based on the category,
+    ///Clear GetAllServcies List data
+    _ref.invalidate(getAllServciesPr);
+
+    ///Now change the bottom nav bar index
+    _ref.read(navbarControllerPr.notifier).updateNavbarIndex(index: 1);
+  }
 }

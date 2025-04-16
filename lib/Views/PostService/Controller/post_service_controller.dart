@@ -21,9 +21,9 @@ class PostServiceController extends StateNotifier<_PostServiceStatus> {
         _repository = postServiceRepo,
         super(
           _PostServiceStatus(
-            selectedSport: "",
-            selectedCategory: "",
-            selectedSubCategory: "",
+            selectedSport: null,
+            selectedCategory: null,
+            selectedSubCategory: null,
             selectedTimeSlots: [],
             selectedSessionDuration: [],
 
@@ -52,18 +52,8 @@ class PostServiceController extends StateNotifier<_PostServiceStatus> {
   late TextEditingController locationController;
   late TextEditingController priceController;
 
-  ///Listenables
-  // late ValueNotifier<String?> selectedServiceSport;
-  // late ValueNotifier<String?> selectedServiceCategory;
-  // late ValueNotifier<String?> selectedServiceSubCategory;
-  // late ValueNotifier<List<String>> selectedTimeSlotsListenable;
-  // late ValueNotifier<List<String>> selectedSessionDurationListenable;
-
-  // ///For Multi-Dates-Picker
-  // late Set<DateTime> selectedDays;
-
   ///Error Validations
-  late ValueNotifier<String> sportValidation;
+  // late ValueNotifier<String> sportValidation;
   late ValueNotifier<String> categoryValidation;
   late ValueNotifier<String> subCategoryValidation;
   late ValueNotifier<String> datesValidation;
@@ -80,21 +70,8 @@ class PostServiceController extends StateNotifier<_PostServiceStatus> {
     priceController = TextEditingController();
     locationController = TextEditingController();
 
-    // selectedServiceSport = ValueNotifier(null);
-    // selectedServiceCategory = ValueNotifier(null);
-    // selectedServiceSubCategory = ValueNotifier(null);
-    // selectedTimeSlotsListenable = ValueNotifier([]);
-    // selectedSessionDurationListenable = ValueNotifier([]);
-
-    // /// For MULTI-DATE_PICKER:
-    // /// Using a `LinkedHashSet` is recommended due to equality comparison override
-    // selectedDays = LinkedHashSet<DateTime>(
-    //   equals: isSameDay,
-    //   hashCode: Utils.instance.getHashCode,
-    // );
-
     ///For Validations
-    sportValidation = ValueNotifier("");
+    // sportValidation = ValueNotifier("");
     categoryValidation = ValueNotifier("");
     subCategoryValidation = ValueNotifier("");
     datesValidation = ValueNotifier("");
@@ -112,13 +89,7 @@ class PostServiceController extends StateNotifier<_PostServiceStatus> {
     priceController.dispose();
     locationController.dispose();
 
-    // selectedServiceSport.dispose();
-    // selectedServiceCategory.dispose();
-    // selectedServiceSubCategory.dispose();
-    // selectedTimeSlotsListenable.dispose();
-    // selectedSessionDurationListenable.dispose();
-
-    sportValidation.dispose();
+    // sportValidation.dispose();
     categoryValidation.dispose();
     subCategoryValidation.dispose();
     datesValidation.dispose();
@@ -167,19 +138,23 @@ class PostServiceController extends StateNotifier<_PostServiceStatus> {
   void updateSelectedSport(String? value) {
     state = state.copyWith(
       selectedSport: value,
-      selectedCategory: "",
-      selectedSubCategory: "",
+      selectedCategory: '',
+      selectedSubCategory: '',
     );
-    debugPrint("SelectedSport:${state.selectedCategory}");
+    debugPrint(
+      "Sport:${state.selectedSport}--Category:${state.selectedCategory}--SubCategory:${state.selectedSubCategory}",
+    );
   }
 
   //* Service Category Update Function
   void updateSelectedCategory(String? value) {
     state = state.copyWith(
       selectedCategory: value,
-      selectedSubCategory: "",
+      selectedSubCategory: '',
     );
-    debugPrint("SelectedCategory:${state.selectedCategory}");
+    debugPrint(
+      "Sport:${state.selectedSport}--Category:${state.selectedCategory}--SubCategory:${state.selectedSubCategory}",
+    );
   }
 
   //* Service Sub-Category Update Function
@@ -187,7 +162,32 @@ class PostServiceController extends StateNotifier<_PostServiceStatus> {
     state = state.copyWith(
       selectedSubCategory: value,
     );
-    debugPrint("SelectedSubCategory:${state.selectedCategory}");
+    debugPrint(
+      "Sport:${state.selectedSport}--Category:${state.selectedCategory}--SubCategory:${state.selectedSubCategory}",
+    );
+  }
+
+  //* Update Selected Dates Value
+  void updateSelectedDates(DateTime value) {
+    final selectedDates = state.selectedDates;
+    List<DateTime> selectedList = [];
+
+    ///Check if value already exist , if [yes] remove the item
+    if (selectedDates.contains(value)) {
+      selectedList =
+          state.selectedDates.where((item) => item != value).toList();
+    }
+
+    /// if [No] add that item to list
+    else {
+      selectedList = [...state.selectedDates, value];
+    }
+
+    ///Sort Selected Dates
+    selectedList.sort((a, b) => a.compareTo(b));
+
+    ///Update State
+    state = state.copyWith(selectedDates: selectedList.toSet());
   }
 
   //* Update Selected TimeSlot Value
@@ -243,7 +243,7 @@ class PostServiceController extends StateNotifier<_PostServiceStatus> {
       return numA.compareTo(numB); // Compare numbers
     });
 
-    ///Update State
+    ///Update State with SessionDuration Sorted List
     state = state.copyWith(selectedSessionDuration: selectedList);
   }
 
@@ -305,12 +305,12 @@ class PostServiceController extends StateNotifier<_PostServiceStatus> {
   ///Handle Service Details Page Validations
   void _handleServiceDetailsFromValidation(BuildContext context) {
     final validate = validateForm(serviceDetailsFormKey);
-    final isSportEmpty = state.selectedSport.isEmpty;
-    final isCategoryEmpty = state.selectedCategory.isEmpty;
-    final isSubCategoryEmpty = state.selectedSubCategory.isEmpty;
+    final isSportEmpty = state.selectedSport == null;
+    final isCategoryEmpty = state.selectedCategory == null;
+    final isSubCategoryEmpty = state.selectedSubCategory == null;
 
     ///Update Specific Validation Error Message
-    sportValidation.value = isSportEmpty ? "Kindly select the Sport" : "";
+    // sportValidation.value = isSportEmpty ? "Kindly select the Sport" : "";
     categoryValidation.value =
         isCategoryEmpty ? "Kindly select your preferred Category" : "";
     subCategoryValidation.value =
@@ -381,7 +381,6 @@ class PostServiceController extends StateNotifier<_PostServiceStatus> {
   Map<String, List<String>> _getTimeSlotsData() {
     ///Sort Selected Dates
     List<DateTime> sortedDates = state.selectedDates.toList();
-    sortedDates.sort((a, b) => a.compareTo(b));
 
     Map<String, List<String>> data = {};
 
@@ -404,13 +403,13 @@ class PostServiceController extends StateNotifier<_PostServiceStatus> {
     final postServiceDto = PostServiceDto(
       providerId: "123asf234234",
       title: serviceTitleController.text.trim(),
-      sport: state.selectedSport,
+      sport: state.selectedSport!,
       description: serviceDescriptionController.text.trim(),
       duration: state.selectedSessionDuration,
       location: locationController.text.trim(),
       price: int.parse(priceController.text.trim()),
-      category: state.selectedCategory,
-      subcategory: state.selectedSubCategory,
+      category: state.selectedCategory!,
+      subcategory: state.selectedSubCategory!,
       timeSlots: timeSlots,
     );
 
@@ -441,9 +440,9 @@ class PostServiceController extends StateNotifier<_PostServiceStatus> {
 
 ///PostService Model for holding and updating status
 class _PostServiceStatus {
-  String selectedSport;
-  String selectedCategory;
-  String selectedSubCategory;
+  String? selectedSport;
+  String? selectedCategory;
+  String? selectedSubCategory;
   List<String> selectedTimeSlots;
   List<String> selectedSessionDuration;
   Set<DateTime> selectedDates;
@@ -465,17 +464,24 @@ class _PostServiceStatus {
     String? selectedSubCategory,
     List<String>? selectedTimeSlots,
     List<String>? selectedSessionDuration,
-    Set<DateTime>? selectedDay,
+    Set<DateTime>? selectedDates,
     bool? loading,
   }) {
     return _PostServiceStatus(
-      selectedSport: selectedSport ?? this.selectedSport,
-      selectedCategory: selectedCategory ?? this.selectedCategory,
-      selectedSubCategory: selectedSubCategory ?? this.selectedSubCategory,
+      selectedSport:
+          ((selectedSport?.isEmpty ?? false) ? null : selectedSport) ??
+              this.selectedSport,
+      selectedCategory:
+          ((selectedCategory?.isEmpty ?? false) ? null : selectedCategory) ??
+              this.selectedCategory,
+      selectedSubCategory: ((selectedSubCategory?.isEmpty ?? false)
+              ? null
+              : selectedSubCategory) ??
+          this.selectedSubCategory,
       selectedTimeSlots: selectedTimeSlots ?? this.selectedTimeSlots,
       selectedSessionDuration:
           selectedSessionDuration ?? this.selectedSessionDuration,
-      selectedDates: selectedDay ?? selectedDates,
+      selectedDates: selectedDates ?? this.selectedDates,
       loading: loading ?? this.loading,
     );
   }

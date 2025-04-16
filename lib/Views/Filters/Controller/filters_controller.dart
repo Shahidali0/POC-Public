@@ -5,21 +5,21 @@ const double _intialDistance = 0.1;
 
 final _selectedFilterIndexPr = StateProvider<int>((ref) => 0);
 
-final filtersControllerPr = StateNotifierProvider.autoDispose<
-    _FiltersController, _FiltersControllerState>(
+final filtersControllerPr =
+    StateNotifierProvider<_FiltersController, FiltersControllerState>(
   (ref) => _FiltersController(
     ref: ref,
   ),
 );
 
-class _FiltersController extends StateNotifier<_FiltersControllerState> {
+class _FiltersController extends StateNotifier<FiltersControllerState> {
   final Ref _ref;
 
   _FiltersController({
     required Ref ref,
   })  : _ref = ref,
         super(
-          _FiltersControllerState(
+          FiltersControllerState(
             selectedSport: "",
             selectedCategory: "",
             selectedSubCategory: "",
@@ -36,8 +36,8 @@ class _FiltersController extends StateNotifier<_FiltersControllerState> {
         "Sport",
         "Category",
         "Sub Category",
-        "Price",
-        "Distance",
+        // "Price",
+        // "Distance",
       ];
 
   ///Initialise
@@ -129,7 +129,7 @@ class _FiltersController extends StateNotifier<_FiltersControllerState> {
 }
 
 ///State Object for maintaining state
-class _FiltersControllerState {
+class FiltersControllerState {
   String selectedSport;
   String selectedCategory;
   String selectedSubCategory;
@@ -137,7 +137,7 @@ class _FiltersControllerState {
   double selectedDistance;
   bool loading;
 
-  _FiltersControllerState({
+  FiltersControllerState({
     required this.selectedSport,
     required this.selectedCategory,
     required this.selectedSubCategory,
@@ -146,7 +146,7 @@ class _FiltersControllerState {
     required this.loading,
   });
 
-  _FiltersControllerState copyWith({
+  FiltersControllerState copyWith({
     String? selectedSport,
     String? selectedCategory,
     String? selectedSubCategory,
@@ -154,7 +154,7 @@ class _FiltersControllerState {
     double? selectedDistance,
     bool? loading,
   }) {
-    return _FiltersControllerState(
+    return FiltersControllerState(
       selectedSport: selectedSport ?? this.selectedSport,
       selectedCategory: selectedCategory ?? this.selectedCategory,
       selectedSubCategory: selectedSubCategory ?? this.selectedSubCategory,

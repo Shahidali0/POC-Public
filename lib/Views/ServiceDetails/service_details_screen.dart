@@ -33,9 +33,6 @@ class ServiceDetailsScreen extends ConsumerWidget {
           ///Description
           ..._description(),
 
-          ///What's Included
-          ..._whatsIncluded(),
-
           ///Available Session Dates
           ..._availableSessionDates(),
 
@@ -129,32 +126,6 @@ class ServiceDetailsScreen extends ConsumerWidget {
         ),
       ];
 
-  ///What's Included
-  List<Widget> _whatsIncluded() => [
-        const SizedBox(height: Sizes.spaceHeight),
-        const Text(
-          "What's Included:",
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontSize: Sizes.fontSize18,
-            color: AppColors.black,
-            fontWeight: FontWeight.w800,
-          ),
-        ),
-        const SizedBox(height: Sizes.spaceMed),
-        const Text(
-          '''-- International standard ground
--- ICC certified umpires
--- Electronic scoreboard
--- Live streaming setup
--- Post-match analytics''',
-          style: TextStyle(
-            color: AppColors.black,
-            fontSize: Sizes.fontSize16,
-          ),
-        ),
-      ];
-
   ///Available Session Dates
   List<Widget> _availableSessionDates() => [
         const SizedBox(height: Sizes.spaceHeight),
@@ -172,7 +143,10 @@ class ServiceDetailsScreen extends ConsumerWidget {
           spacing: Sizes.space,
           children: serviceJson.timeSlots!.entries.map(
             (entry) {
-              return Chip(label: Text(entry.key));
+              return ActionChip.elevated(
+                onPressed: () {},
+                label: Text(entry.key),
+              );
             },
           ).toList(),
         ),

@@ -130,98 +130,98 @@ class _SubCategoryTypeWidget extends StatelessWidget {
   }
 }
 
-///This is for [Price] Types
-class _PriceTypeWidget extends StatelessWidget {
-  const _PriceTypeWidget({
-    required this.ref,
-    required this.controller,
-  });
+// ///This is for [Price] Types
+// class _PriceTypeWidget extends StatelessWidget {
+//   const _PriceTypeWidget({
+//     required this.ref,
+//     required this.controller,
+//   });
 
-  final WidgetRef ref;
-  final _FiltersController controller;
+//   final WidgetRef ref;
+//   final _FiltersController controller;
 
-  @override
-  Widget build(BuildContext context) {
-    final price = ref.watch(filtersControllerPr).selectedPrice;
+//   @override
+//   Widget build(BuildContext context) {
+//     final price = ref.watch(filtersControllerPr).selectedPrice;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: Sizes.spaceHeight),
-        const Text(
-          "PRICE",
-          style: TextStyle(letterSpacing: 1),
-        ),
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         const SizedBox(height: Sizes.spaceHeight),
+//         const Text(
+//           "PRICE",
+//           style: TextStyle(letterSpacing: 1),
+//         ),
 
-        const SizedBox(height: Sizes.spaceHeight),
+//         const SizedBox(height: Sizes.spaceHeight),
 
-        ///RadioListTiles
-        ...[
-          "\$ 50 and Below",
-          "\$ 50 - \$ 100",
-          "\$ 100 - \$ 500",
-          "\$ 500 and Above",
-        ].map((value) {
-          return RadioListTile<String>.adaptive(
-            value: value,
-            groupValue: price,
-            onChanged: (String? value) {
-              controller.updatePriceValue(value);
-            },
-            title: Text(value),
-          );
-        }),
-      ],
-    );
-  }
-}
+//         ///RadioListTiles
+//         ...[
+//           "\$ 50 and Below",
+//           "\$ 50 - \$ 100",
+//           "\$ 100 - \$ 500",
+//           "\$ 500 and Above",
+//         ].map((value) {
+//           return RadioListTile<String>.adaptive(
+//             value: value,
+//             groupValue: price,
+//             onChanged: (String? value) {
+//               controller.updatePriceValue(value);
+//             },
+//             title: Text(value),
+//           );
+//         }),
+//       ],
+//     );
+//   }
+// }
 
-///This is for location [Distance]
-class _DistanceWidget extends StatelessWidget {
-  const _DistanceWidget({
-    required this.ref,
-    required this.controller,
-  });
+// ///This is for location [Distance]
+// class _DistanceWidget extends StatelessWidget {
+//   const _DistanceWidget({
+//     required this.ref,
+//     required this.controller,
+//   });
 
-  final WidgetRef ref;
-  final _FiltersController controller;
+//   final WidgetRef ref;
+//   final _FiltersController controller;
 
-  @override
-  Widget build(BuildContext context) {
-    final distance = ref.watch(filtersControllerPr).selectedDistance;
+//   @override
+//   Widget build(BuildContext context) {
+//     final distance = ref.watch(filtersControllerPr).selectedDistance;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: Sizes.spaceHeight),
-        const Text(
-          "DISTANCE",
-          style: TextStyle(letterSpacing: 1),
-        ),
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         const SizedBox(height: Sizes.spaceHeight),
+//         const Text(
+//           "DISTANCE",
+//           style: TextStyle(letterSpacing: 1),
+//         ),
 
-        const SizedBox(height: Sizes.spaceHeight),
+//         const SizedBox(height: Sizes.spaceHeight),
 
-        Center(
-          child: Text(
-            "${(distance * 100).round()} km",
-            style: const TextStyle(
-              letterSpacing: 1,
-              fontSize: Sizes.fontSize16,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
+//         Center(
+//           child: Text(
+//             "${(distance * 100).round()} km",
+//             style: const TextStyle(
+//               letterSpacing: 1,
+//               fontSize: Sizes.fontSize16,
+//               fontWeight: FontWeight.w600,
+//             ),
+//           ),
+//         ),
 
-        ///Slider
-        Slider.adaptive(
-          min: 0.1,
-          max: 1,
-          value: distance,
-          onChanged: (changedValue) {
-            controller.updateDistanceValue(changedValue);
-          },
-        ),
-      ],
-    );
-  }
-}
+//         ///Slider
+//         Slider.adaptive(
+//           min: 0.1,
+//           max: 1,
+//           value: distance,
+//           onChanged: (changedValue) {
+//             controller.updateDistanceValue(changedValue);
+//           },
+//         ),
+//       ],
+//     );
+//   }
+// }

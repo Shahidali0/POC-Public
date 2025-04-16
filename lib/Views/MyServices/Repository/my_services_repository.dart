@@ -15,7 +15,7 @@ class MyServicesRepository {
   MyServicesRepository({required HomeServices homeServices})
       : _homeServices = homeServices;
 
-  ///Get All Service
+  ///Get My Service
   Future<AllServicesJson?> findMyServices() async {
     try {
       AllServicesJson? findMyServices;

@@ -151,7 +151,6 @@ class _HeaderText extends StatelessWidget {
 ///About Us Card
 // class _AboutUs extends StatelessWidget {
 //   const _AboutUs({super.key});
-
 //   @override
 //   Widget build(BuildContext context) {
 //     return Column(
@@ -159,7 +158,6 @@ class _HeaderText extends StatelessWidget {
 //       children: [
 //          const SizedBox(height: Sizes.spaceHeight),
 //             const _HeaderText(title: "Contact Us"),
-
 //             const SizedBox(height: Sizes.spaceHeight),
 //             Card(
 //               margin: EdgeInsets.zero,
@@ -178,7 +176,6 @@ class _HeaderText extends StatelessWidget {
 //                     const Text(
 //                       "ABC, 3rd Floor, Industrial Area Phase-2, Australia",
 //                     ),
-
 //                     ///Email
 //                     const SizedBox(height: Sizes.spaceHeight),
 //                     const Text(
@@ -192,7 +189,6 @@ class _HeaderText extends StatelessWidget {
 //                       "contactus@xyz.com",
 //                       style: TextStyle(fontSize: Sizes.fontSize16),
 //                     ),
-
 //                     ///Follow Us
 //                     const SizedBox(height: Sizes.spaceHeight),
 //                     const Text(
@@ -219,7 +215,6 @@ class _HeaderText extends StatelessWidget {
 //                           ),
 //                         ),
 //                         const SizedBox(width: Sizes.space),
-
 //                         ///Twitter
 //                         GestureDetector(
 //                           onTap: () {},
@@ -233,7 +228,6 @@ class _HeaderText extends StatelessWidget {
 //                           ),
 //                         ),
 //                         const SizedBox(width: Sizes.space),
-
 //                         ///Youtube
 //                         GestureDetector(
 //                           onTap: () {},
@@ -247,7 +241,6 @@ class _HeaderText extends StatelessWidget {
 //                           ),
 //                         ),
 //                         const SizedBox(width: Sizes.space),
-
 //                         ///Instagram
 //                         GestureDetector(
 //                           onTap: () {},
@@ -261,7 +254,6 @@ class _HeaderText extends StatelessWidget {
 //                           ),
 //                         ),
 //                         const SizedBox(width: Sizes.space),
-
 //                         ///LinkedIn
 //                         GestureDetector(
 //                           onTap: () {},
@@ -281,7 +273,6 @@ class _HeaderText extends StatelessWidget {
 //                 ),
 //               ),
 //             ),
-
 //       ],
 //     );
 //   }

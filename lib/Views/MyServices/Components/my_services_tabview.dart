@@ -10,7 +10,7 @@ class MyServicesTabview extends ConsumerWidget {
     return ref.watch(findMyServicesPr).when(
           skipLoadingOnRefresh: false,
           data: (data) {
-            if (data == null) {
+            if (data == null || (data.services?.isEmpty ?? false)) {
               return const EmptyDataWidget();
             }
 

@@ -8,7 +8,6 @@ class MyBookingsTabview extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(getMyBookingsPr).when(
-          skipLoadingOnRefresh: false,
           data: (data) {
             return RefreshIndicator.adaptive(
               onRefresh: () async => ref.invalidate(getMyBookingsPr),
@@ -218,7 +217,6 @@ class _BookingListView extends StatelessWidget {
       itemBuilder: (BuildContext context, int index) {
         return _BookingCard(
           booking: bookings[index],
-          status: bookings[index].status!,
           sendReminder: sendReminder,
         );
       },
@@ -232,12 +230,11 @@ class _BookingListView extends StatelessWidget {
 class _BookingCard extends StatelessWidget {
   const _BookingCard({
     required this.booking,
-    required this.status,
     required this.sendReminder,
   });
 
   final BookingsJson booking;
-  final String status;
+
   final bool sendReminder;
 
   @override
@@ -253,18 +250,20 @@ class _BookingCard extends StatelessWidget {
             ///Header
             Row(
               children: [
-                const Expanded(
+                Expanded(
                   child: Text(
-                    "Professional Batting Practice",
+                    booking.serviceTitle ?? "Service",
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: Sizes.fontSize18,
                       color: AppColors.black,
                       fontWeight: FontWeight.w800,
                     ),
                   ),
                 ),
+
+                const SizedBox(width: Sizes.spaceMed),
 
                 ///Price Tag
                 Text(
@@ -279,11 +278,11 @@ class _BookingCard extends StatelessWidget {
             ),
 
             ///Customer Name
-            const Text(
-              "Customer: Alex Johnson",
+            Text(
+              "Customer: ${booking.providerName ?? "N/A"}",
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(
+              style: const TextStyle(
                 color: AppColors.black,
                 fontWeight: FontWeight.w500,
                 fontSize: Sizes.fontSize16,
@@ -306,22 +305,12 @@ class _BookingCard extends StatelessWidget {
             ///Status
             CustomTile(
               iconData: CupertinoIcons.question_circle,
-              text: status.capitalizeFirst,
-              textColor: status.toLowerCase().contains("pending")
+              text: booking.status!.capitalizeFirst,
+              textColor: booking.status!.toLowerCase().contains("pending")
                   ? AppColors.orange
                   : AppColors.green,
               fontWeight: FontWeight.w600,
             ),
-
-// ///Status
-//                   const Text(
-//                     "Pending",
-//                     overflow: TextOverflow.ellipsis,
-//                     style: TextStyle(
-//                       fontSize: Sizes.fontSize12,
-//                       color: AppColors.green,
-//                     ),
-//                   ),
 
             const SizedBox(height: Sizes.spaceSmall),
 

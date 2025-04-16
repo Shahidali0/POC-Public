@@ -9,8 +9,12 @@ final findServicesControllerPr =
 
 final findServicesTabBarIndexPr = StateProvider<int>((ref) => 0);
 
-final findAllServciesPr = FutureProvider<AllServicesJson?>((ref) async {
-  return ref.read(findServicesControllerPr.notifier).findAllServices();
+final getAllServciesPr = FutureProvider<AllServicesJson?>((ref) async {
+  final state = ref.read(filtersControllerPr);
+
+  return ref
+      .read(findServicesControllerPr.notifier)
+      .findAllServices(state: state);
 });
 
 class FindServciesController extends StateNotifier<bool> {
@@ -33,5 +37,7 @@ class FindServciesController extends StateNotifier<bool> {
   }
 
   //* Find AllServices
-  Future<AllServicesJson?> findAllServices() => _repository.findAllServices();
+  Future<AllServicesJson?> findAllServices(
+          {required FiltersControllerState state}) =>
+      _repository.getAllServices(state: state);
 }

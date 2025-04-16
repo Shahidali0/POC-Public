@@ -43,7 +43,7 @@ class Utils {
   //* FormatDate to Specific String Format (Month, Year)
   String getDuration(List<String>? data) {
     final duration =
-        data!.map((e) => e).toString().replaceAll(RegExp(r"[()]"), "");
+        data!.map((e) => "$e min").toString().replaceAll(RegExp(r"[()]"), "");
 
     return duration;
   }

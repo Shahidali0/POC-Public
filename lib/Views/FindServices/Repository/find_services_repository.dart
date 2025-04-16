@@ -16,11 +16,16 @@ class FindServicesRepository {
       : _homeServices = homeServices;
 
   ///Get All Service
-  Future<AllServicesJson?> findAllServices() async {
+  Future<AllServicesJson?> getAllServices(
+      {required FiltersControllerState state}) async {
     try {
       AllServicesJson? findAllServices;
 
-      final response = await _homeServices.findAllServices();
+      final response = await _homeServices.getAllServices(
+        sport: state.selectedSport,
+        category: state.selectedCategory,
+        subCategory: state.selectedSubCategory,
+      );
 
       if (response != null) {
         findAllServices = await compute(AllServicesJson.fromRawJson, response);

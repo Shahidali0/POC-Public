@@ -7,7 +7,11 @@ final homeServicesPr = Provider<HomeServices>(
 );
 
 sealed class HomeServices {
-  Future<String?> findAllServices();
+  Future<String?> getAllServices({
+    required String sport,
+    required String category,
+    required String subCategory,
+  });
 
   Future<String?> getFeaturedServices();
 
@@ -28,8 +32,19 @@ class _HomeServicesImpl implements HomeServices {
 
   //* Get All Services List
   @override
-  Future<String?> findAllServices() async {
-    const url = "services";
+  Future<String?> getAllServices({
+    required String sport,
+    required String category,
+    required String subCategory,
+  }) async {
+    String url;
+
+    if (sport.isEmpty && category.isEmpty && subCategory.isEmpty) {
+      url = "services";
+    } else {
+      url =
+          "services?${sport.isNotEmpty ? "sport=$sport" : ""}${category.isNotEmpty ? "&category=$category" : ""}${subCategory.isNotEmpty ? "&subcategory=$subCategory" : ""}";
+    }
 
     // final headers = await _apiHeaders.getHeadersWithToken();
 

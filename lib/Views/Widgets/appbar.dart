@@ -157,6 +157,7 @@ class CupertinoAppbar extends StatelessWidget
   final String title;
   final String? previousPageTitle;
   final Widget? trailing;
+
   final bool showNotificationIcon;
 
   @override

@@ -6,9 +6,11 @@ class BookingsJson {
   final String? providerId;
   final String? userId;
   final String? status;
+  final String? providerName;
   final DateTime? createdAt;
   final String? serviceId;
   final int? price;
+  final String? serviceTitle;
   final String? timeSlot;
 
   BookingsJson({
@@ -17,9 +19,11 @@ class BookingsJson {
     this.providerId,
     this.userId,
     this.status,
+    this.providerName,
     this.createdAt,
     this.serviceId,
     this.price,
+    this.serviceTitle,
     this.timeSlot,
   });
 
@@ -35,11 +39,13 @@ class BookingsJson {
         providerId: json["providerId"],
         userId: json["userId"],
         status: json["status"],
+        providerName: json["providerName"],
         createdAt: json["createdAt"] == null
             ? null
             : DateTime.parse(json["createdAt"]),
         serviceId: json["serviceId"],
         price: json["price"],
+        serviceTitle: json["serviceTitle"],
         timeSlot: json["timeSlot"],
       );
 
@@ -50,9 +56,11 @@ class BookingsJson {
         "providerId": providerId,
         "userId": userId,
         "status": status,
+        "providerName": providerName,
         "createdAt": createdAt?.toIso8601String(),
         "serviceId": serviceId,
         "price": price,
+        "serviceTitle": serviceTitle,
         "timeSlot": timeSlot,
       };
 }

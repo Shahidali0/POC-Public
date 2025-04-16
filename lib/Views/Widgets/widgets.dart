@@ -6,3 +6,4 @@ export 'custom_tile.dart';
 export 'custom_scaffold.dart';
 export 'error.dart';
 export 'authorize.dart';
+export 'service_card.dart';

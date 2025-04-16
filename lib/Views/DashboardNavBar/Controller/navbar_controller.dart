@@ -34,6 +34,11 @@ class NavbarController extends StateNotifier<bool> {
         _ref = ref,
         super(false);
 
+  ///Update Navbar Index
+  void updateNavbarIndex({required int index}) {
+    _ref.read(_navBarIndexPr.notifier).update((st) => st = index);
+  }
+
   ///Load all required api's
   Future<List<CategoryJson>> loadData() async {
     final response = await Future.wait([
