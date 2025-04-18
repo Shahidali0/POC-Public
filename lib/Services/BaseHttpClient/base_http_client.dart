@@ -19,7 +19,7 @@ class BaseHttpClient {
     required Map<String, String> headers,
     bool isAuthUrl = false,
   }) async {
-    Uri uri = Uri.parse(Utils.instance.baseUrl(isAuthUrl) + urlEndPoint);
+    Uri uri = Uri.parse(MyKeys.instance.baseUrl(isAuthUrl) + urlEndPoint);
 
     final response = await http.get(uri, headers: headers);
 
@@ -32,7 +32,7 @@ class BaseHttpClient {
     required Map<String, String> headers,
     bool isAuthUrl = false,
   }) async {
-    Uri uri = Uri.parse(Utils.instance.baseUrl(isAuthUrl) + urlEndPoint);
+    Uri uri = Uri.parse(MyKeys.instance.baseUrl(isAuthUrl) + urlEndPoint);
 
     final response = await http.delete(uri, headers: headers);
 
@@ -42,11 +42,11 @@ class BaseHttpClient {
   ///Post Service
   static Future<String?> postService({
     required String urlEndPoint,
-    Object? body,
+    required Object? body,
     required Map<String, String> headers,
     bool isAuthUrl = false,
   }) async {
-    Uri uri = Uri.parse(Utils.instance.baseUrl(isAuthUrl) + urlEndPoint);
+    Uri uri = Uri.parse(MyKeys.instance.baseUrl(isAuthUrl) + urlEndPoint);
 
     final response = await http.post(
       uri,
@@ -64,7 +64,7 @@ class BaseHttpClient {
     required Map<String, String> headers,
     bool isAuthUrl = false,
   }) async {
-    Uri uri = Uri.parse(Utils.instance.baseUrl(isAuthUrl) + urlEndPoint);
+    Uri uri = Uri.parse(MyKeys.instance.baseUrl(isAuthUrl) + urlEndPoint);
     final response = await http.put(
       uri,
       body: body,
@@ -81,7 +81,7 @@ class BaseHttpClient {
     required Map<String, String> headers,
     bool isAuthUrl = false,
   }) async {
-    Uri uri = Uri.parse(Utils.instance.baseUrl(isAuthUrl) + urlEndPoint);
+    Uri uri = Uri.parse(MyKeys.instance.baseUrl(isAuthUrl) + urlEndPoint);
 
     final request = mhttp.MultipartRequest('POST', uri);
 

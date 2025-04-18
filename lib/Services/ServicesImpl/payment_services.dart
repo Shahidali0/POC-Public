@@ -1,16 +1,20 @@
+import 'dart:convert';
 import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:http/http.dart' as http;
 
-final stripePaymentServicesPr = Provider<StripePaymentServices>((ref) {
-  return _StripePaymentServicesImpl();
-});
+final stripePaymentServicesPr = Provider<StripePaymentServices>(
+  (ref) {
+    return _StripePaymentServicesImpl(
+      apiHeaders: ref.read(apiHeadersPr),
+    );
+  },
+);
 
 sealed class StripePaymentServices {
   Future<String?> createPaymentIntent({
     required int amount,
-    required String currency,
+    String? currency,
   });
 
   FutureVoid initPaymentSheet({
@@ -20,30 +24,59 @@ sealed class StripePaymentServices {
 }
 
 class _StripePaymentServicesImpl implements StripePaymentServices {
-  ///Create Payment Intent -- To get ClientSecret Key
+  final ApiHeaders _apiHeaders;
+
+  _StripePaymentServicesImpl({required ApiHeaders apiHeaders})
+      : _apiHeaders = apiHeaders;
+
+  //* Create Payment Intent -- To get ClientSecret Key
   @override
   Future<String?> createPaymentIntent({
     required int amount,
-    required String currency,
+    String? currency,
   }) async {
-    ///Request body
-    Map<String, dynamic> body = {
-      'amount': _calculateAmount(amount),
-      'currency': currency,
-    };
+    const url = "payment";
 
-    ///Make post request to Stripe
-    final response = await http.post(
-      Uri.parse('https://api.stripe.com/v1/payment_intents'),
-      headers: {
-        'Authorization': 'Bearer ${MyKeys.instance.stripeSecretKey}',
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
+    ///Request body
+    final body = jsonEncode({
+      'amount': _calculateAmount(amount),
+      'currency': currency ?? "AUD",
+    });
+
+    // final headers = await _apiHeaders.getHeadersWithToken();
+
+    final response = await BaseHttpClient.postService(
+      urlEndPoint: url,
+      headers: _apiHeaders.headers,
       body: body,
     );
 
-    return ResponseHandler.instance.handleResponse(response: response);
+    return response;
   }
+
+  // @override
+  // Future<String?> createPaymentIntent({
+  //   required int amount,
+  //   String? currency,
+  // }) async {
+  //   ///Request body
+  //   Map<String, dynamic> body = {
+  //     'amount': _calculateAmount(amount),
+  //     'currency': currency ?? "AUD",
+  //   };
+
+  //   ///Make post request to Stripe
+  //   final response = await http.post(
+  //     Uri.parse('https://api.stripe.com/v1/payment_intents'),
+  //     headers: {
+  //       'Authorization': 'Bearer ${MyKeys.instance.stripeSecretKey}',
+  //       'Content-Type': 'application/x-www-form-urlencoded'
+  //     },
+  //     body: body,
+  //   );
+
+  //   return ResponseHandler.instance.handleResponse(response: response);
+  // }
 
   //* Init Stripe Payment Sheet
   @override

@@ -35,7 +35,6 @@ class ServiceDetailsRepository {
       ///STEP 1: Create Payment Intent
       final response = await _paymentServices.createPaymentIntent(
         amount: serviceJson.price!,
-        currency: "USD",
       );
 
       if (response == null) {
@@ -50,7 +49,7 @@ class ServiceDetailsRepository {
 
       ///STEP 2: Initialize Payment Sheet
       await _paymentServices.initPaymentSheet(
-        clientSecretKey: paymentIntent!['client_secret'],
+        clientSecretKey: paymentIntent!['clientSecret'],
         merchantName: user != null ? "${user.firstName} ${user.lastName}" : "",
       );
 
@@ -88,9 +87,7 @@ class ServiceDetailsRepository {
 
   ///Display Payment Sheet
   FutureVoid _displayPaymentSheet() async {
-    PaymentSheetPaymentOption? options =
-        await Stripe.instance.presentPaymentSheet();
-    print(options?.image);
+    await Stripe.instance.presentPaymentSheet();
     await Stripe.instance.confirmPaymentSheetPayment();
   }
 
