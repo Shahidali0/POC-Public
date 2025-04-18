@@ -26,8 +26,6 @@ class _StripePaymentServicesImpl implements StripePaymentServices {
     required int amount,
     required String currency,
   }) async {
-    final stripeKey = dotenv.env['STRIPE_SECRET_KEY'];
-
     ///Request body
     Map<String, dynamic> body = {
       'amount': _calculateAmount(amount),
@@ -38,7 +36,7 @@ class _StripePaymentServicesImpl implements StripePaymentServices {
     final response = await http.post(
       Uri.parse('https://api.stripe.com/v1/payment_intents'),
       headers: {
-        'Authorization': 'Bearer $stripeKey',
+        'Authorization': 'Bearer ${MyKeys.instance.stripeSecretKey}',
         'Content-Type': 'application/x-www-form-urlencoded'
       },
       body: body,
