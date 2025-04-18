@@ -218,28 +218,3 @@ class _DurationField extends ConsumerWidget {
     );
   }
 }
-
-///User Name Field
-class _NameField extends StatelessWidget {
-  const _NameField({
-    required this.controller,
-  });
-
-  final TextEditingController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return FormFiledWidget(
-      title: "Name",
-      isRequired: true,
-      child: TextFormField(
-        controller: controller,
-        keyboardType: TextInputType.name,
-        validator: FieldValidators.instance.commonValidator,
-        autofillHints: Formatter.instance.nameAutoFillHints,
-        textCapitalization: TextCapitalization.words,
-        decoration: const InputDecoration(hintText: "John"),
-      ),
-    );
-  }
-}

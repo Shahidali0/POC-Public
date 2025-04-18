@@ -90,7 +90,7 @@ class ServiceDetailsRepository {
   FutureVoid _displayPaymentSheet() async {
     PaymentSheetPaymentOption? options =
         await Stripe.instance.presentPaymentSheet();
-    print(options!.image!);
+    print(options?.image);
     await Stripe.instance.confirmPaymentSheetPayment();
   }
 

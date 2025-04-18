@@ -1,7 +1,6 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'package:cricket_poc/Views/Filters/service_filter.dart';
 
-const double _intialDistance = 0.1;
+// const double _intialDistance = 0.1;
 
 final _selectedFilterIndexPr = StateProvider<int>((ref) => 0);
 
