@@ -71,8 +71,7 @@ dependencies:
   # Stripe Payment Gateway 
   flutter_stripe: ^9.4.1
 
-  #Load Env Files --> Secret Keys File
-  flutter_dotenv: ^5.2.1
+
 
   # For Location access
   # geocoding: ^3.0.0

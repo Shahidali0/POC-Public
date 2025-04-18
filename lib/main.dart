@@ -6,9 +6,6 @@ void main() async {
   //Initialize Flutter Binding
   WidgetsFlutterBinding.ensureInitialized();
 
-  ///Load .env file for Keys
-  await dotenv.load(fileName: ".env");
-
   //Assign publishable key to flutter_stripe
   Stripe.publishableKey = MyKeys.instance.stripePublishableKey;
 
