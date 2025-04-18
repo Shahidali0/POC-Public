@@ -65,7 +65,7 @@ class _HomeSearchbarWithCategories extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final categories =
-        ref.watch(homeControllerPr.notifier).getAllCattegoriesList;
+        ref.watch(homeControllerPr.notifier).getAllCategoriesList;
 
     final user = ref.watch(userJsonPr)?.user;
 
@@ -85,7 +85,7 @@ class _HomeSearchbarWithCategories extends ConsumerWidget {
                   color: AppColors.white,
                   fontWeight: FontWeight.normal,
                 ),
-                text: "Good evening",
+                text: "Welcome back",
                 children: [
                   ///Comma
                   if (user != null) const TextSpan(text: ", "),
@@ -120,7 +120,7 @@ class _HomeSearchbarWithCategories extends ConsumerWidget {
             const TextField(
               readOnly: true,
               decoration: InputDecoration(
-                hintText: "In a few words, What do you need done?",
+                hintText: "Search for coaching, training or services…",
                 prefixIcon: Icon(CupertinoIcons.search),
               ),
             ),
@@ -149,12 +149,16 @@ class _HomeSearchbarWithCategories extends ConsumerWidget {
                     const SizedBox(width: Sizes.space),
                 itemBuilder: (BuildContext context, int index) {
                   final item = categories[index];
+
                   return ActionChip.elevated(
-                    onPressed: () => ref
-                        .read(homeControllerPr.notifier)
-                        .onTapCategory(category: item),
+                    onPressed: () =>
+                        ref.read(homeControllerPr.notifier).onTapCategory(
+                              context: context,
+                              sport: item.sport!,
+                              category: item.category!,
+                            ),
                     padding: Sizes.globalPadding,
-                    label: Text(item),
+                    label: Text(item.category!),
                   );
                 },
               ),

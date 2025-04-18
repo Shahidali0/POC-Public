@@ -46,10 +46,16 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 
+	<!-- ACCESSING LOCATION OF DEVICE -->
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We need your location to provide better service.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>We need your location even when the app is in background.</string>
 
+	<!-- SCANNING CARD FOR PAYMENT -->
+	<key>NSCameraUsageDescription</key>
+	<string>Scan your card to add it automatically</string>
+	<key>NSCameraUsageDescription</key>
+	<string>To scan cards</string>
 </dict>
 </plist>

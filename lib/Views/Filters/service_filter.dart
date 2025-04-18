@@ -33,10 +33,10 @@ class _ServiceFiltersState extends ConsumerState<ServiceFilters> {
           : SafeArea(
               minimum: Sizes.globalMargin,
               child: CommonButton(
-                onPressed: () {
-                  ref.invalidate(getAllServciesPr);
-                  AppRouter.instance.pop(context);
-                },
+                onPressed: () => _controller.onApplyFilters(
+                  context: context,
+                  shouldPop: true,
+                ),
                 text: "Apply Filters",
               ),
             ),
@@ -67,7 +67,10 @@ class _ServiceFiltersState extends ConsumerState<ServiceFilters> {
         trailing: Consumer(
           builder: (_, WidgetRef ref, __) {
             return CommonTextButton(
-              onPressed: () => _controller.clearFilters(),
+              onPressed: () => _controller.clearFilters(
+                context: context,
+                shouldPop: true,
+              ),
               text: "Clear All",
               textColor: AppColors.red,
             );

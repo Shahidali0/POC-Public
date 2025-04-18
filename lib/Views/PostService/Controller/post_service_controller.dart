@@ -102,12 +102,12 @@ class PostServiceController extends StateNotifier<_PostServiceStatus> {
   //* Get All Categories
   FutureVoid loadAllCategories() async {
     if (!mounted) return;
-    state.loading = true;
+    state = state.copyWith(loading: true);
 
     allCategories =
         await _ref.read(navbarControllerPr.notifier).getAllCategories();
 
-    state.loading = false;
+    state = state.copyWith(loading: false);
   }
 
   //*Get Sports List
@@ -393,9 +393,12 @@ class PostServiceController extends StateNotifier<_PostServiceStatus> {
     return data;
   }
 
+  //########################## API CALLS ############################
+  //###############################################################
+
   //* Post the Service to API
   void postService(BuildContext context) async {
-    state.loading = true;
+    state = state.copyWith(loading: true);
 
     ///Get Time Slots
     final timeSlots = _getTimeSlotsData();
@@ -416,7 +419,7 @@ class PostServiceController extends StateNotifier<_PostServiceStatus> {
     final response =
         await _repository.postService(postServiceDto: postServiceDto);
 
-    state.loading = false;
+    state = state.copyWith(loading: false);
 
     response.fold(
       (failure) => showErrorSnackBar(

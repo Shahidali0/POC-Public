@@ -21,6 +21,8 @@ sealed class HomeServices {
 
   Future<String?> postService({required PostServiceDto postServiceDto});
 
+  Future<String?> createBooking({required CreateBookingDto bookingDto});
+
   Future<String?> getAllCategories();
 }
 
@@ -43,7 +45,7 @@ class _HomeServicesImpl implements HomeServices {
       url = "services";
     } else {
       url =
-          "services?${sport.isNotEmpty ? "sport=$sport" : ""}${category.isNotEmpty ? "&category=$category" : ""}${subCategory.isNotEmpty ? "&subcategory=$subCategory" : ""}";
+          "services?${sport.isNotEmpty ? "sport=${Uri.encodeComponent(sport)}" : ""}${category.isNotEmpty ? "&category=${Uri.encodeComponent(category)}" : ""}${subCategory.isNotEmpty ? "&subcategory=${Uri.encodeComponent(subCategory)}" : ""}";
     }
 
     // final headers = await _apiHeaders.getHeadersWithToken();
@@ -128,6 +130,24 @@ class _HomeServicesImpl implements HomeServices {
 
     final response = await BaseHttpClient.getService(
       urlEndPoint: url,
+      headers: _apiHeaders.headers,
+    );
+
+    return response;
+  }
+
+  //* Create Booking--From user
+  @override
+  Future<String?> createBooking({required CreateBookingDto bookingDto}) async {
+    const url = "booking";
+
+    final body = bookingDto.toRawJson();
+
+    // final headers = await _apiHeaders.getHeadersWithToken();
+
+    final response = await BaseHttpClient.postService(
+      urlEndPoint: url,
+      body: body,
       headers: _apiHeaders.headers,
     );
 

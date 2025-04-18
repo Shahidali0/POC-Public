@@ -16,7 +16,7 @@ class ServiceDetailsScreen extends ConsumerWidget {
 
     return MyCupertinoSliverScaffold(
       previousPageTitle: "Home",
-      title: serviceJson.title!,
+      title: "Service Details",
 
       ///Bottom Navbar
       bottomNavBar: _BookNowButton(serviceJson: serviceJson),
@@ -35,6 +35,9 @@ class ServiceDetailsScreen extends ConsumerWidget {
 
           ///Available Session Dates
           ..._availableSessionDates(),
+
+          ///Available Session TimeSlots
+          ..._availableSessionTimeSlots(),
 
           ///Location Details
           ..._locationDetails(),
@@ -62,22 +65,13 @@ class ServiceDetailsScreen extends ConsumerWidget {
             ),
           ),
           title: Text(serviceJson.title!),
-          subtitle: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ///Tag
-              Flexible(
-                child: Text(
-                  serviceJson.category!,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: AppColors.appTheme,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-            ],
+          subtitle: Text(
+            "${serviceJson.category} (${serviceJson.sport})",
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              color: AppColors.appTheme,
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
         const SizedBox(height: Sizes.spaceMed),
@@ -143,9 +137,43 @@ class ServiceDetailsScreen extends ConsumerWidget {
           spacing: Sizes.space,
           children: serviceJson.timeSlots!.entries.map(
             (entry) {
-              return ActionChip.elevated(
-                onPressed: () {},
-                label: Text(entry.key),
+              return Card(
+                elevation: 2,
+                margin: EdgeInsets.zero,
+                child: Padding(
+                  padding: Sizes.cardPadding,
+                  child: Text(entry.key),
+                ),
+              );
+            },
+          ).toList(),
+        ),
+      ];
+
+  ///Available Session TimeSlots
+  List<Widget> _availableSessionTimeSlots() => [
+        const SizedBox(height: Sizes.spaceHeight),
+        const Text(
+          "Available Time Slots:",
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontSize: Sizes.fontSize18,
+            color: AppColors.black,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+        const SizedBox(height: Sizes.spaceMed),
+        Wrap(
+          spacing: Sizes.space,
+          children: serviceJson.timeSlots!.values.first.map(
+            (entry) {
+              return Card(
+                elevation: 2,
+                margin: EdgeInsets.zero,
+                child: Padding(
+                  padding: Sizes.cardPadding,
+                  child: Text(entry),
+                ),
               );
             },
           ).toList(),
@@ -233,11 +261,9 @@ class _BookNowButton extends ConsumerWidget {
             Expanded(
               flex: 2,
               child: CommonButton(
-                onPressed: () =>
-                    LogHelper.instance.showPlatformSpecificBottomSheet(
-                  title: "Book Now",
+                onPressed: () => AppRouter.instance.push(
                   context: context,
-                  child: const BookServiceForm(),
+                  screen: BookServiceScreen(serviceJson: serviceJson),
                 ),
                 text: "Book Now",
               ),

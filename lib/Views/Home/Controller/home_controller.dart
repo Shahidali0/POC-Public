@@ -27,8 +27,8 @@ class _HomeController extends StateNotifier<bool> {
         super(false);
 
   //* Get all categories
-  List<String> get getAllCattegoriesList =>
-      _ref.read(allCategoriesPr).map((e) => e.category!).toSet().toList();
+  List<CategoryJson> get getAllCategoriesList =>
+      _ref.read(allCategoriesPr).toSet().toList();
 
   //* Get Featured Services
   Future<AllServicesJson?> getFeaturedServices() =>
@@ -37,17 +37,20 @@ class _HomeController extends StateNotifier<bool> {
   //* onTap Category
 
   void onTapCategory({
+    required String sport,
     required String category,
+    required BuildContext context,
   }) {
     ///Clears the Filter Controller Data
     _ref.invalidate(filtersControllerPr);
 
-    ///Now update the category value in FiltersController
+    ///Now update the Sport And Category value in FiltersController
+    _ref.read(filtersControllerPr.notifier).updateSportValue(sport);
     _ref.read(filtersControllerPr.notifier).updateCategoryValue(category);
 
     ///Now to fetch the services based on the category,
     ///Clear GetAllServcies List data
-    _ref.invalidate(getAllServciesPr);
+    _ref.read(filtersControllerPr.notifier).onApplyFilters(context: context);
 
     ///Now change the bottom nav bar index
     _ref.read(navbarControllerPr.notifier).updateNavbarIndex(index: 1);

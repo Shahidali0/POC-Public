@@ -51,6 +51,11 @@ class Sizes {
 
   static const EdgeInsets globalPadding = EdgeInsets.all(space);
 
+  static const EdgeInsets cardPadding = EdgeInsets.symmetric(
+    horizontal: Sizes.spaceHeight,
+    vertical: Sizes.spaceHeightSm,
+  );
+
   static EdgeInsets cupertinoScaffoldPadding(BuildContext context) =>
       EdgeInsets.only(
         top: MediaQuery.of(context).padding.top + kToolbarHeight,

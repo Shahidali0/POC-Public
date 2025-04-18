@@ -149,7 +149,7 @@ class _CustomNavigationBar extends StatelessWidget {
           const BottomNavigationBarItem(
             icon: Icon(CupertinoIcons.doc_text_search),
             activeIcon: Icon(CupertinoIcons.search),
-            label: "Browse",
+            label: "Services",
           ),
 
           ///Post Services

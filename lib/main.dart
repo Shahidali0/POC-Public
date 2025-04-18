@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:cricket_poc/lib_exports.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
-void main() {
+void main() async {
+  //Initialize Flutter Binding
+  WidgetsFlutterBinding.ensureInitialized();
+
+  //Assign publishable key to flutter_stripe
+  Stripe.publishableKey = MyKeys.instance.stripePublishableKey;
+
+  //Apply Settings
+  await Stripe.instance.applySettings();
+
   runApp(const ProviderScope(child: MyApp()));
 }
 

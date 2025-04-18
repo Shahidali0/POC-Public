@@ -62,8 +62,9 @@ class ServiceCardWidget extends StatelessWidget {
 
               ///Tag
               CustomTile(
-                iconData: CupertinoIcons.person,
-                text: serviceJson.category!.capitalizeFirst,
+                iconData: CupertinoIcons.tag,
+                text:
+                    "${serviceJson.category!.capitalizeFirst} (${serviceJson.sport!.capitalizeFirst})",
               ),
 
               ///Details

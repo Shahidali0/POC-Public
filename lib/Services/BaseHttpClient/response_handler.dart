@@ -3,13 +3,17 @@ import 'package:http/http.dart' as http;
 import 'package:cricket_poc/lib_exports.dart';
 
 class ResponseHandler {
-  static Failure basicFailure = Failure(
+  ResponseHandler._();
+
+  static ResponseHandler get instance => ResponseHandler._();
+
+  Failure basicFailure = Failure(
     title: AppExceptions.instance.serverError,
     message: AppExceptions.instance.normalErrorText,
   );
 
   //! Handle HTTP Responses
-  static handleResponse({required http.Response response}) {
+  String? handleResponse({required http.Response response}) {
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.body.isEmpty) return null;
       return response.body;
@@ -74,30 +78,8 @@ class ResponseHandler {
     ///Else if none of above conditions then
     else {
       throw MyHttpClientException(
-          failure: AppExceptions.instance.handleException(error: ""));
-    }
-  }
-
-  //! Handle HTTP Responses Without Dialogs
-  static Future handleResponseWithoutDialogs(
-      {required http.Response response}) async {
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      if (response.body.isEmpty) return null;
-
-      return response.body;
-    }
-
-    ///Else if none of above conditions then
-    else {
-      if (response.body.isNotEmpty) {
-        final body = jsonDecode(response.body);
-        final message = body["message"];
-        throw MyHttpClientException(
-          failure: Failure(
-              title: AppExceptions.instance.serverError, message: message),
-        );
-      }
-      throw MyHttpClientException(failure: basicFailure);
+        failure: AppExceptions.instance.handleException(error: ""),
+      );
     }
   }
 
@@ -112,7 +94,8 @@ class ResponseHandler {
       throw MyHttpClientException(
           failure: AppExceptions.instance.handleUnAuthorizedError());
     } else {
-      throw MyHttpClientException(failure: basicFailure);
+      throw MyHttpClientException(
+          failure: ResponseHandler.instance.basicFailure);
     }
   }
 }

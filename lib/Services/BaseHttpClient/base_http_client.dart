@@ -17,32 +17,26 @@ class BaseHttpClient {
   static Future getService({
     required String urlEndPoint,
     required Map<String, String> headers,
-    bool hideDialogs = false,
     bool isAuthUrl = false,
   }) async {
     Uri uri = Uri.parse(Utils.instance.baseUrl(isAuthUrl) + urlEndPoint);
 
     final response = await http.get(uri, headers: headers);
 
-    return hideDialogs
-        ? ResponseHandler.handleResponseWithoutDialogs(response: response)
-        : ResponseHandler.handleResponse(response: response);
+    return ResponseHandler.instance.handleResponse(response: response);
   }
 
   ///Delete Service
   static Future deleteService({
     required String urlEndPoint,
     required Map<String, String> headers,
-    bool hideDialogs = false,
     bool isAuthUrl = false,
   }) async {
     Uri uri = Uri.parse(Utils.instance.baseUrl(isAuthUrl) + urlEndPoint);
 
     final response = await http.delete(uri, headers: headers);
 
-    return hideDialogs
-        ? ResponseHandler.handleResponseWithoutDialogs(response: response)
-        : ResponseHandler.handleResponse(response: response);
+    return ResponseHandler.instance.handleResponse(response: response);
   }
 
   ///Post Service
@@ -50,7 +44,6 @@ class BaseHttpClient {
     required String urlEndPoint,
     Object? body,
     required Map<String, String> headers,
-    bool hideDialogs = false,
     bool isAuthUrl = false,
   }) async {
     Uri uri = Uri.parse(Utils.instance.baseUrl(isAuthUrl) + urlEndPoint);
@@ -61,9 +54,7 @@ class BaseHttpClient {
       headers: headers,
     );
 
-    return hideDialogs
-        ? ResponseHandler.handleResponseWithoutDialogs(response: response)
-        : ResponseHandler.handleResponse(response: response);
+    return ResponseHandler.instance.handleResponse(response: response);
   }
 
   ///Put Service
@@ -71,7 +62,6 @@ class BaseHttpClient {
     required String urlEndPoint,
     required Object body,
     required Map<String, String> headers,
-    bool hideDialogs = false,
     bool isAuthUrl = false,
   }) async {
     Uri uri = Uri.parse(Utils.instance.baseUrl(isAuthUrl) + urlEndPoint);
@@ -81,9 +71,7 @@ class BaseHttpClient {
       headers: headers,
     );
 
-    return hideDialogs
-        ? ResponseHandler.handleResponseWithoutDialogs(response: response)
-        : ResponseHandler.handleResponse(response: response);
+    return ResponseHandler.instance.handleResponse(response: response);
   }
 
   ///Put Service
@@ -91,7 +79,6 @@ class BaseHttpClient {
     required String urlEndPoint,
     required String filePath,
     required Map<String, String> headers,
-    bool hideDialogs = false,
     bool isAuthUrl = false,
   }) async {
     Uri uri = Uri.parse(Utils.instance.baseUrl(isAuthUrl) + urlEndPoint);

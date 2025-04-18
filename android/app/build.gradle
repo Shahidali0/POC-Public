@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.cricket_poc"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 35
     ndkVersion = flutter.ndkVersion
 
     compileOptions {

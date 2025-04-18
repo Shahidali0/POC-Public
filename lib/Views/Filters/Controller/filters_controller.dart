@@ -23,13 +23,16 @@ class _FiltersController extends StateNotifier<FiltersControllerState> {
             selectedSport: "",
             selectedCategory: "",
             selectedSubCategory: "",
-            selectedPrice: "",
-            selectedDistance: _intialDistance,
+            // selectedPrice: "",
+            // selectedDistance: _intialDistance,
+            updateFilters: false,
             loading: false,
           ),
         );
 
   List<CategoryJson> allCategories = [];
+
+  FiltersControllerState get emptyFilter => FiltersControllerState.empty();
 
   ///Filters Page LeftMenu Data
   List<String> get filtersData => [
@@ -52,14 +55,38 @@ class _FiltersController extends StateNotifier<FiltersControllerState> {
   }
 
   //* Clear All Filters
-  void clearFilters() {
+  void clearFilters({
+    required BuildContext context,
+    bool shouldPop = false,
+  }) {
+    /// If filters are already applied and the user chooses to clear them,
+    /// refresh the FindServices page to reset the view and show all results.
+    if (state.updateFilters) {
+      _ref.invalidate(getAllServciesPr);
+    }
+
     state = state.copyWith(
       selectedCategory: "",
       selectedSubCategory: "",
-      selectedPrice: "",
-      selectedDistance: _intialDistance,
+      // selectedPrice: "",
+      // selectedDistance: _intialDistance,
+      updateFilters: false,
       loading: false,
     );
+
+    if (shouldPop) AppRouter.instance.pop(context);
+  }
+
+  //* OnTap Apply Filters Button
+  void onApplyFilters({required BuildContext context, bool shouldPop = false}) {
+    state = state.copyWith(updateFilters: true);
+
+    ///Now Refresh the Find Services List
+    _ref.invalidate(getAllServciesPr);
+
+    if (shouldPop) {
+      return AppRouter.instance.pop(context);
+    }
   }
 
   //* Update SportValue
@@ -83,15 +110,15 @@ class _FiltersController extends StateNotifier<FiltersControllerState> {
     state = state.copyWith(selectedSubCategory: value);
   }
 
-  //* Update Price Value
-  void updatePriceValue(String? value) {
-    state = state.copyWith(selectedPrice: value);
-  }
+  // //* Update Price Value
+  // void updatePriceValue(String? value) {
+  //   state = state.copyWith(selectedPrice: value);
+  // }
 
-  //* Update Distance Value
-  void updateDistanceValue(double value) {
-    state = state.copyWith(selectedDistance: value);
-  }
+  // //* Update Distance Value
+  // void updateDistanceValue(double value) {
+  //   state = state.copyWith(selectedDistance: value);
+  // }
 
   //* Get All Categories
   FutureVoid loadAllCategories() async {
@@ -133,16 +160,18 @@ class FiltersControllerState {
   String selectedSport;
   String selectedCategory;
   String selectedSubCategory;
-  String selectedPrice;
-  double selectedDistance;
+  // String selectedPrice;
+  // double selectedDistance;
+  bool updateFilters;
   bool loading;
 
   FiltersControllerState({
     required this.selectedSport,
     required this.selectedCategory,
     required this.selectedSubCategory,
-    required this.selectedPrice,
-    required this.selectedDistance,
+    // required this.selectedPrice,
+    // required this.selectedDistance,
+    required this.updateFilters,
     required this.loading,
   });
 
@@ -150,17 +179,32 @@ class FiltersControllerState {
     String? selectedSport,
     String? selectedCategory,
     String? selectedSubCategory,
-    String? selectedPrice,
-    double? selectedDistance,
+    // String? selectedPrice,
+    // double? selectedDistance,
+    bool? updateFilters,
     bool? loading,
   }) {
     return FiltersControllerState(
       selectedSport: selectedSport ?? this.selectedSport,
       selectedCategory: selectedCategory ?? this.selectedCategory,
       selectedSubCategory: selectedSubCategory ?? this.selectedSubCategory,
-      selectedPrice: selectedPrice ?? this.selectedPrice,
-      selectedDistance: selectedDistance ?? this.selectedDistance,
+      // selectedPrice: selectedPrice ?? this.selectedPrice,
+      // selectedDistance: selectedDistance ?? this.selectedDistance,
+      updateFilters: updateFilters ?? this.updateFilters,
       loading: loading ?? this.loading,
+    );
+  }
+
+  ///Empty Filter
+  static empty() {
+    return FiltersControllerState(
+      selectedSport: "",
+      selectedCategory: "",
+      selectedSubCategory: "",
+      // selectedPrice: "",
+      // selectedDistance: _intialDistance,
+      updateFilters: false,
+      loading: false,
     );
   }
 }

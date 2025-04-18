@@ -7,43 +7,48 @@ class _ServiceDetailsForm extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.read(postServiceControllerPr.notifier);
 
-    return Form(
-      key: controller.serviceDetailsFormKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            "Service Details",
-            style: TextStyle(
-              fontSize: Sizes.fontSize18,
-              fontWeight: FontWeight.bold,
-              color: AppColors.black,
+    return GestureDetector(
+      onTap: () {
+        Utils.instance.hideFoucs(context);
+      },
+      child: Form(
+        key: controller.serviceDetailsFormKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Service Details",
+              style: TextStyle(
+                fontSize: Sizes.fontSize18,
+                fontWeight: FontWeight.bold,
+                color: AppColors.black,
+              ),
             ),
-          ),
-          const Text(
-            "Provide basic information about your service",
-          ),
-          const SizedBox(height: Sizes.spaceSmall),
+            const Text(
+              "Provide basic information about your service",
+            ),
+            const SizedBox(height: Sizes.spaceSmall),
 
-          ///Service Title
-          _ServiceTitleField(controller: controller.serviceTitleController),
+            ///Service Title
+            _ServiceTitleField(controller: controller.serviceTitleController),
 
-          ///Service Sport
-          const _ServiceSport(),
-          // _ValidationErrorMessage(listenable: controller.sportValidation),
+            ///Service Sport
+            const _ServiceSport(),
+            // _ValidationErrorMessage(listenable: controller.sportValidation),
 
-          ///Service Category
-          const _ServiceCategory(),
+            ///Service Category
+            const _ServiceCategory(),
 
-          ///Service Sub-Category
-          const _ServiceSubCategory(),
+            ///Service Sub-Category
+            const _ServiceSubCategory(),
 
-          ///Service Description
-          _ServiceDescriptionField(
-            controller: controller.serviceDescriptionController,
-          ),
-          const SizedBox(height: Sizes.spaceHeight),
-        ],
+            ///Service Description
+            _ServiceDescriptionField(
+              controller: controller.serviceDescriptionController,
+            ),
+            const SizedBox(height: Sizes.spaceHeight),
+          ],
+        ),
       ),
     );
   }
@@ -89,14 +94,15 @@ class _ServiceDescriptionField extends StatelessWidget {
       isRequired: true,
       child: TextFormField(
         controller: controller,
-        keyboardType: TextInputType.name,
+        keyboardType: TextInputType.multiline,
         validator: FieldValidators.instance.commonValidator,
         textCapitalization: TextCapitalization.words,
         maxLines: 7,
         minLines: 4,
+        textInputAction: TextInputAction.newline,
 
         ///Limits 100 characters
-        maxLength: 100,
+        maxLength: 500,
         decoration: const InputDecoration(
           hintText:
               "Describe your service, what players can expect and any requirements...",
