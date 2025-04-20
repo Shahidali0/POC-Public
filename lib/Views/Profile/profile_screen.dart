@@ -2,16 +2,11 @@ import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
   @override
-  State<ProfileScreen> createState() => _FindServicesScreenState();
-}
-
-class _FindServicesScreenState extends State<ProfileScreen> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return CupertinoPageScaffold(
       navigationBar: const CupertinoAppbar(
         title: "Profile",
@@ -20,8 +15,12 @@ class _FindServicesScreenState extends State<ProfileScreen> {
       child: ListView(
         padding: Sizes.cupertinoScaffoldPadding(context),
         children: [
-          const Authorize(),
-          const SizedBox(height: Sizes.spaceMed),
+          ///User Profile
+          AuthorizedWidget(
+            child: _UserProfile(
+              ref: ref,
+            ),
+          ),
 
           ///Divider
           const Divider(thickness: 5),
@@ -40,6 +39,39 @@ class _FindServicesScreenState extends State<ProfileScreen> {
           ),
         ],
       ),
+    );
+  }
+}
+
+///User Profile
+//* If User is not authorized then show Authorize Widget
+class _UserProfile extends StatelessWidget {
+  const _UserProfile({
+    required this.ref,
+  });
+
+  final WidgetRef ref;
+
+  @override
+  Widget build(BuildContext context) {
+    UserJson userJson = ref.read(userJsonPr)!.user!;
+
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: Sizes.space),
+      leading: CircleAvatar(
+        child: Text(
+          "${userJson.firstName![0]}${userJson.lastName![0]}",
+        ),
+      ),
+      title: Text(
+        "${userJson.firstName} ${userJson.lastName}",
+        style: Theme.of(context).textTheme.titleLarge,
+      ),
+      subtitle: Text(
+        userJson.username!,
+        style: Theme.of(context).textTheme.bodyMedium,
+      ),
+      trailing: const Icon(Icons.chevron_right),
     );
   }
 }

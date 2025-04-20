@@ -1,41 +1,59 @@
-class LocalStorage {
-  // final String _kSignInData = "SignedInData";
+import 'dart:convert';
 
-  // final FlutterSecureStorage _storage = const FlutterSecureStorage(
-  //   aOptions: AndroidOptions(encryptedSharedPreferences: true),
-  // );
+import 'package:cricket_poc/lib_exports.dart';
+import 'package:flutter/material.dart';
+
+class LocalStorage {
+  final String _kSignInJson = "SingInJson";
+
+  final FlutterSecureStorage _storage = const FlutterSecureStorage(
+    aOptions: AndroidOptions(encryptedSharedPreferences: true),
+  );
 
   ///
   //* Login Details
-  // Future setLoginDetails(SignInJson signInData) async {
-  //   await deleteLoginDetails();
-  //   await _storage.write(key: _kSignInData, value: jsonEncode(signInData.data));
-  //   debugPrint('Saved Vendor Login Details');
-  // }
+  Future setLoginDetails({required SignInJson singInJson}) async {
+    await deleteLoginDetails();
+    await _storage.write(
+      key: _kSignInJson,
+      value: jsonEncode(singInJson),
+    );
+
+    debugPrint('Created Login Details and Token');
+  }
 
   //* Get JWT Token
   Future<String?> getJwtToken() async {
-    // String? details = await _storage.read(key: _kSignInData);
-    // if (details == null || details == "null") return null;
-    // final data = SignedInData.fromRawJson(details);
+    final signInJson = await getSignInResponse();
 
-    // return data.jwtToken;
-    return '';
+    return signInJson?.accessToken;
   }
 
-  //* Get SignedIn Data
-  // Future<SignedInData?> getSignedInData() async {
-  //   String? details = await _storage.read(key: _kSignInData);
-  //   if (details == null || details == "null") return null;
+  //* Get Login Data
+  Future<SignInJson?> getSignInResponse() async {
+    String? data = await _storage.read(key: _kSignInJson);
 
-  //   return SignedInData.fromRawJson(details);
-  // }
+    if (data == null || data == "null") return null;
+
+    Map<String, dynamic> jsonMap = jsonDecode(data);
+    final signInJson = SignInJson.fromJson(jsonMap);
+
+    return signInJson;
+  }
+
+  //* IsAuthorizes
+  Future<bool> isAuthorized() async {
+    final token = await getJwtToken();
+
+    return token != null;
+  }
 
   //! Delete Login Details
-  // Future deleteLoginDetails() async {
-  //   await _storage.delete(key: _kSignInData);
-  //   debugPrint('Deleted Login Details and Token');
-  // }
+  Future deleteLoginDetails() async {
+    await _storage.delete(key: _kSignInJson);
+
+    debugPrint('Deleted Login Details and Token');
+  }
 
   // //! Clear all data
   // Future deleteAll() async {

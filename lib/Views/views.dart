@@ -76,6 +76,10 @@ export 'ServiceDetails/Controller/service_details_controller.dart';
 
 export 'Profile/profile_screen.dart';
 
+export 'Profile/Components/profile_details_page.dart';
+
+export 'Profile/Repository/profile_repository.dart';
+
 export 'Profile/Controller/profile_controller.dart';
 
 //* Notifications

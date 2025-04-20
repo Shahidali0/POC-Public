@@ -10,18 +10,15 @@ class DashboardNavbarScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = ref.watch(_navBarIndexPr);
-    final showNavbar = ref.watch(_showOrHideNavBarPr);
 
     return Material(
       child: ref.watch(_getAllCategoriesListPr).when(
-            skipLoadingOnRefresh: false,
             data: (data) {
               if (data.isEmpty) {
                 return const EmptyDataWidget();
               }
 
               return _bodyView(
-                showNavbar: showNavbar,
                 ref: ref,
                 currentIndex: currentIndex,
               );
@@ -41,7 +38,6 @@ class DashboardNavbarScreen extends ConsumerWidget {
 
   ///BodyView
   Widget _bodyView({
-    required bool showNavbar,
     required WidgetRef ref,
     required int currentIndex,
   }) {
@@ -49,23 +45,17 @@ class DashboardNavbarScreen extends ConsumerWidget {
       body: IndexedStack(
         index: currentIndex,
         children: const [
-          HomeScreen(),
-          FindServicesScreen(),
+          HomeScreen(key: PageStorageKey("Homescreen")),
+          FindServicesScreen(key: PageStorageKey("FindServicesScreen")),
 
-          ///This is PostButton(+)
-          SizedBox(),
+          ///This is For PostButton(+)
+          SizedBox.shrink(),
 
-          MyServicesScreen(),
-          ProfileScreen(),
+          MyServicesScreen(key: PageStorageKey("MyServicesScreen")),
+          ProfileScreen(key: PageStorageKey("ProfileScreen")),
         ],
       ),
-      bottomNavigationBar: AnimatedCrossFade(
-        duration: Sizes.duration,
-        firstChild: _CustomNavigationBar(ref: ref),
-        secondChild: const SizedBox.shrink(),
-        crossFadeState:
-            showNavbar ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-      ),
+      bottomNavigationBar: _CustomNavigationBar(ref: ref),
     );
   }
 
@@ -96,7 +86,6 @@ class DashboardNavbarScreen extends ConsumerWidget {
   //       },
   //     );
   //   }
-
   //   return true;
   // }
 }

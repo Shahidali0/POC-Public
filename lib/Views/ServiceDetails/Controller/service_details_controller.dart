@@ -44,6 +44,26 @@ class ServiceDetailsController extends StateNotifier<_ServiceDetailsState> {
     state = state.copyWith(selectedSessionDuration: value);
   }
 
+  //* Add duration to selected time to get Actual TimeSlots
+  String _getActualTimeSlots() {
+    final selectedTimeSlot = state.selectedTimeSlot;
+    final selectedDuration = state.selectedSessionDuration;
+
+    /// Parse string to DateTime
+    DateFormat format =
+        DateFormat("hh:mm a"); // '"HH:mm:ss"' is like '10:20 AM'
+    DateTime time = format.parse(selectedTimeSlot);
+
+    /// Add Duration
+    Duration duration = Duration(minutes: int.parse(selectedDuration));
+    DateTime newTime = time.add(duration);
+
+    /// Convert back to string
+    String outputTime = format.format(newTime);
+
+    return "$selectedTimeSlot - $outputTime";
+  }
+
   //########################## API CALLS ############################
   //###############################################################
 
@@ -55,11 +75,14 @@ class ServiceDetailsController extends StateNotifier<_ServiceDetailsState> {
 
     final user = _ref.read(userJsonPr)?.user;
 
+    ///Based on Duration and Selected Time get TimeSlots Range
+    final timeSlots = _getActualTimeSlots();
+
     final response = await _repository.makePayment(
       serviceJson: serviceJson,
       user: user,
       selectedDate: state.selectedDate,
-      selectedTimeSlot: state.selectedTimeSlot,
+      selectedTimeSlot: timeSlots,
     );
 
     state = state.copyWith(loading: false);
@@ -71,6 +94,12 @@ class ServiceDetailsController extends StateNotifier<_ServiceDetailsState> {
         content: failure.message,
       ),
       (success) {
+        ///Go back
+        AppRouter.instance.pop(context, rootNavigator: true);
+
+        ///Now Change BottomNav Index -- To see MyBooking
+        _ref.read(navbarControllerPr.notifier).updateNavbarIndex(index: 2);
+
         showSuccessSnackBar(
           context: context,
           content: success,

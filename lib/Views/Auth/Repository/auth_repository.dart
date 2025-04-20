@@ -7,16 +7,19 @@ import 'package:fpdart/fpdart.dart';
 final authRepositoryPr = Provider<AuthRepository>(
   (ref) => AuthRepository(
     authServices: ref.read(authServicesPr),
-    // localStorage: LocalStorage(),
+    localStorage: LocalStorage(),
   ),
 );
 
 class AuthRepository {
   final AuthServices _authServices;
+  final LocalStorage _localStorage;
 
   AuthRepository({
     required AuthServices authServices,
-  }) : _authServices = authServices;
+    required LocalStorage localStorage,
+  })  : _authServices = authServices,
+        _localStorage = localStorage;
 
   ///Authenticate
   FutureEither<bool> authenticateUser({
@@ -32,8 +35,12 @@ class AuthRepository {
       );
 
       if (signInResult != null) {
-        // final signInData = SignInJson.fromRawJson(signInResult);
-        // await _localStorage.setLoginDetails(signInData);
+        ///Parse the json
+        final signInData = SignInJson.fromRawJson(signInResult);
+
+        ///Save the LoginDetails in local storage
+        signInData.copyWith(emailId: emailId);
+        await _localStorage.setLoginDetails(singInJson: signInData);
         isSignedIn = true;
       }
 

@@ -1,7 +1,5 @@
 import 'dart:io';
-
 import 'package:cricket_poc/lib_exports.dart';
-import 'package:flutter/foundation.dart';
 
 final myServicesRepositoryPr = Provider<MyServicesRepository>(
   (ref) => MyServicesRepository(
@@ -24,7 +22,8 @@ class MyServicesRepository {
           await _homeServices.findUserServices(userId: "123asf234234");
 
       if (response != null) {
-        findMyServices = await compute(AllServicesJson.fromRawJson, response);
+        findMyServices = AllServicesJson.fromRawJson(response);
+        // findMyServices = await compute(AllServicesJson.fromRawJson, response);
       }
 
       return findMyServices;
@@ -48,7 +47,8 @@ class MyServicesRepository {
       );
 
       if (response != null) {
-        userBookings = await compute(BookingsJson.fromRawJson, response);
+        userBookings = BookingsJson.fromRawJson(response);
+        // userBookings = await compute(BookingsJson.fromRawJson, response);
       }
 
       return userBookings;

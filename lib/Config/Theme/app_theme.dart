@@ -4,11 +4,14 @@ import 'package:cricket_poc/lib_exports.dart';
 class AppTheme {
   AppTheme._();
 
+  static const regularFont = "ProximaNova-Regular";
+  static const boldFont = "ProximaNova-Bold";
+
   ///---- LIGHT THEME ------
   static ThemeData lightTheme(BuildContext context) {
     return ThemeData(
       useMaterial3: true,
-      fontFamily: "ProximaNova",
+      fontFamily: regularFont,
       brightness: Brightness.light,
       primaryColor: AppColors.appTheme,
       scaffoldBackgroundColor: AppColors.scaffoldBackColor,
@@ -38,7 +41,7 @@ class AppTheme {
   static ThemeData darkTheme(BuildContext context) {
     return ThemeData(
       useMaterial3: true,
-      fontFamily: "ProximaNova",
+      fontFamily: regularFont,
       brightness: Brightness.dark,
       primaryColor: AppColors.appTheme,
       scaffoldBackgroundColor: AppColors.black,

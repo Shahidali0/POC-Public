@@ -65,50 +65,6 @@ class AuthController extends StateNotifier<bool> {
   //################################### ############################
   //################################### ############################
 
-  /*
-  ///Ontap Register as User
-  void onTapRegisterAsUser({
-    required BuildContext context,
-    required UserRegistrationDto userData,
-  }) {
-    ///Not validated
-    if (!userData.isValidated) {
-      showErrorSnackBar(
-        context: context,
-        content: FieldValidators.instance.requiredText,
-      );
-      return;
-    }
-
-    ///Else
-    showSuccessSnackBar(
-      context: context,
-      content: "User registered successfully",
-    );
-  }
-
-  ///Ontap Register as Provider
-  void onTapRegisterAsProvider({
-    required BuildContext context,
-    required ProviderRegistrationDto providerData,
-  }) {
-    ///Not validated
-    if (!providerData.isValidated) {
-      showErrorSnackBar(
-        context: context,
-        content: FieldValidators.instance.requiredText,
-      );
-      return;
-    }
-
-    ///Else
-    showSuccessSnackBar(
-      context: context,
-      content: "Provider registration was successfull",
-    );
-  }
-  */
-
   ///Sign in User
   Future<void> signInUser({
     required BuildContext context,
@@ -175,11 +131,11 @@ class AuthController extends StateNotifier<bool> {
 
     state = true;
 
-    final isSignedIn = await _authRepository.signUpUser(dto: signUpDto);
+    final isSignedup = await _authRepository.signUpUser(dto: signUpDto);
 
     state = false;
 
-    isSignedIn.fold(
+    isSignedup.fold(
       (failure) => showErrorSnackBar(
         context: context,
         title: failure.title,

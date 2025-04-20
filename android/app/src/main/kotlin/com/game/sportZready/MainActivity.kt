@@ -1,4 +1,4 @@
-package com.example.cricket_poc
+package com.game.sportZready
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 

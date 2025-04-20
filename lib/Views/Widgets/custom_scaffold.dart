@@ -54,6 +54,7 @@ class MyCupertinoSliverScaffold extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontStyle: FontStyle.italic,
                         color: AppColors.appTheme,
+                        fontFamily: AppTheme.boldFont,
                       ),
                     ),
               largeTitle: title == null
@@ -66,6 +67,7 @@ class MyCupertinoSliverScaffold extends StatelessWidget {
                         fontStyle: FontStyle.italic,
                         color: AppColors.black,
                         fontSize: Sizes.fontSize24,
+                        fontFamily: AppTheme.boldFont,
                       ),
                     ),
             ),

@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:cricket_poc/lib_exports.dart';
-import 'package:flutter/foundation.dart';
 
 final findServicesRepositoryPr = Provider<FindServicesRepository>(
   (ref) => FindServicesRepository(
@@ -28,7 +27,8 @@ class FindServicesRepository {
       );
 
       if (response != null) {
-        findAllServices = await compute(AllServicesJson.fromRawJson, response);
+        findAllServices = AllServicesJson.fromRawJson(response);
+        // findAllServices = await compute(AllServicesJson.fromRawJson, response);
       }
 
       return findAllServices;

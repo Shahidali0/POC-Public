@@ -29,17 +29,15 @@ class ResponseHandler {
 
       ///
       final responseData = jsonDecode(response.body);
-      String title = responseData["message"].toString().replaceAll(".", "");
-      String message = responseData["error"].toString();
-      // if (status.toLowerCase().contains("error")) {
-      //   basicFailure = Failure(
-      //     title: AppExceptions.instance.serverError,
-      //     message: message,
-      //   );
-      // }
+      String title = responseData["message"]
+          .toString()
+          .replaceAll(".", "")
+          .capitalizeFirst;
+      String? message = responseData["error"]?.toString().capitalizeFirst;
+
       basicFailure = Failure(
         title: title,
-        message: message,
+        message: message ?? AppExceptions.instance.normalErrorText,
       );
 
       throw MyHttpClientException(failure: basicFailure);
@@ -58,18 +56,21 @@ class ResponseHandler {
         response.statusCode == 500) {
       if (response.body.isEmpty) {
         throw MyHttpClientException(
-            failure: AppExceptions.instance.handleInternalServerError());
+          failure: AppExceptions.instance.handleInternalServerError(),
+        );
       }
 
       ///
       final responseData = jsonDecode(response.body);
-      String title =
-          responseData["message"].toString().replaceAll(".", "").toLowerCase();
-      String message = responseData["error"].toString().toLowerCase();
+      String title = responseData["message"]
+          .toString()
+          .replaceAll(".", "")
+          .capitalizeFirst;
+      String? message = responseData["error"]?.toString().capitalizeFirst;
 
       basicFailure = Failure(
         title: title,
-        message: message,
+        message: message ?? AppExceptions.instance.normalErrorText,
       );
 
       throw MyHttpClientException(failure: basicFailure);
@@ -78,7 +79,9 @@ class ResponseHandler {
     ///Else if none of above conditions then
     else {
       throw MyHttpClientException(
-        failure: AppExceptions.instance.handleException(error: ""),
+        failure: AppExceptions.instance.handleException(
+          error: AppExceptions.instance.normalErrorText,
+        ),
       );
     }
   }

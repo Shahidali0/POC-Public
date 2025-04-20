@@ -18,7 +18,6 @@ class ApiHeaders {
   ///Get Headers with Token
   Future<Map<String, String>> getHeadersWithToken() async {
     final token = await _localStorage.getJwtToken();
-    // final token = await _localStorage.getJwtToken();
 
     return <String, String>{
       HttpHeaders.contentTypeHeader: 'application/json; charset=UTF-8',

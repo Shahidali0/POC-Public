@@ -1,7 +1,5 @@
 import 'dart:io';
-
 import 'package:cricket_poc/lib_exports.dart';
-import 'package:flutter/foundation.dart';
 
 final homeRepositoryPr = Provider<HomeRepository>(
   (ref) => HomeRepository(
@@ -23,7 +21,8 @@ class HomeRepository {
       final response = await _homeServices.getFeaturedServices();
 
       if (response != null) {
-        featuredServices = await compute(AllServicesJson.fromRawJson, response);
+        featuredServices = AllServicesJson.fromRawJson(response);
+        // featuredServices = await compute(AllServicesJson.fromRawJson, response);
       }
 
       return featuredServices;

@@ -1,25 +1,26 @@
 import 'dart:convert';
 
-class UsersJson {
+class UsersResponseJson {
   final UserJson? user;
 
-  UsersJson({
+  UsersResponseJson({
     this.user,
   });
 
-  UsersJson copyWith({
+  UsersResponseJson copyWith({
     UserJson? user,
   }) =>
-      UsersJson(
+      UsersResponseJson(
         user: user ?? this.user,
       );
 
-  factory UsersJson.fromRawJson(String str) =>
-      UsersJson.fromJson(json.decode(str));
+  factory UsersResponseJson.fromRawJson(String str) =>
+      UsersResponseJson.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory UsersJson.fromJson(Map<String, dynamic> json) => UsersJson(
+  factory UsersResponseJson.fromJson(Map<String, dynamic> json) =>
+      UsersResponseJson(
         user: json["user"] == null ? null : UserJson.fromJson(json["user"]),
       );
 

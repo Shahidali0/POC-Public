@@ -48,11 +48,11 @@ class _HomeServicesImpl implements HomeServices {
           "services?${sport.isNotEmpty ? "sport=${Uri.encodeComponent(sport)}" : ""}${category.isNotEmpty ? "&category=${Uri.encodeComponent(category)}" : ""}${subCategory.isNotEmpty ? "&subcategory=${Uri.encodeComponent(subCategory)}" : ""}";
     }
 
-    // final headers = await _apiHeaders.getHeadersWithToken();
+    final headers = await _apiHeaders.getHeadersWithToken();
 
     final response = await BaseHttpClient.getService(
       urlEndPoint: url,
-      headers: _apiHeaders.headers,
+      headers: headers,
     );
 
     return response;
@@ -63,11 +63,11 @@ class _HomeServicesImpl implements HomeServices {
   Future<String?> getFeaturedServices() async {
     const url = "services?featured=true";
 
-    // final headers = await _apiHeaders.getHeadersWithToken();
+    final headers = await _apiHeaders.getHeadersWithToken();
 
     final response = await BaseHttpClient.getService(
       urlEndPoint: url,
-      headers: _apiHeaders.headers,
+      headers: headers,
     );
 
     return response;
@@ -78,11 +78,11 @@ class _HomeServicesImpl implements HomeServices {
   Future<String?> findUserServices({required String userId}) async {
     final url = "services?providerId=$userId";
 
-    // final headers = await _apiHeaders.getHeadersWithToken();
+    final headers = await _apiHeaders.getHeadersWithToken();
 
     final response = await BaseHttpClient.getService(
       urlEndPoint: url,
-      headers: _apiHeaders.headers,
+      headers: headers,
     );
 
     return response;
@@ -93,11 +93,11 @@ class _HomeServicesImpl implements HomeServices {
   Future<String?> getUserBookings({required String userId}) async {
     final url = "booking?userId=$userId";
 
-    // final headers = await _apiHeaders.getHeadersWithToken();
+    final headers = await _apiHeaders.getHeadersWithToken();
 
     final response = await BaseHttpClient.getService(
       urlEndPoint: url,
-      headers: _apiHeaders.headers,
+      headers: headers,
     );
 
     return response;
@@ -110,12 +110,12 @@ class _HomeServicesImpl implements HomeServices {
 
     final body = postServiceDto.toRawJson();
 
-    // final headers = await _apiHeaders.getHeadersWithToken();
+    final headers = await _apiHeaders.getHeadersWithToken();
 
     final response = await BaseHttpClient.postService(
       urlEndPoint: url,
       body: body,
-      headers: _apiHeaders.headers,
+      headers: headers,
     );
 
     return response;
@@ -126,11 +126,11 @@ class _HomeServicesImpl implements HomeServices {
   Future<String?> getAllCategories() async {
     const url = "category";
 
-    // final headers = await _apiHeaders.getHeadersWithToken();
+    final headers = await _apiHeaders.getHeadersWithToken();
 
     final response = await BaseHttpClient.getService(
       urlEndPoint: url,
-      headers: _apiHeaders.headers,
+      headers: headers,
     );
 
     return response;
@@ -143,12 +143,12 @@ class _HomeServicesImpl implements HomeServices {
 
     final body = bookingDto.toRawJson();
 
-    // final headers = await _apiHeaders.getHeadersWithToken();
+    final headers = await _apiHeaders.getHeadersWithToken();
 
     final response = await BaseHttpClient.postService(
       urlEndPoint: url,
       body: body,
-      headers: _apiHeaders.headers,
+      headers: headers,
     );
 
     return response;

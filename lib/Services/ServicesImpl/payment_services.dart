@@ -83,26 +83,26 @@ class _StripePaymentServicesImpl implements StripePaymentServices {
   FutureVoid initPaymentSheet({
     required String clientSecretKey,
     required String merchantName,
-  }) async {
-    await Stripe.instance.initPaymentSheet(
-      paymentSheetParameters: SetupPaymentSheetParameters(
-        paymentIntentClientSecret: clientSecretKey, //Gotten from payment intent
-        style: ThemeMode.system,
-        merchantDisplayName: merchantName,
-        appearance: const PaymentSheetAppearance(
-          ///Button
-          primaryButton: PaymentSheetPrimaryButtonAppearance(
-            colors: PaymentSheetPrimaryButtonTheme(
-              light: PaymentSheetPrimaryButtonThemeColors(
-                background: AppColors.appTheme,
-                text: AppColors.white,
+  }) async =>
+      await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+          paymentIntentClientSecret:
+              clientSecretKey, //Gotten from payment intent
+          style: ThemeMode.system,
+          merchantDisplayName: merchantName,
+          appearance: const PaymentSheetAppearance(
+            ///Button
+            primaryButton: PaymentSheetPrimaryButtonAppearance(
+              colors: PaymentSheetPrimaryButtonTheme(
+                light: PaymentSheetPrimaryButtonThemeColors(
+                  background: AppColors.appTheme,
+                  text: AppColors.white,
+                ),
               ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 /// Calculate Amount

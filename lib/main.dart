@@ -3,13 +3,16 @@ import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
 void main() async {
-  //Initialize Flutter Binding
-  WidgetsFlutterBinding.ensureInitialized();
+  ///Initialize Flutter Binding
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+
+  ///Initialize Splash screen
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   //Assign publishable key to flutter_stripe
   Stripe.publishableKey = MyKeys.instance.stripePublishableKey;
 
-  //Apply Settings
+  //Apply Settings --For Stripe
   await Stripe.instance.applySettings();
 
   runApp(const ProviderScope(child: MyApp()));
@@ -20,6 +23,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FlutterNativeSplash.remove();
+
     return MaterialApp(
       title: 'PlayMate',
       // showPerformanceOverlay: true,
@@ -27,13 +32,16 @@ class MyApp extends StatelessWidget {
       darkTheme: AppTheme.darkTheme(context),
       theme: AppTheme.lightTheme(context),
       themeMode: ThemeMode.light,
-      // home: const IntroScreen(),
-      // home: const LocationScreen(),
       home: const DashboardNavbarScreen(),
-      // home: const LoginScreen(),
-      // home: const OtpVerificationScreen(
-      //   emailId: "shahid@asztechnologies.com",
-      // ),
     );
+  }
+}
+
+class Spash extends StatelessWidget {
+  const Spash({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }
