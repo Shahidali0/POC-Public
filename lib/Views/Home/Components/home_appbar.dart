@@ -12,7 +12,7 @@ class _HomeTitleAppBar extends StatelessWidget {
       pinned: true,
       centerTitle: true,
       scrolledUnderElevation: 0,
-      backgroundColor: AppColors.blueLight,
+      backgroundColor: AppColors.lightBlue,
       actions: [
         FadeAnimations(
           child: Padding(
@@ -58,7 +58,6 @@ class _HomeTitleAppBar extends StatelessWidget {
 }
 
 ///This Class shows homepage appbar with search button followed by tabs
-
 class _HomeSearchbarWithCategories extends ConsumerWidget {
   const _HomeSearchbarWithCategories();
 
@@ -114,15 +113,35 @@ class _HomeSearchbarWithCategories extends ConsumerWidget {
 
             ///Search Field
             const SizedBox(height: Sizes.spaceHeightSm),
-            const TextField(
-              readOnly: true,
-              decoration: InputDecoration(
-                hintText: "Search for coaching, training or services…",
-                prefixIcon: Icon(CupertinoIcons.search),
+            InkWell(
+              onTap: () => ref
+                  .read(homeControllerPr.notifier)
+                  .showSearchWidget(context: context),
+              child: Container(
+                padding: Sizes.globalPadding,
+                decoration: BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.circular(Sizes.borderRadius),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(
+                      CupertinoIcons.search,
+                      color: AppColors.grey,
+                    ),
+                    const SizedBox(width: Sizes.space),
+                    Text(
+                      "Search for coaching, training or services…",
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                            color: AppColors.blueGrey,
+                          ),
+                    ),
+                  ],
+                ),
               ),
             ),
 
-            ///Buttons
+            ///Post Button
             const SizedBox(height: Sizes.spaceHeight),
             CommonButton(
               onPressed: () => AppRouter.instance.animatedPush(
@@ -151,8 +170,8 @@ class _HomeSearchbarWithCategories extends ConsumerWidget {
                     onPressed: () =>
                         ref.read(homeControllerPr.notifier).onTapCategory(
                               context: context,
-                              sport: item.sport!,
-                              category: item.category!,
+                              sport: item.sport,
+                              category: item.category,
                             ),
                     padding: Sizes.globalPadding,
                     label: Text(item.category!),

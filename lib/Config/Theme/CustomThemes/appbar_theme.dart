@@ -13,7 +13,7 @@ class MyAppbarTheme {
       shadowColor: AppColors.border,
       backgroundColor: AppColors.white,
       foregroundColor: AppColors.appTheme,
-      surfaceTintColor: AppColors.blueLight,
+      surfaceTintColor: AppColors.lightBlue,
       scrolledUnderElevation: 6,
       titleTextStyle: TextStyle(
         fontStyle: FontStyle.italic,

@@ -36,6 +36,7 @@ export 'DashboardNavBar/dashboard_screen.dart';
 export 'Home/Repository/home_repository.dart';
 
 export 'Home/Components/featured_services.dart';
+export 'Home/Components/search_delegate.dart';
 
 export 'Home/home_screen.dart';
 

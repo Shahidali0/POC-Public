@@ -55,7 +55,7 @@ class ServiceDetailsScreen extends ConsumerWidget {
           horizontalTitleGap: Sizes.spaceMed,
           leading: CircleAvatar(
             radius: 30,
-            backgroundColor: AppColors.blueLight,
+            backgroundColor: AppColors.lightBlue,
             child: Text(
               controller.getInitials(serviceJson.title!),
               style: const TextStyle(

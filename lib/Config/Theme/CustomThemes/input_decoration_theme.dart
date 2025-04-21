@@ -25,7 +25,7 @@ class MyInputDecorationTheme {
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(Sizes.borderRadius),
-        borderSide: BorderSide(color: AppColors.blueLight.withOpacity(0.75)),
+        borderSide: BorderSide(color: AppColors.lightBlue.withOpacity(0.75)),
       ),
       errorBorder: OutlineInputBorder(
         borderSide: const BorderSide(color: AppColors.red),

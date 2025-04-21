@@ -3,6 +3,7 @@ export 'Dto/create_booking_dto.dart';
 export 'Dto/post_service_dto.dart';
 
 export 'Local/local_data.dart';
+export 'Local/search_filter_model.dart';
 export 'Local/local_models.dart';
 
 export 'Json/services_json.dart';

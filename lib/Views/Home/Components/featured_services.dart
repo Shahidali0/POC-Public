@@ -23,7 +23,7 @@ class FeaturedServicesList extends ConsumerWidget {
             return ErrorText(
               title: error.title,
               error: error.message,
-              onRefresh: () async => ref.invalidate(getAllServciesPr),
+              onRefresh: () async => ref.invalidate(getFindServciesListPr),
             );
           },
           loading: () => const _ShimmerCard(),

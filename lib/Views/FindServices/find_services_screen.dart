@@ -12,7 +12,7 @@ class FindServicesScreen extends ConsumerWidget {
     final updateFilters = ref.watch(filtersControllerPr).updateFilters;
 
     return RefreshIndicator.adaptive(
-      onRefresh: () async => ref.invalidate(getAllServciesPr),
+      onRefresh: () async => ref.invalidate(getFindServciesListPr),
       child: CupertinoPageScaffold(
         navigationBar: CupertinoAppbar(
           title: "Find Services",
@@ -29,7 +29,7 @@ class FindServicesScreen extends ConsumerWidget {
         child: Stack(
           children: [
             ///List
-            ref.watch(getAllServciesPr).when(
+            ref.watch(getFindServciesListPr).when(
                   skipLoadingOnRefresh: false,
                   data: (data) {
                     if (data == null || (data.services?.isEmpty ?? false)) {
@@ -48,7 +48,8 @@ class FindServicesScreen extends ConsumerWidget {
                     return ErrorText(
                       title: error.title,
                       error: error.message,
-                      onRefresh: () async => ref.invalidate(getAllServciesPr),
+                      onRefresh: () async =>
+                          ref.invalidate(getFindServciesListPr),
                     );
                   },
                   loading: () => const ShowDataLoader(),

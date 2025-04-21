@@ -6,16 +6,14 @@ class AppColors {
   AppColors._();
 
   static const Color appTheme = Color(0xFF537EEF);
-  // static const Color appTheme = Color(0xFF5758d0);
-  static const Color blueLight = Color(0xFF95ADF3);
   static const Color scaffoldBackColor = CupertinoColors.white;
 
   static const Color black = CupertinoColors.black;
   static const Color blueGrey = Color(0xFF3f556e);
   static const Color card = CupertinoColors.secondarySystemGroupedBackground;
-  // static const Color card = CupertinoColors.secondarySystemBackground;
   static const Color grey = Color(0xFFABBBCE);
   static Color lightGrey = CupertinoColors.extraLightBackgroundGray;
+  static const Color lightBlue = Color(0xFF95ADF3);
   static const Color button = Color(0xFF678CEA);
   static const Color border = Color(0xFFEDEDED);
   static const Color orange =
@@ -32,7 +30,7 @@ class AppColors {
     end: Alignment.bottomCenter,
     colors: [
       // appTheme,
-      blueLight,
+      lightBlue,
       white,
     ],
   );

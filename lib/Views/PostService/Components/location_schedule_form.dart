@@ -146,7 +146,7 @@ class _AvailableDates extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius:
                               BorderRadius.circular(Sizes.borderRadius),
-                          side: const BorderSide(color: AppColors.blueLight),
+                          side: const BorderSide(color: AppColors.lightBlue),
                         ),
                         label: Text(
                           Utils.instance.formatDateToString(day),

@@ -12,7 +12,7 @@ class MyFloatingActionButtonTheme {
     return Theme.of(context).floatingActionButtonTheme.copyWith(
           backgroundColor: AppColors.white,
           foregroundColor: AppColors.appTheme,
-          splashColor: AppColors.blueLight,
+          splashColor: AppColors.lightBlue,
           iconSize: 26,
         );
   }
