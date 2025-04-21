@@ -432,9 +432,9 @@ class PostServiceController extends StateNotifier<_PostServiceStatus> {
           context: context,
           content: success,
         );
-        return AppRouter.instance.pushOff(
-          context: context,
-          screen: const DashboardNavbarScreen(),
+        return AppRouter.instance.pop(
+          context,
+          rootNavigator: true,
         );
       },
     );

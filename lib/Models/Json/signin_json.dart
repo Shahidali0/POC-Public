@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 class SignInJson {
@@ -19,23 +20,6 @@ class SignInJson {
     this.password,
   });
 
-  SignInJson copyWith({
-    String? message,
-    String? accessToken,
-    String? idToken,
-    String? refreshToken,
-    String? emailId,
-    String? password,
-  }) =>
-      SignInJson(
-        message: message ?? this.message,
-        accessToken: accessToken ?? this.accessToken,
-        idToken: idToken ?? this.idToken,
-        refreshToken: refreshToken ?? this.refreshToken,
-        emailId: emailId ?? this.emailId,
-        password: password ?? this.password,
-      );
-
   factory SignInJson.fromRawJson(String str) =>
       SignInJson.fromJson(json.decode(str));
 
@@ -55,5 +39,25 @@ class SignInJson {
         "accessToken": accessToken,
         "idToken": idToken,
         "refreshToken": refreshToken,
+        "emailId": emailId,
+        "password": password,
       };
+
+  SignInJson copyWith({
+    String? message,
+    String? accessToken,
+    String? idToken,
+    String? refreshToken,
+    String? emailId,
+    String? password,
+  }) {
+    return SignInJson(
+      message: message ?? this.message,
+      accessToken: accessToken ?? this.accessToken,
+      idToken: idToken ?? this.idToken,
+      refreshToken: refreshToken ?? this.refreshToken,
+      emailId: emailId ?? this.emailId,
+      password: password ?? this.password,
+    );
+  }
 }

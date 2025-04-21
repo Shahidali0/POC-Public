@@ -27,7 +27,9 @@ export 'Auth/Repository/auth_repository.dart';
 
 export 'DashboardNavBar/Repository/navbar_repository.dart';
 
-export 'DashboardNavBar/dashboard_navbar_screen.dart';
+export 'DashboardNavBar/navbar_screen.dart';
+
+export 'DashboardNavBar/dashboard_screen.dart';
 
 //* Home
 

@@ -51,7 +51,7 @@ class IntroController extends StateNotifier<bool> {
 
     return AppRouter.instance.pushOff(
       context: context,
-      screen: const DashboardNavbarScreen(),
+      screen: const DashboardScreen(),
     );
   }
 

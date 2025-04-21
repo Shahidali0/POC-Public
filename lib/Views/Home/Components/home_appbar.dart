@@ -81,23 +81,20 @@ class _HomeSearchbarWithCategories extends ConsumerWidget {
             ///User Wish
             RichText(
               text: TextSpan(
-                style: const TextStyle(
-                  color: AppColors.white,
-                  fontWeight: FontWeight.normal,
-                ),
-                text: "Welcome back",
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                      color: AppColors.white,
+                      fontWeight: FontWeight.normal,
+                    ),
+                text: user != null ? "Welcome back, " : "Welcome, ",
                 children: [
-                  ///Comma
-                  if (user != null) const TextSpan(text: ", "),
-
                   ///UserName
                   if (user != null)
                     TextSpan(
                       text: "${user.firstName} ${user.lastName}",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: Sizes.fontSize16,
-                      ),
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.white,
+                          ),
                     ),
                 ],
               ),

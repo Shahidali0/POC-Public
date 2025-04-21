@@ -88,7 +88,6 @@ class HomeScreen extends ConsumerWidget {
               textAlign: TextAlign.center,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: Sizes.spaceHeight),
           ],
         ),
       ),

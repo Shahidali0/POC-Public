@@ -54,7 +54,9 @@ class _UserProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UserJson userJson = ref.read(userJsonPr)!.user!;
+    UserJson? userJson = ref.read(userJsonPr)?.user;
+
+    if (userJson == null) return const SizedBox.shrink();
 
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: Sizes.space),

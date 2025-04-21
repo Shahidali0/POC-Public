@@ -1,4 +1,4 @@
-part of 'package:cricket_poc/Views/DashboardNavBar/dashboard_navbar_screen.dart';
+part of 'package:cricket_poc/Views/DashboardNavBar/navbar_screen.dart';
 
 final _navBarIndexPr = StateProvider<int>((ref) => 0);
 
@@ -6,9 +6,9 @@ final allCategoriesPr = StateProvider<List<CategoryJson>>((ref) {
   return [];
 });
 
-final _getAllCategoriesListPr = FutureProvider<List<CategoryJson>>((ref) async {
-  return ref.watch(navbarControllerPr.notifier).loadData();
-});
+// final _loadDashboardDataPr = FutureProvider<List<CategoryJson>>((ref) async {
+//   return ref.watch(navbarControllerPr.notifier).loadData();
+// });
 
 final navbarControllerPr = StateNotifierProvider<NavbarController, bool>(
   (ref) => NavbarController(
@@ -38,7 +38,10 @@ class NavbarController extends StateNotifier<bool> {
   }
 
   ///Load all required api's
-  Future<List<CategoryJson>> loadData() async {
+  Future<List<CategoryJson>> loadDashboardData() async {
+    // print("Load Data");
+    // throw AppExceptions.instance.handleSocketException();
+
     final response = await Future.wait([
       _navBarRepository.getAllCategories(),
       _profileRepository.getCurrentUser(),

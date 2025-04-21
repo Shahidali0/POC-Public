@@ -4,43 +4,13 @@ import 'package:cricket_poc/lib_exports.dart';
 
 part "Controller/navbar_controller.dart";
 
-class DashboardNavbarScreen extends ConsumerWidget {
-  const DashboardNavbarScreen({super.key});
+class NavbarScreen extends ConsumerWidget {
+  const NavbarScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = ref.watch(_navBarIndexPr);
 
-    return Material(
-      child: ref.watch(_getAllCategoriesListPr).when(
-            data: (data) {
-              if (data.isEmpty) {
-                return const EmptyDataWidget();
-              }
-
-              return _bodyView(
-                ref: ref,
-                currentIndex: currentIndex,
-              );
-            },
-            error: (e, st) {
-              final error = e as Failure;
-              return ErrorText(
-                title: error.title,
-                error: error.message,
-                onRefresh: () async => ref.invalidate(_getAllCategoriesListPr),
-              );
-            },
-            loading: () => const ShowDataLoader(),
-          ),
-    );
-  }
-
-  ///BodyView
-  Widget _bodyView({
-    required WidgetRef ref,
-    required int currentIndex,
-  }) {
     return Scaffold(
       body: IndexedStack(
         index: currentIndex,
@@ -172,74 +142,66 @@ class _CustomNavigationBar extends StatelessWidget {
   }
 }
 
-//  return Padding(
-//     padding:
-//         const EdgeInsets.fromLTRB(Sizes.space, 0, Sizes.space, Sizes.space),
-//     child: ClipRRect(
-//       borderRadius: BorderRadius.circular(Sizes.borderRadius * 2),
-//       child: NavigationBarTheme(
-//         data: Theme.of(context).navigationBarTheme.copyWith(
 
-//             ///This is for Custom Label Style
-//             // labelTextStyle: WidgetStateProperty.resolveWith(
-//             //   (state) {
-//             //     if (state.contains(WidgetState.selected)) {
-//             //       return TextStyle(
-//             //         color: AppColors.indicatorColors[selectedIndex],
-//             //         fontStyle: FontStyle.italic,
-//             //         fontWeight: FontWeight.w600,
-//             //         fontSize: Sizes.fontSize12,
-//             //       );
-//             //     }
-//             //     return const TextStyle(
-//             //       color: AppColors.black,
-//             //     );
-//             //   },
-//             // ),
+///  return Material(
+      // child: StatefulBuilder(
+      //   builder =
+      //       (BuildContext context, void Function(void Function()) setState) {
+      //     print("StatefulBuilder");
+      //     return FutureBuilder<List<CategoryJson>>(
+      //       future: ref.watch(navbarControllerPr.notifier).loadData(),
+      //       builder: (BuildContext context,
+      //           AsyncSnapshot<List<CategoryJson>> snapshot) {
+      //         switch (snapshot.connectionState) {
+      //           case ConnectionState.waiting:
+      //             return const ShowDataLoader();
+      //           case ConnectionState.done:
+      //           default:
+      //             //*If SnapData has error
+      //             if (snapshot.hasError) {
+      //               final error = snapshot.error as Failure;\
+      //               return ErrorText(
+      //                 title: error.title,
+      //                 error: error.message,
+      //                 onRefresh: () async => setState(() {}),
+      //               );
+      //             }
+      //             //*If SnapData is present
+      //             else if (snapshot.hasData) {
+      //               return _bodyView(
+      //                 ref: ref,
+      //                 currentIndex: currentIndex,
+      //               );
+      //             }
+      //             //*If No Data Available
+      //             else {
+      //               return const EmptyDataWidget();
+      //             }
+      //         }
+      //       },
+      //     );
+      //   },
+      // ),
+      // child: ref.watch(_getAllCategoriesListPr).when(
+      //       data: (data) {
+      //         if (data.isEmpty) {
+      //           return const EmptyDataWidget();
+      //         }
 
-//             ),
-//         child: NavigationBar(
-//           backgroundColor: AppColors.transparent,
-//           selectedIndex: selectedIndex,
-//           onDestinationSelected: (value) =>
-//               ref.read(navBarIndexPr.notifier).update((st) => st = value),
-//           // indicatorColor: AppColors.indicatorColors[selectedIndex],
-//           destinations: const [
-//             ///Home
-//             NavigationDestination(
-//               icon: Icon(CupertinoIcons.home),
-//               selectedIcon: Icon(CupertinoIcons.house_fill),
-//               label: "Home",
-//             ),
-
-//             ///Find Services
-//             Padding(
-//               padding: EdgeInsets.only(right: 5),
-//               child: NavigationDestination(
-//                 icon: Icon(CupertinoIcons.doc_text_search),
-//                 selectedIcon: Icon(CupertinoIcons.search),
-//                 label: "Find Services",
-//               ),
-//             ),
-
-//             ///My Services
-//             Padding(
-//               padding: EdgeInsets.only(left: 5),
-//               child: NavigationDestination(
-//                 icon: Icon(Icons.design_services_outlined),
-//                 selectedIcon: Icon(CupertinoIcons.settings_solid),
-//                 label: "My Services",
-//               ),
-//             ),
-
-//             ///Profile
-//             NavigationDestination(
-//               icon: Icon(CupertinoIcons.person),
-//               selectedIcon: Icon(CupertinoIcons.person_fill),
-//               label: "Profile",
-//             ),
-//           ],
-//         ),
-//       ),
-//     ),
-//   );
+      //         return _bodyView(
+      //           ref: ref,
+      //           currentIndex: currentIndex,
+      //         );
+      //       },
+      //       error: (e, st) {
+      //         final error = e as Failure;
+      //         return ErrorText(
+      //           title: error.title,
+      //           error: error.message,
+      //           onRefresh: () async => ref.invalidate(_getAllCategoriesListPr),
+      //         );
+      //       },
+      //       loading: () => const ShowDataLoader(),
+      //     ),
+    // );
+ 

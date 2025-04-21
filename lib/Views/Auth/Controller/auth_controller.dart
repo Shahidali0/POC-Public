@@ -65,6 +65,9 @@ class AuthController extends StateNotifier<bool> {
   //################################### ############################
   //################################### ############################
 
+  ///Auto Sign In
+  Future<bool> autoSignIn() async => await _authRepository.autoSignIn();
+
   ///Sign in User
   Future<void> signInUser({
     required BuildContext context,
@@ -94,10 +97,14 @@ class AuthController extends StateNotifier<bool> {
         title: failure.title,
         content: failure.message,
       ),
-      (success) => AppRouter.instance.pushOff(
-        context: context,
-        screen: const DashboardNavbarScreen(),
-      ),
+      (success) {
+        _ref.invalidate(isAuthroizedPr);
+
+        return AppRouter.instance.pushOff(
+          context: context,
+          screen: const DashboardScreen(),
+        );
+      },
     );
   }
 
@@ -201,9 +208,9 @@ class AuthController extends StateNotifier<bool> {
         );
 
         ///Goto Dashboard
-        return AppRouter.instance.pushOff(
+        return AppRouter.instance.pushReplacement(
           context: context,
-          screen: const DashboardNavbarScreen(),
+          screen: const LoginScreen(),
         );
       },
     );
