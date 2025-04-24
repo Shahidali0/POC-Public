@@ -261,10 +261,14 @@ class _BookNowButton extends ConsumerWidget {
             Expanded(
               flex: 2,
               child: CommonButton(
-                onPressed: () => AppRouter.instance.push(
-                  context: context,
-                  screen: BookServiceScreen(serviceJson: serviceJson),
-                ),
+                onPressed: () =>
+                    ref.read(profileControllerPr.notifier).isAuthorized(
+                          context: context,
+                          redirectTo: () => AppRouter.instance.push(
+                            context: context,
+                            page: BookServiceScreen(serviceJson: serviceJson),
+                          ),
+                        ),
                 text: "Book Now",
               ),
             ),

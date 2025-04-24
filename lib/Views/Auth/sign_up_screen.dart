@@ -19,6 +19,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
   final ValueNotifier<String?> _selectedGoal = ValueNotifier(null);
   final ValueNotifier<String?> _aboutYourSelf = ValueNotifier(null);
+  final ValueNotifier<bool> _hidePassword = ValueNotifier(true);
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -53,6 +54,11 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
   ///Update About Youself  value
   void _updateAboutYourSelf(String value) => _aboutYourSelf.value = value;
+
+  ///Hide Password
+  void hidePasswordFunction() {
+    _hidePassword.value = !_hidePassword.value;
+  }
 
   ///OnTap SignUp
   void _onTapSignUp({
@@ -95,23 +101,29 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: Sizes.spaceHeight),
-                const FadeAnimations(
-                  child: Text(
-                    "Hello,",
-                    style: TextStyle(
-                      fontSize: Sizes.fontSize24,
-                      fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.w800,
+
+                ///Header
+                const ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: FadeAnimations(
+                    child: Text(
+                      "👋 Hello,",
+                      style: TextStyle(
+                        fontSize: Sizes.fontSize24,
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
                   ),
-                ),
-                const FadeAnimations(
-                  child: Text(
-                    "Get started with PlayMate",
-                    style: TextStyle(
-                      fontSize: Sizes.fontSize18,
+                  subtitle: FadeAnimations(
+                    child: Text(
+                      "Get started with SportZReady",
+                      style: TextStyle(
+                        fontSize: Sizes.fontSize18,
+                      ),
                     ),
                   ),
+                  trailing: FadeAnimations(child: CloseButton()),
                 ),
 
                 ///FirstName And LastName
@@ -124,7 +136,11 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 _EmailField(controller: _emailController),
 
                 ///New Password
-                _NewPasswordField(controller: _passwordController),
+                _NewPasswordField(
+                  controller: _passwordController,
+                  hidePassword: _hidePassword,
+                  hidePasswordFunction: hidePasswordFunction,
+                ),
 
                 ///HomeSubhurb
                 _HomeSuburbField(controller: _homeSuburbController),
@@ -260,9 +276,13 @@ class _EmailField extends StatelessWidget {
 class _NewPasswordField extends StatelessWidget {
   const _NewPasswordField({
     required this.controller,
+    required this.hidePassword,
+    required this.hidePasswordFunction,
   });
 
   final TextEditingController controller;
+  final ValueNotifier hidePassword;
+  final VoidCallback? hidePasswordFunction;
 
   @override
   Widget build(BuildContext context) {
@@ -270,11 +290,27 @@ class _NewPasswordField extends StatelessWidget {
       child: FormFiledWidget(
         title: "Password",
         isRequired: true,
-        child: TextFormField(
-          controller: controller,
-          keyboardType: TextInputType.text,
-          validator: FieldValidators.instance.passwordValidator,
-          decoration: const InputDecoration(hintText: "Enter a new password"),
+        child: ValueListenableBuilder(
+          valueListenable: hidePassword,
+          builder: (BuildContext context, value, Widget? child) {
+            return TextFormField(
+              controller: controller,
+              keyboardType: TextInputType.text,
+              obscureText: value,
+              validator: FieldValidators.instance.passwordValidator,
+              decoration: InputDecoration(
+                hintText: "Enter a new password",
+                suffixIcon: IconButton(
+                  onPressed: hidePasswordFunction,
+                  icon: Icon(
+                    value
+                        ? CupertinoIcons.eye_slash_fill
+                        : CupertinoIcons.eye_fill,
+                  ),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );

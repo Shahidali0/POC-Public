@@ -20,7 +20,7 @@ class _HomeTitleAppBar extends StatelessWidget {
             child: CommonIconButton(
               onPressed: () => AppRouter.instance.push(
                 context: context,
-                screen: const NotificationScreen(),
+                page: const NotificationScreen(),
               ),
               iconData: CupertinoIcons.bell,
               iconColor: AppColors.white,
@@ -34,7 +34,7 @@ class _HomeTitleAppBar extends StatelessWidget {
           children: [
             ///App Logo Header
             Image.asset(
-              AppImages.logoTitle,
+              AppImages.logoText,
               color: AppColors.white,
               width: Sizes.screenWidth(context) * 0.6,
             ),
@@ -45,7 +45,7 @@ class _HomeTitleAppBar extends StatelessWidget {
               top: -10,
               bottom: 0,
               child: Image.asset(
-                AppImages.logoHeader,
+                AppImages.personRunningLogo,
                 fit: BoxFit.fitHeight,
                 filterQuality: FilterQuality.high,
               ),
@@ -147,7 +147,7 @@ class _HomeSearchbarWithCategories extends ConsumerWidget {
               onPressed: () => AppRouter.instance.animatedPush(
                 context: context,
                 scaleTransition: true,
-                screen: const PostServiceScreen(),
+                page: const PostServiceScreen(),
               ),
               text: "Post Your Service for free",
               backgroundColor: AppColors.white,

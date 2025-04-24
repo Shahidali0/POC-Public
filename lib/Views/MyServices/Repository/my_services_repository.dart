@@ -14,19 +14,20 @@ class MyServicesRepository {
       : _homeServices = homeServices;
 
   ///Get My Service
-  Future<AllServicesJson?> findMyServices() async {
+  Future<AllServicesJson?> getMyServicesList() async {
     try {
-      AllServicesJson? findMyServices;
+      AllServicesJson? getMyServices;
 
-      final response =
-          await _homeServices.findUserServices(userId: "123asf234234");
+      final response = await _homeServices.findUserServices(
+        userId: "592e1478-f071-70e2-c2e2-a92acc58cc5f",
+      );
 
       if (response != null) {
-        findMyServices = AllServicesJson.fromRawJson(response);
+        getMyServices = AllServicesJson.fromRawJson(response);
         // findMyServices = await compute(AllServicesJson.fromRawJson, response);
       }
 
-      return findMyServices;
+      return getMyServices;
     } on SocketException catch (_) {
       throw AppExceptions.instance.handleSocketException();
     } on MyHttpClientException catch (error) {

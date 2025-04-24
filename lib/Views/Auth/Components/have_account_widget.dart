@@ -14,7 +14,7 @@ class HaveAnAccountWidget extends StatelessWidget {
     }
     return AppRouter.instance.push(
       context: context,
-      screen: const SignUpScreen(),
+      page: const SignUpScreen(),
     );
   }
 

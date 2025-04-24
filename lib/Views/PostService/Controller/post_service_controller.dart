@@ -372,7 +372,7 @@ class PostServiceController extends StateNotifier<_PostServiceStatus> {
     if (validate) {
       AppRouter.instance.push(
         context: context,
-        screen: const PostServiceReviewScreen(),
+        page: const PostServiceReviewScreen(),
       );
     }
   }

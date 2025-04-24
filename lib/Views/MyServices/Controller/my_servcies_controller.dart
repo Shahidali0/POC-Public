@@ -13,8 +13,8 @@ final myBookingSegemntIndexPr = StateProvider<MyBookingType>(
   (ref) => MyBookingType.upcoming,
 );
 
-final findMyServicesPr = FutureProvider<AllServicesJson?>((ref) async {
-  return ref.read(myServicesControllerPr.notifier).findMyServices();
+final getMyServicesListPr = FutureProvider<AllServicesJson?>((ref) async {
+  return ref.read(myServicesControllerPr.notifier).getMyServicesList();
 });
 
 final getMyBookingsPr = FutureProvider<List<BookingsJson>>((ref) async {
@@ -30,7 +30,8 @@ class MyServciesController extends StateNotifier<bool> {
         super(false);
 
   //* Find My Services
-  Future<AllServicesJson?> findMyServices() => _repository.findMyServices();
+  Future<AllServicesJson?> getMyServicesList() =>
+      _repository.getMyServicesList();
 
   //* Get User Bookings List
   Future<List<BookingsJson>> getMyBookings() => _repository.getMyBookings();

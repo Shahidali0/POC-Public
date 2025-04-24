@@ -32,9 +32,49 @@ class NavbarController extends StateNotifier<bool> {
         _ref = ref,
         super(false);
 
+  @override
+  dispose() {
+    _ref.invalidate(_navBarIndexPr);
+    super.dispose();
+  }
+
   ///Update Navbar Index
   void updateNavbarIndex({required int index}) {
     _ref.read(_navBarIndexPr.notifier).update((st) => st = index);
+  }
+
+  ///OnTap Bottom NavBar Item
+  void onTapBottomNavBarItem({
+    required BuildContext context,
+    required int index,
+  }) {
+    ///This is for Post Service Buttton
+    if (index == 2) {
+      ///Check If User Authorized or not
+      _ref.read(profileControllerPr.notifier).isAuthorized(
+            context: context,
+            redirectTo: () async => AppRouter.instance.animatedPush(
+              context: context,
+              scaleTransition: true,
+              page: const PostServiceScreen(),
+            ),
+          );
+      return;
+    }
+
+    /// For My Services and Profile Check for Authorization
+    if (index == 3 || index == 4) {
+      _ref.read(profileControllerPr.notifier).isAuthorized(
+            context: context,
+            redirectTo: () => updateNavbarIndex(index: index),
+          );
+      return;
+    }
+
+    ///For Home and Find Services no need Authorization
+    else {
+      updateNavbarIndex(index: index);
+    }
   }
 
   ///Load all required api's

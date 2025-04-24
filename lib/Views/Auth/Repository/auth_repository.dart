@@ -6,6 +6,7 @@ import 'package:fpdart/fpdart.dart';
 
 final authRepositoryPr = Provider<AuthRepository>(
   (ref) => AuthRepository(
+    ref: ref,
     authServices: ref.read(authServicesPr),
     localStorage: LocalStorage(),
   ),
@@ -19,12 +20,15 @@ final autoSignInPr = FutureProvider<bool>((ref) async {
 class AuthRepository {
   final AuthServices _authServices;
   final LocalStorage _localStorage;
+  final Ref _ref;
 
   AuthRepository({
     required AuthServices authServices,
     required LocalStorage localStorage,
+    required Ref ref,
   })  : _authServices = authServices,
-        _localStorage = localStorage;
+        _localStorage = localStorage,
+        _ref = ref;
 
   ///Authenticate
   FutureEither<bool> authenticateUser({
@@ -69,26 +73,33 @@ class AuthRepository {
   ///Automatically SignIn
   Future<bool> autoSignIn() async {
     try {
-      bool isAutoSignIn = false;
+      bool showIntroPage = false;
+
+      ///Get Login Details
       final signInResult = await _localStorage.getSignInResponse();
+
+      ///Check for authorization
+      final isAuthorized = await _localStorage.isAuthorized();
+      _ref
+          .read(isAuthorizedPr.notifier)
+          .update((state) => state = isAuthorized);
+
+      ///Get Show Intro Screen Value
+      final showIntro = await _localStorage.getShowIntro();
+      showIntroPage = showIntro;
 
       ///Check if the user details are not null
       if (signInResult == null ||
           signInResult.emailId == null ||
-          signInResult.password == null) return false;
+          signInResult.password == null) return showIntroPage;
 
       ///Authenticate the user
-      final data = await authenticateUser(
+      await authenticateUser(
         emailId: signInResult.emailId!,
         password: signInResult.password!,
       );
 
-      data.fold(
-        (failure) => isAutoSignIn = false,
-        (success) => isAutoSignIn = success,
-      );
-
-      return isAutoSignIn;
+      return showIntroPage;
     } on SocketException {
       throw left(AppExceptions.instance.handleSocketException());
     } on MyHttpClientException catch (error) {

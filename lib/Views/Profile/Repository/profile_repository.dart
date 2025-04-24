@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cricket_poc/lib_exports.dart';
+import 'package:flutter/material.dart';
 
 final profileRepositoryPr = Provider<ProfileRepository>(
   (ref) => ProfileRepository(
@@ -26,18 +27,24 @@ class ProfileRepository {
         _profileServices = profileServices,
         _ref = ref;
 
+  ///Update User Json
+  void _updateUserJson({required UsersResponseJson userJson}) {
+    _ref.read(userJsonPr.notifier).update((state) => state = userJson);
+  }
+
   Future<UsersResponseJson?> getCurrentUser() async {
     //*Get userId
     final signInResponse = await _localStorage.getSignInResponse();
 
-    if (signInResponse == null || signInResponse.accessToken == null) {
+    if (signInResponse == null ||
+        signInResponse.accessToken == null ||
+        signInResponse.emailId == null) {
       return null;
     }
 
-    String userId = "592e1478-f071-70e2-c2e2-a92acc58cc5f";
-
     //* Now get user details
-    final user = await getUser(userId: userId);
+    final user = await getUserByUserName(userName: "skummethi2@gmail.com");
+    // signInResponse.emailId!);
 
     //* Update User Json
     _ref
@@ -46,21 +53,43 @@ class ProfileRepository {
     return null;
   }
 
-  ///Get User Profile Details by UserId
-  Future<UsersResponseJson?> getUser({required String userId}) async {
+  ///Get User Details by UserId
+  Future<UsersResponseJson?> getUserByUserId({required String userId}) async {
     try {
-      UsersResponseJson? usersJson;
+      UsersResponseJson? userJson;
 
       final response = await _profileServices.getUser(
         userId: userId,
       );
 
       if (response != null) {
-        usersJson = UsersResponseJson.fromRawJson(response);
+        userJson = UsersResponseJson.fromRawJson(response);
         // usersJson = await compute(UsersJson.fromRawJson, response);
       }
 
-      return usersJson;
+      return userJson;
+    } catch (error) {
+      throw Exception(error);
+    }
+  }
+
+  ///Get User Details by UserName
+  Future<UsersResponseJson?> getUserByUserName(
+      {required String userName}) async {
+    try {
+      UsersResponseJson? userJson;
+
+      final response = await _profileServices.getUserByUserName(
+        userName: userName,
+      );
+
+      if (response != null) {
+        userJson = UsersResponseJson.fromRawJson(response);
+        // usersJson = await compute(UsersJson.fromRawJson, response);
+        _updateUserJson(userJson: userJson);
+      }
+
+      return userJson;
     } on SocketException catch (_) {
       throw AppExceptions.instance.handleSocketException();
     } on MyHttpClientException catch (error) {
@@ -73,5 +102,34 @@ class ProfileRepository {
   ///Is User Authorized
   Future<bool> isAuthorized() async {
     return await _localStorage.isAuthorized();
+  }
+
+  ///Logout User
+  FutureVoid logout(BuildContext context) async {
+    return LogHelper.instance.showPlatformDialog(
+      context: context,
+      isDestructiveAction: true,
+      title: "Are you sure",
+      content: "Do you want to logout?",
+      okText: "Logout",
+      onOk: () async {
+        await _localStorage.deleteLoginDetails();
+
+        ///Refresh Some Providers
+        _ref.invalidate(isAuthorizedPr);
+        _ref.invalidate(navbarControllerPr);
+        _ref.invalidate(userJsonPr);
+
+        if (!context.mounted) return;
+
+        AppRouter.instance.pop(context);
+
+        AppRouter.instance.pushOff(
+          context: context,
+          page: const DashboardScreen(),
+        );
+        return;
+      },
+    );
   }
 }

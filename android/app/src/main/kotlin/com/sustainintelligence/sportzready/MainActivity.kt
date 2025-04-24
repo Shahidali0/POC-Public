@@ -1,4 +1,4 @@
-package com.game.sportZready
+package com.sustainintelligence.sportzready
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 

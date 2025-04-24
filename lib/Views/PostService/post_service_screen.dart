@@ -42,52 +42,50 @@ class _PostServiceScreenState extends ConsumerState<PostServiceScreen> {
               error: "Please try to refresh the page",
               onRefresh: _controller.loadAllCategories,
             )
-          : AuthorizedWidget(
-              child: Stepper(
-                elevation: 0.7,
-                type: StepperType.horizontal,
+          : Stepper(
+              elevation: 0.7,
+              type: StepperType.horizontal,
+              currentStep: currentStep,
+              onStepTapped: (step) => _controller.onStepTapped(
                 currentStep: currentStep,
-                onStepTapped: (step) => _controller.onStepTapped(
-                  currentStep: currentStep,
-                  step: step,
-                ),
-                onStepContinue: () => _controller.onStepContinue(
-                  context: context,
-                  currentStep: currentStep,
-                ),
-                onStepCancel: () => _controller.onStepCancel(currentStep),
-                steps: [
-                  ///Step1
-                  _buildStep(
-                    title: "Service\nDetails",
-                    content: const _ServiceDetailsForm(),
-                    isActive: currentStep == 0,
-                    isCompleted: currentStep > 0,
-                  ),
-
-                  ///Step2
-                  _buildStep(
-                    title: "Location &\nSchedule",
-                    content: const _LocationScheduleForm(),
-                    isActive: currentStep == 1,
-                    isCompleted: currentStep > 1,
-                  ),
-
-                  ///Step3
-                  _buildStep(
-                    title: "Pricing",
-                    content: const _PricingForm(),
-                    isActive: currentStep == 2,
-                    isCompleted: currentStep > 2,
-                  ),
-                ],
-                controlsBuilder: (context, details) {
-                  return _StepperControlsButtons(
-                    currentStep: currentStep,
-                    details: details,
-                  );
-                },
+                step: step,
               ),
+              onStepContinue: () => _controller.onStepContinue(
+                context: context,
+                currentStep: currentStep,
+              ),
+              onStepCancel: () => _controller.onStepCancel(currentStep),
+              steps: [
+                ///Step1
+                _buildStep(
+                  title: "Service\nDetails",
+                  content: const _ServiceDetailsForm(),
+                  isActive: currentStep == 0,
+                  isCompleted: currentStep > 0,
+                ),
+
+                ///Step2
+                _buildStep(
+                  title: "Location &\nSchedule",
+                  content: const _LocationScheduleForm(),
+                  isActive: currentStep == 1,
+                  isCompleted: currentStep > 1,
+                ),
+
+                ///Step3
+                _buildStep(
+                  title: "Pricing",
+                  content: const _PricingForm(),
+                  isActive: currentStep == 2,
+                  isCompleted: currentStep > 2,
+                ),
+              ],
+              controlsBuilder: (context, details) {
+                return _StepperControlsButtons(
+                  currentStep: currentStep,
+                  details: details,
+                );
+              },
             ),
     );
   }

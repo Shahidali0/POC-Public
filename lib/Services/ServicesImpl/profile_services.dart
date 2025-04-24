@@ -6,6 +6,8 @@ final profileServicesPr = Provider<ProfileServices>(
 
 sealed class ProfileServices {
   Future<String?> getUser({required String userId});
+
+  Future<String?> getUserByUserName({required String userName});
 }
 
 class _ProfileServicesImpl implements ProfileServices {
@@ -14,16 +16,31 @@ class _ProfileServicesImpl implements ProfileServices {
   _ProfileServicesImpl({required ApiHeaders apiHeaders})
       : _apiHeaders = apiHeaders;
 
+//* Get User by UserId
   @override
   Future<String?> getUser({required String userId}) async {
     final url = "user?userId=$userId";
-    //592e1478-f071-70e2-c2e2-a92acc58cc5f";
 
-    // final headers = await _apiHeaders.getHeadersWithToken();
+    final headers = await _apiHeaders.getHeadersWithToken();
 
     final response = await BaseHttpClient.getService(
       urlEndPoint: url,
-      headers: _apiHeaders.headers,
+      headers: headers,
+    );
+
+    return response;
+  }
+
+  //* Get User by UserName
+  @override
+  Future<String?> getUserByUserName({required String userName}) async {
+    final url = "user?username=$userName";
+
+    final headers = await _apiHeaders.getHeadersWithToken();
+
+    final response = await BaseHttpClient.getService(
+      urlEndPoint: url,
+      headers: headers,
     );
 
     return response;

@@ -12,23 +12,23 @@ class AppRouter {
   //* Push syntax -> To navigate next screen
   Future<dynamic>? push({
     required BuildContext context,
-    required Widget screen,
+    required Widget page,
   }) {
     ///IOS
     if (Platform.isIOS) {
       return Navigator.of(context)
-          .push(CupertinoPageRoute(builder: (ctx) => screen));
+          .push(CupertinoPageRoute(builder: (ctx) => page));
     }
 
     ///ANDROID
     return Navigator.of(context)
-        .push(MaterialPageRoute(builder: (ctx) => screen));
+        .push(MaterialPageRoute(builder: (ctx) => page));
   }
 
   //* Animated Push syntax -> To navigate next screen
   Future<dynamic>? animatedPush({
     required BuildContext context,
-    required Widget screen,
+    required Widget page,
     MyAnimationType type = MyAnimationType.bottomUp,
     bool scaleTransition = false,
   }) {
@@ -36,7 +36,7 @@ class AppRouter {
       PageRouteBuilder(
         pageBuilder: (BuildContext context, Animation<double> animation,
                 Animation<double> secondaryAnimation) =>
-            screen,
+            page,
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return SlideTransition(
             position: Tween(begin: _getOffset(type), end: const Offset(0, 0))
@@ -56,35 +56,35 @@ class AppRouter {
   //* Push Replacement syntax -> To navigate next screen
   Future<dynamic>? pushReplacement({
     required BuildContext context,
-    required Widget screen,
+    required Widget page,
   }) {
     ///IOS
     if (Platform.isIOS) {
       return Navigator.of(context)
-          .pushReplacement(CupertinoPageRoute(builder: (ctx) => screen));
+          .pushReplacement(CupertinoPageRoute(builder: (ctx) => page));
     }
 
     ///ANDROID
     return Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: (ctx) => screen));
+        .pushReplacement(MaterialPageRoute(builder: (ctx) => page));
   }
 
   //* PushOff syntax -> To navigate next screen and close previous screens
   Future<dynamic>? pushOff({
     required BuildContext context,
-    required Widget screen,
+    required Widget page,
   }) {
     ///IOS
     if (Platform.isIOS) {
       return Navigator.of(context).pushAndRemoveUntil(
-        CupertinoPageRoute(builder: (ctx) => screen),
+        CupertinoPageRoute(builder: (ctx) => page),
         (Route<dynamic> route) => false,
       );
     }
 
     ///ANDROID
     return Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (ctx) => screen),
+      MaterialPageRoute(builder: (ctx) => page),
       (Route<dynamic> route) => false,
     );
   }

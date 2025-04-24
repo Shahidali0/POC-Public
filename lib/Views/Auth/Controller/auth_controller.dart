@@ -98,11 +98,11 @@ class AuthController extends StateNotifier<bool> {
         content: failure.message,
       ),
       (success) {
-        _ref.invalidate(isAuthroizedPr);
+        _ref.invalidate(isAuthorizedPr);
 
         return AppRouter.instance.pushOff(
           context: context,
-          screen: const DashboardScreen(),
+          page: const DashboardScreen(),
         );
       },
     );
@@ -155,7 +155,7 @@ class AuthController extends StateNotifier<bool> {
         );
         return AppRouter.instance.pushReplacement(
           context: context,
-          screen: OtpVerificationScreen(
+          page: OtpVerificationScreen(
             emailId: signUpDto.username!,
           ),
         );
@@ -210,7 +210,7 @@ class AuthController extends StateNotifier<bool> {
         ///Goto Dashboard
         return AppRouter.instance.pushReplacement(
           context: context,
-          screen: const LoginScreen(),
+          page: const LoginScreen(),
         );
       },
     );

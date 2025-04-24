@@ -14,7 +14,7 @@ class ServiceCardWidget extends StatelessWidget {
   ///OnTap BookNow
   void _onBookNow(BuildContext context) => AppRouter.instance.push(
         context: context,
-        screen: ServiceDetailsScreen(serviceJson: serviceJson),
+        page: ServiceDetailsScreen(serviceJson: serviceJson),
       );
 
   @override

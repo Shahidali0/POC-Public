@@ -10,7 +10,7 @@ class MyBookingsTabview extends ConsumerWidget {
     return ref.watch(getMyBookingsPr).when(
           data: (data) {
             return RefreshIndicator.adaptive(
-              onRefresh: () async => ref.invalidate(getMyBookingsPr),
+              onRefresh: () async => ref.refresh(getMyBookingsPr.future),
               child: _body(
                 context: context,
                 myBookings: data,
@@ -61,12 +61,12 @@ class MyBookingsTabview extends ConsumerWidget {
                 Flexible(child: _MyBookingSegments()),
               ],
             ),
-            const SizedBox(height: Sizes.spaceHeightSm),
+            const SizedBox(height: Sizes.spaceSmall),
 
             ///List of Bookings
             Expanded(
               child: Consumer(
-                builder: (_, WidgetRef ref, __) {
+                builder: (context, WidgetRef ref, __) {
                   final selectedSegment = ref.watch(myBookingSegemntIndexPr);
 
                   return AnimatedSwitcher(

@@ -16,20 +16,31 @@ class ProfileScreen extends ConsumerWidget {
         padding: Sizes.cupertinoScaffoldPadding(context),
         children: [
           ///User Profile
-          AuthorizedWidget(
-            child: _UserProfile(
-              ref: ref,
-            ),
+          _UserProfile(
+            ref: ref,
           ),
 
           ///Divider
           const Divider(thickness: 5),
 
           ///AboutUs
+          const ListTile(
+            // onTap: () => AppRouter.instance.push(
+            //   context: context,
+            //   page: const AboutUsPage(),
+            // ),
+            leading: Icon(CupertinoIcons.info),
+            title: Text("About Us"),
+            trailing: Icon(Icons.chevron_right),
+          ),
+
+          ///Logout
           ListTile(
-            onTap: () {},
-            leading: const Icon(Icons.info),
-            title: const Text("About Us"),
+            onTap: () => ref.read(profileControllerPr.notifier).logout(context),
+            textColor: AppColors.red,
+            iconColor: AppColors.red,
+            leading: const Icon(CupertinoIcons.arrow_right_circle),
+            title: const Text("Logout"),
             trailing: const Icon(Icons.chevron_right),
           ),
 
@@ -59,10 +70,21 @@ class _UserProfile extends StatelessWidget {
     if (userJson == null) return const SizedBox.shrink();
 
     return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: Sizes.space),
+      onTap: () => AppRouter.instance.push(
+        context: context,
+        page: ProfileDetailsPage(userJson: userJson),
+      ),
+      minLeadingWidth: 0,
+
+      // contentPadding: const EdgeInsets.symmetric(horizontal: Sizes.space),
       leading: CircleAvatar(
+        radius: Sizes.space * 2,
+        backgroundColor: AppColors.lightBlue,
         child: Text(
           "${userJson.firstName![0]}${userJson.lastName![0]}",
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: AppColors.white,
+              ),
         ),
       ),
       title: Text(

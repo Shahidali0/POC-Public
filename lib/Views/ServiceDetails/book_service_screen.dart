@@ -15,69 +15,67 @@ class BookServiceScreen extends ConsumerWidget {
       isLoading: isLoading,
       child: MyCupertinoSliverScaffold(
         title: "Book Now",
-        body: AuthorizedWidget(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                horizontalTitleGap: Sizes.spaceMed,
-                title: Text(serviceJson.title!),
-                subtitle: Text(
-                  "${serviceJson.category} (${serviceJson.sport})",
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: AppColors.appTheme,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                trailing: Text(
-                  "\$ ${serviceJson.price}",
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: Sizes.fontSize16,
-                  ),
+        body: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              horizontalTitleGap: Sizes.spaceMed,
+              title: Text(serviceJson.title!),
+              subtitle: Text(
+                "${serviceJson.category} (${serviceJson.sport})",
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  color: AppColors.appTheme,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
-
-              ///Dates
-              _DatePickerField(
-                dates: serviceJson.timeSlots!.keys.toList(),
+              trailing: Text(
+                "\$ ${serviceJson.price}",
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: Sizes.fontSize16,
+                ),
               ),
+            ),
 
-              _TimeSlotsField(
-                timeSlotsData: serviceJson.timeSlots!.values.first,
-              ),
+            ///Dates
+            _DatePickerField(
+              dates: serviceJson.timeSlots!.keys.toList(),
+            ),
 
-              _DurationField(
-                sessionDurations: serviceJson.duration!,
-              ),
+            _TimeSlotsField(
+              timeSlotsData: serviceJson.timeSlots!.values.first,
+            ),
 
-              // _NameField(controller: _nameController),
-              const SizedBox(height: Sizes.spaceHeight),
+            _DurationField(
+              sessionDurations: serviceJson.duration!,
+            ),
 
-              ///Continue Button
-              Consumer(
-                builder: (_, WidgetRef ref, __) {
-                  final state = ref.watch(serviceDetailsControllerPr);
-                  return CommonButton(
-                    onPressed: state.selectedDate.isEmpty ||
-                            state.selectedTimeSlot.isEmpty ||
-                            state.selectedSessionDuration.isEmpty
-                        ? null
-                        : () => ref
-                            .read(serviceDetailsControllerPr.notifier)
-                            .makePayment(
-                              context: context,
-                              serviceJson: serviceJson,
-                            ),
-                    text: "Continue",
-                  );
-                },
-              ),
-            ],
-          ),
+            // _NameField(controller: _nameController),
+            const SizedBox(height: Sizes.spaceHeight),
+
+            ///Continue Button
+            Consumer(
+              builder: (_, WidgetRef ref, __) {
+                final state = ref.watch(serviceDetailsControllerPr);
+                return CommonButton(
+                  onPressed: state.selectedDate.isEmpty ||
+                          state.selectedTimeSlot.isEmpty ||
+                          state.selectedSessionDuration.isEmpty
+                      ? null
+                      : () => ref
+                          .read(serviceDetailsControllerPr.notifier)
+                          .makePayment(
+                            context: context,
+                            serviceJson: serviceJson,
+                          ),
+                  text: "Continue",
+                );
+              },
+            ),
+          ],
         ),
       ),
     );

@@ -115,6 +115,85 @@ class LogHelper {
 
     return selectedDate;
   }
+
+  ///Show PlatFormSpecific Alert Dialog
+  FutureVoid showPlatformDialog({
+    required BuildContext context,
+    required String title,
+    required String content,
+    String? okText,
+    String? cancelText,
+    VoidCallback? onCancel,
+    required VoidCallback? onOk,
+    bool isDestructiveAction = false,
+  }) async {
+    ///For IOS
+    if (Platform.isIOS) {
+      return showCupertinoDialog(
+        context: context,
+        builder: (ctx) => CupertinoAlertDialog(
+          title: Text(
+            title,
+            // style: Theme.of(ctx).textTheme.titleLarge?.copyWith(
+            //       fontWeight: FontWeight.w700,
+            //       fontSize: Sizes.fontSize20,
+            //     ),
+          ),
+          content: Text(
+            content,
+            // style: Theme.of(ctx).textTheme.titleMedium,
+          ),
+          actions: [
+            CupertinoDialogAction(
+              onPressed: () => AppRouter.instance.pop(ctx),
+              child: Text(cancelText ?? 'Cancel'),
+            ),
+            CupertinoDialogAction(
+              isDefaultAction: true,
+              isDestructiveAction: isDestructiveAction,
+              onPressed: onOk,
+              child: Text(okText ?? 'OK'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    ///For Android
+    return showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(Sizes.borderRadius),
+        ),
+        title: Text(title),
+        content: Text(content),
+        titleTextStyle: Theme.of(ctx)
+            .textTheme
+            .titleLarge
+            ?.copyWith(fontWeight: FontWeight.w700),
+        contentTextStyle: Theme.of(ctx).textTheme.titleMedium,
+        actions: [
+          TextButton(
+            onPressed: () => AppRouter.instance.pop(ctx),
+            child: Text(cancelText ?? 'CANCEL'),
+          ),
+          TextButton(
+            onPressed: onOk,
+            child: Text(
+              okText?.toUpperCase() ?? 'OK',
+              style: Theme.of(ctx).textTheme.labelLarge?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: isDestructiveAction
+                        ? AppColors.red
+                        : AppColors.appTheme,
+                  ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 ///CupertinoDatePicker Widget

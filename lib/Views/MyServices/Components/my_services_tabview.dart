@@ -7,15 +7,14 @@ class MyServicesTabview extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(findMyServicesPr).when(
-          skipLoadingOnRefresh: false,
+    return ref.watch(getMyServicesListPr).when(
           data: (data) {
             if (data == null || (data.services?.isEmpty ?? false)) {
               return const EmptyDataWidget();
             }
 
             return RefreshIndicator.adaptive(
-              onRefresh: () async => ref.invalidate(findMyServicesPr),
+              onRefresh: () async => ref.refresh(getMyServicesListPr),
               child: _body(
                 context: context,
                 myServices: data.services!,
@@ -28,7 +27,7 @@ class MyServicesTabview extends ConsumerWidget {
             return ErrorText(
               title: error.title,
               error: error.message,
-              onRefresh: () async => ref.invalidate(findMyServicesPr),
+              onRefresh: () async => ref.invalidate(getMyServicesListPr),
             );
           },
           loading: () => const ShowDataLoader(),
@@ -103,7 +102,7 @@ class _MyServiceCard extends StatelessWidget {
     return InkWell(
       onTap: () => AppRouter.instance.push(
         context: context,
-        screen: ServiceDetailsScreen(serviceJson: serviceJson),
+        page: ServiceDetailsScreen(serviceJson: serviceJson),
       ),
       child: Card(
         margin: EdgeInsets.zero,

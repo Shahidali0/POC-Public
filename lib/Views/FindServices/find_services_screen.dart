@@ -11,8 +11,10 @@ class FindServicesScreen extends ConsumerWidget {
     double filterHeight = 60;
     final updateFilters = ref.watch(filtersControllerPr).updateFilters;
 
-    return RefreshIndicator.adaptive(
-      onRefresh: () async => ref.invalidate(getFindServciesListPr),
+    return RefreshIndicator(
+      edgeOffset: 20,
+      displacement: 100,
+      onRefresh: () async => ref.refresh(getFindServciesListPr.future),
       child: CupertinoPageScaffold(
         navigationBar: CupertinoAppbar(
           title: "Find Services",
@@ -21,7 +23,7 @@ class FindServicesScreen extends ConsumerWidget {
             onPressed: () => AppRouter.instance.animatedPush(
               context: context,
               type: MyAnimationType.upDown,
-              screen: const ServiceFilters(),
+              page: const ServiceFilters(),
             ),
             iconData: CupertinoIcons.slider_horizontal_3,
           ),

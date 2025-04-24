@@ -7,28 +7,6 @@ part "Controller/navbar_controller.dart";
 class NavbarScreen extends ConsumerWidget {
   const NavbarScreen({super.key});
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final currentIndex = ref.watch(_navBarIndexPr);
-
-    return Scaffold(
-      body: IndexedStack(
-        index: currentIndex,
-        children: const [
-          HomeScreen(key: PageStorageKey("Homescreen")),
-          FindServicesScreen(key: PageStorageKey("FindServicesScreen")),
-
-          ///This is For PostButton(+)
-          SizedBox.shrink(),
-
-          MyServicesScreen(key: PageStorageKey("MyServicesScreen")),
-          ProfileScreen(key: PageStorageKey("ProfileScreen")),
-        ],
-      ),
-      bottomNavigationBar: _CustomNavigationBar(ref: ref),
-    );
-  }
-
   // ///OnNotification Update
   // bool _onNotification({
   //   required UserScrollNotification notification,
@@ -58,6 +36,28 @@ class NavbarScreen extends ConsumerWidget {
   //   }
   //   return true;
   // }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentIndex = ref.watch(_navBarIndexPr);
+
+    return Scaffold(
+      body: IndexedStack(
+        index: currentIndex,
+        children: const [
+          HomeScreen(key: PageStorageKey("Homescreen")),
+          FindServicesScreen(key: PageStorageKey("FindServicesScreen")),
+
+          ///This is For PostButton(+)
+          SizedBox.shrink(),
+
+          MyServicesScreen(key: PageStorageKey("MyServicesScreen")),
+          ProfileScreen(key: PageStorageKey("ProfileScreen")),
+        ],
+      ),
+      bottomNavigationBar: _CustomNavigationBar(ref: ref),
+    );
+  }
 }
 
 ///This Class shows Custom Bottom Navigation bar
@@ -65,6 +65,7 @@ class _CustomNavigationBar extends StatelessWidget {
   const _CustomNavigationBar({
     required this.ref,
   });
+
   final WidgetRef ref;
 
   @override
@@ -79,23 +80,11 @@ class _CustomNavigationBar extends StatelessWidget {
       ),
       child: BottomNavigationBar(
         currentIndex: selectedIndex,
-        onTap: (index) {
-          ///This is for Post Service Buttton
-          if (index == 2) {
-            AppRouter.instance.animatedPush(
-              context: context,
-              scaleTransition: true,
-              screen: const PostServiceScreen(),
-            );
-          }
-
-          ///For Other Icons
-          else {
-            ref
-                .read(navbarControllerPr.notifier)
-                .updateNavbarIndex(index: index);
-          }
-        },
+        onTap: (index) =>
+            ref.read(navbarControllerPr.notifier).onTapBottomNavBarItem(
+                  context: context,
+                  index: index,
+                ),
         items: [
           ///Home
           const BottomNavigationBarItem(
@@ -131,9 +120,10 @@ class _CustomNavigationBar extends StatelessWidget {
             label: "My Services",
           ),
 
+          ///Profile
           const BottomNavigationBarItem(
             icon: Icon(CupertinoIcons.person),
-            activeIcon: Icon(CupertinoIcons.person_circle_fill),
+            activeIcon: Icon(CupertinoIcons.person_fill),
             label: "Profile",
           ),
         ],
@@ -141,67 +131,3 @@ class _CustomNavigationBar extends StatelessWidget {
     );
   }
 }
-
-
-///  return Material(
-      // child: StatefulBuilder(
-      //   builder =
-      //       (BuildContext context, void Function(void Function()) setState) {
-      //     print("StatefulBuilder");
-      //     return FutureBuilder<List<CategoryJson>>(
-      //       future: ref.watch(navbarControllerPr.notifier).loadData(),
-      //       builder: (BuildContext context,
-      //           AsyncSnapshot<List<CategoryJson>> snapshot) {
-      //         switch (snapshot.connectionState) {
-      //           case ConnectionState.waiting:
-      //             return const ShowDataLoader();
-      //           case ConnectionState.done:
-      //           default:
-      //             //*If SnapData has error
-      //             if (snapshot.hasError) {
-      //               final error = snapshot.error as Failure;\
-      //               return ErrorText(
-      //                 title: error.title,
-      //                 error: error.message,
-      //                 onRefresh: () async => setState(() {}),
-      //               );
-      //             }
-      //             //*If SnapData is present
-      //             else if (snapshot.hasData) {
-      //               return _bodyView(
-      //                 ref: ref,
-      //                 currentIndex: currentIndex,
-      //               );
-      //             }
-      //             //*If No Data Available
-      //             else {
-      //               return const EmptyDataWidget();
-      //             }
-      //         }
-      //       },
-      //     );
-      //   },
-      // ),
-      // child: ref.watch(_getAllCategoriesListPr).when(
-      //       data: (data) {
-      //         if (data.isEmpty) {
-      //           return const EmptyDataWidget();
-      //         }
-
-      //         return _bodyView(
-      //           ref: ref,
-      //           currentIndex: currentIndex,
-      //         );
-      //       },
-      //       error: (e, st) {
-      //         final error = e as Failure;
-      //         return ErrorText(
-      //           title: error.title,
-      //           error: error.message,
-      //           onRefresh: () async => ref.invalidate(_getAllCategoriesListPr),
-      //         );
-      //       },
-      //       loading: () => const ShowDataLoader(),
-      //     ),
-    // );
- 

@@ -37,7 +37,7 @@ class _HomeController extends StateNotifier<bool> {
   //* Load Search Filter Data
   List<SearchFilterModel> getSearchFilterData() {
     ///Used Set to remove duplicate values
-    Set<SearchFilterModel> searchFilterModel = {};
+    List<SearchFilterModel> searchFilterModel = [];
 
     ///From getAllCategoriesList get the sport, category and subcategory
     for (var element in getAllCategoriesList) {

@@ -108,7 +108,7 @@ class ServiceDetailsRepository {
     required String selectedTimeSlot,
   }) async {
     ///Now Fetch Provider Details
-    final provider = await _profileRepository.getUser(
+    final provider = await _profileRepository.getUserByUserId(
       userId: serviceJson.providerId!,
     );
 

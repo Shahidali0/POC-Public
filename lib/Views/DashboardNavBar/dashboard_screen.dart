@@ -56,18 +56,19 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               //*If SnapData is present
               else if (snapshot.hasData) {
                 ///If Data is Available then go to Navbar Screen
-                Future.microtask(
-                  () {
-                    if (context.mounted) {
-                      AppRouter.instance.pushOff(
-                        context: context,
-                        screen: const NavbarScreen(),
-                      );
-                    }
-                  },
-                );
+                // Future.microtask(
+                //   () {
+                //     if (context.mounted) {
+                //       AppRouter.instance.pushOff(
+                //         context: context,
+                //         screen: const NavbarScreen(),
+                //       );
+                //     }
+                //   },
+                // );
 
-                return const SizedBox.shrink();
+                // return const SizedBox.shrink();
+                return const NavbarScreen();
               }
 
               //*If No Data Available

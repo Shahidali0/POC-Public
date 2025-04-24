@@ -1,13 +1,19 @@
 import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter/material.dart';
 
-final introControllerPr =
-    StateNotifierProvider<IntroController, bool>((ref) => IntroController());
+final introControllerPr = StateNotifierProvider<IntroController, bool>(
+  (ref) => IntroController(
+    localStorage: LocalStorage(),
+  ),
+);
 
 final introIndexPr = StateProvider<int>((ref) => 0);
 
 class IntroController extends StateNotifier<bool> {
-  IntroController() : super(false);
+  final LocalStorage _localStorage;
+  IntroController({required LocalStorage localStorage})
+      : _localStorage = localStorage,
+        super(false);
 
   ///Show Dailog for ReadyToGetStarted
   FutureVoid _showDialogBoxForMarkReady(BuildContext context) {
@@ -46,24 +52,39 @@ class IntroController extends StateNotifier<bool> {
   ///OnTap Find Services
   Future? onTapFindServices({
     required BuildContext context,
-  }) {
+  }) async {
     AppRouter.instance.pop(context);
+
+    ///Set Show Intro to false
+    await _localStorage.setShowIntro(showIntro: false);
+
+    if (!context.mounted) return;
 
     return AppRouter.instance.pushOff(
       context: context,
-      screen: const DashboardScreen(),
+      page: const DashboardScreen(),
     );
   }
 
   ///OnTap Become a provider
   Future? onTapBecomeProvider({
     required BuildContext context,
-  }) {
+  }) async {
     AppRouter.instance.pop(context);
+
+    ///Set Show Intro to false
+    await _localStorage.setShowIntro(showIntro: false);
+
+    if (!context.mounted) return;
+
+    AppRouter.instance.pushOff(
+      context: context,
+      page: const DashboardScreen(),
+    );
 
     return AppRouter.instance.push(
       context: context,
-      screen: const SignUpScreen(),
+      page: const SignUpScreen(),
     );
   }
 }

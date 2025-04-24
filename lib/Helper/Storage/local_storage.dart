@@ -5,19 +5,43 @@ import 'package:flutter/material.dart';
 
 class LocalStorage {
   final String _kSignInJson = "SingInJson";
+  final String _kShowIntro = "ShowIntro";
 
   final FlutterSecureStorage _storage = const FlutterSecureStorage(
     aOptions: AndroidOptions(encryptedSharedPreferences: true),
   );
 
-  ///
+  //* Get Show Intro
+  Future<bool> getShowIntro() async {
+    String? data = await _storage.read(key: _kShowIntro);
+
+    if (data == null || data == "null") return true;
+
+    return bool.parse(data);
+  }
+
+  //* Set Show Intro
+  Future setShowIntro({required bool showIntro}) async {
+    await _storage.write(
+      key: _kShowIntro,
+      value: showIntro.toString(),
+    );
+
+    debugPrint('Created Show Intro');
+  }
+
   //* Login Details
   Future setLoginDetails({required SignInJson singInJson}) async {
     await deleteLoginDetails();
+
+    //Store the login details
     await _storage.write(
       key: _kSignInJson,
       value: jsonEncode(singInJson),
     );
+
+    //Store Show Intro Value
+    await setShowIntro(showIntro: false);
 
     debugPrint('Created Login Details and Token');
   }

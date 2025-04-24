@@ -102,8 +102,9 @@ class CommonButton extends _PlatformWidget {
                 text,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: Sizes.fontSize16,
-                  fontWeight: FontWeight.w800,
+                  fontSize: Sizes.fontSize18,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: AppTheme.boldFont,
                   color: textColor ?? AppColors.white,
                 ),
               ),
@@ -164,7 +165,9 @@ class CommonTextButton extends _PlatformWidget {
 
   TextStyle get _style => TextStyle(
         fontSize: Sizes.defaultSize,
-        fontWeight: FontWeight.w700,
+        // fontWeight: FontWeight.w700,
+        fontWeight: FontWeight.bold,
+        fontFamily: AppTheme.boldFont,
         color: textColor ?? AppColors.appTheme,
         decoration: decoration,
       );

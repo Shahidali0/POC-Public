@@ -46,6 +46,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final isLoading = ref.watch(authControllerPr);
+
     return AuthBackground(
       child: AbsorbPointer(
         absorbing: isLoading,
@@ -53,24 +54,32 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: Sizes.spaceHeight * 2),
-              const FadeAnimations(
-                child: Text(
-                  "👋 Hello,",
-                  style: TextStyle(
-                    fontSize: Sizes.fontSize24,
-                    fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.w800,
+              const SizedBox(height: Sizes.spaceHeight),
+
+              ///Logo
+              ///Header
+              const ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: FadeAnimations(
+                  child: Text(
+                    "👋 Hello,",
+                    style: TextStyle(
+                      fontSize: Sizes.fontSize24,
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
                 ),
-              ),
-              const FadeAnimations(
-                child: Text(
-                  "Welcome back to your account",
-                  style: TextStyle(fontSize: Sizes.fontSize18),
+                subtitle: FadeAnimations(
+                  child: Text(
+                    "Welcome back to your account",
+                    style: TextStyle(
+                      fontSize: Sizes.fontSize18,
+                    ),
+                  ),
                 ),
+                trailing: FadeAnimations(child: CloseButton()),
               ),
-              const SizedBox(height: Sizes.spaceHeight),
 
               ///Email
               _EmailField(controller: _emailController),
