@@ -70,7 +70,7 @@ class CommonButton extends _PlatformWidget {
         disabledBackgroundColor: backgroundColor.withOpacity(0.14),
         backgroundColor: backgroundColor,
         foregroundColor: AppColors.white,
-        shape: RoundedRectangleBorder(borderRadius: _borderRadius),
+        shape: ContinuousRectangleBorder(borderRadius: _borderRadius),
         minimumSize: Size(
           _minButtonWidthValue(context),
           dense ? Sizes.buttonHeight * 0.7 : Sizes.buttonHeight,
@@ -214,7 +214,7 @@ class CommonOutlineButton extends StatelessWidget {
         foregroundColor: foregroundColor,
         backgroundColor: AppColors.white,
         side: BorderSide(color: foregroundColor),
-        shape: RoundedRectangleBorder(borderRadius: _borderRadius),
+        shape: ContinuousRectangleBorder(borderRadius: _borderRadius),
         minimumSize: Size(
           _minButtonWidthValue(context),
           dense ? Sizes.buttonHeight * 0.7 : Sizes.buttonHeight,
@@ -269,6 +269,42 @@ class CommonIconButton extends _PlatformWidget {
       color: iconColor,
       iconSize: iconSize,
       icon: Icon(iconData),
+    );
+  }
+}
+
+///Common Delete Icon Buttton Widget
+class DeleteIconButton extends StatelessWidget {
+  const DeleteIconButton({
+    super.key,
+    required this.onPressed,
+  });
+
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        margin: const EdgeInsets.symmetric(
+          vertical: Sizes.space,
+        ),
+        padding: const EdgeInsets.symmetric(
+          horizontal: Sizes.space,
+          vertical: Sizes.space * 0.6,
+        ),
+        decoration: ShapeDecoration(
+          shape: ContinuousRectangleBorder(
+            borderRadius: BorderRadius.circular(Sizes.borderRadius),
+          ),
+          color: AppColors.red.withOpacity(0.2),
+        ),
+        child: const Icon(
+          CupertinoIcons.delete,
+          color: AppColors.red,
+        ),
+      ),
     );
   }
 }

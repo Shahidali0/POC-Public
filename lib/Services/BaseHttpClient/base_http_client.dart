@@ -74,6 +74,23 @@ class BaseHttpClient {
     return ResponseHandler.instance.handleResponse(response: response);
   }
 
+  ///Patch Service
+  static Future patchService({
+    required String urlEndPoint,
+    required Object body,
+    required Map<String, String> headers,
+    bool isAuthUrl = false,
+  }) async {
+    Uri uri = Uri.parse(MyKeys.instance.baseUrl(isAuthUrl) + urlEndPoint);
+    final response = await http.patch(
+      uri,
+      body: body,
+      headers: headers,
+    );
+
+    return ResponseHandler.instance.handleResponse(response: response);
+  }
+
   ///Put Service
   static Future multiPartService({
     required String urlEndPoint,

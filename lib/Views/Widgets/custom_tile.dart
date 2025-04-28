@@ -2,8 +2,8 @@ import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter/material.dart';
 
 ///This class shows custom listtile with [minimal titlegap] and [visualdensity--compact]
-class CustomTile extends StatelessWidget {
-  const CustomTile({
+class CustomListTile extends StatelessWidget {
+  const CustomListTile({
     super.key,
     required this.iconData,
     required this.text,

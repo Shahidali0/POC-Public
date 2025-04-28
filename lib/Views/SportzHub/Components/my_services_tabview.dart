@@ -14,8 +14,7 @@ class MyServicesTabview extends ConsumerWidget {
               ///For Empty Services List
               if (data == null || (data.services?.isEmpty ?? false)) {
                 return EmptyDataWidget(
-                  subTitle:
-                      "Let’s add your first service and get you SportZReady!",
+                  subTitle: Constants.emptyMyServices,
                   widget: CommonOutlineButton(
                     minButtonWidth: 100,
                     dense: true,

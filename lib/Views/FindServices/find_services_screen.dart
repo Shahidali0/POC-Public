@@ -39,8 +39,7 @@ class FindServicesScreen extends ConsumerWidget {
                         padding: EdgeInsets.only(
                           top: Sizes.screenSize(context).height * 0.4,
                         ),
-                        subTitle:
-                            "No services available yet. Stay tuned and get SportZReady!",
+                        subTitle: Constants.emmptyFindServices,
                       );
                     }
 

@@ -7,7 +7,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'SportZReady',
+      title: Constants.appName,
       // showPerformanceOverlay: true,
       debugShowCheckedModeBanner: false,
       darkTheme: AppTheme.darkTheme(context),

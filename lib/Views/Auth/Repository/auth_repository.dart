@@ -69,12 +69,6 @@ class AuthRepository {
       ///Get Login Details
       final signInResult = await _localStorage.getSignInResponse();
 
-      // ///Check for authorization
-      // final isAuthorized = await _localStorage.isAuthorized();
-      // _ref
-      //     .read(isAuthorizedPr.notifier)
-      //     .update((state) => state = isAuthorized);
-
       ///Get Show Intro Screen Value
       final showIntro = await _localStorage.getShowIntro();
       showIntroPage = showIntro;
@@ -144,8 +138,8 @@ class AuthRepository {
       );
 
       if (otpResult != null) {
-        final signUpData = jsonDecode(otpResult);
-        message = signUpData["message"];
+        final otpResponse = jsonDecode(otpResult);
+        message = otpResponse["message"];
       }
 
       return right(message);

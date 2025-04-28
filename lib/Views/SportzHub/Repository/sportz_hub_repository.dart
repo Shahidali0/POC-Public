@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cricket_poc/lib_exports.dart';
+import 'package:fpdart/fpdart.dart';
 
 final sportzHubRepositoryPr = Provider<SportzHubRepository>(
   (ref) => SportzHubRepository(
@@ -69,6 +70,34 @@ class SportzHubRepository {
       throw AppExceptions.instance.handleMyHTTPClientException(error);
     } catch (e) {
       throw AppExceptions.instance.handleException(error: e.toString());
+    }
+  }
+
+  ///Delete Booking
+  FutureEither<String> deleteBooking({
+    required String userId,
+    required String bookingId,
+  }) async {
+    try {
+      String message = "";
+
+      ///Delete Booking
+      final response = await _homeServices.deleteBooking(
+        userId: userId,
+        bookingId: bookingId,
+      );
+
+      if (response != null) {
+        message = "";
+      }
+
+      return right(message);
+    } on SocketException catch (_) {
+      return left(AppExceptions.instance.handleSocketException());
+    } on MyHttpClientException catch (error) {
+      return left(AppExceptions.instance.handleMyHTTPClientException(error));
+    } catch (e) {
+      return left(AppExceptions.instance.handleException(error: e.toString()));
     }
   }
 }

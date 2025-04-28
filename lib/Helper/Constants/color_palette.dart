@@ -15,10 +15,8 @@ class AppColors {
   static const Color grey = Color(0xFFABBBCE);
   static Color lightGrey = CupertinoColors.extraLightBackgroundGray;
   static const Color lightBlue = Color(0xFF95ADF3);
-  // static const Color button = Color(0xFF678CEA);
   static const Color border = Color(0xFFEDEDED);
   static const Color orange = Color(0xFFE07A5F);
-  // static const Color orange = Color(0xFFFFB347);
   // CupertinoColors.systemOrange;
   static const Color green = CupertinoColors.systemGreen;
 

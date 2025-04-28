@@ -21,12 +21,18 @@ class BookServiceScreen extends ConsumerWidget {
             ListTile(
               contentPadding: EdgeInsets.zero,
               horizontalTitleGap: Sizes.spaceMed,
-              title: Text(serviceJson.title!),
+              title: Text(
+                serviceJson.title!,
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      fontSize: Sizes.fontSize18,
+                      fontWeight: FontWeight.w600,
+                    ),
+              ),
               subtitle: Text(
                 "${serviceJson.category} (${serviceJson.sport})",
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
-                  color: AppColors.appTheme,
+                  color: AppColors.orange,
                   fontWeight: FontWeight.w700,
                 ),
               ),

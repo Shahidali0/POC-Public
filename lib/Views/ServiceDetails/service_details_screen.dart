@@ -26,7 +26,10 @@ class ServiceDetailsScreen extends ConsumerWidget {
         padding: EdgeInsets.zero,
         children: [
           ///About the Provider
-          ..._aboutProvider(controller),
+          ..._aboutProvider(
+            context: context,
+            controller: controller,
+          ),
 
           const Divider(),
 
@@ -48,7 +51,11 @@ class ServiceDetailsScreen extends ConsumerWidget {
   }
 
   ///About the Provider
-  List<Widget> _aboutProvider(FindServciesController controller) => [
+  List<Widget> _aboutProvider({
+    required BuildContext context,
+    required FindServciesController controller,
+  }) =>
+      [
         ///Profile
         ListTile(
           contentPadding: EdgeInsets.zero,
@@ -64,35 +71,41 @@ class ServiceDetailsScreen extends ConsumerWidget {
               ),
             ),
           ),
-          title: Text(serviceJson.title!),
+          title: Text(
+            serviceJson.title!,
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  fontSize: Sizes.fontSize18,
+                  fontWeight: FontWeight.w600,
+                ),
+          ),
           subtitle: Text(
             "${serviceJson.category} (${serviceJson.sport})",
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
-              color: AppColors.appTheme,
+              color: AppColors.orange,
               fontWeight: FontWeight.w700,
             ),
           ),
         ),
         const SizedBox(height: Sizes.spaceMed),
 
-        CustomTile(
+        CustomListTile(
           iconData: CupertinoIcons.person,
           text:
               "Member since ${Utils.instance.formatDateYMMM(serviceJson.createdAt)}",
         ),
 
-        CustomTile(
+        CustomListTile(
           iconData: CupertinoIcons.calendar,
           text: "${serviceJson.timeSlots!.length} available dates",
         ),
 
-        CustomTile(
+        CustomListTile(
           iconData: CupertinoIcons.map_pin_ellipse,
           text: serviceJson.location!,
         ),
 
-        CustomTile(
+        CustomListTile(
           iconData: CupertinoIcons.timer,
           text: Utils.instance.getDuration(serviceJson.duration),
         ),

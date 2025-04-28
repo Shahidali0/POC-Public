@@ -63,7 +63,7 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSuccessSnackBar({
 }) {
   ScaffoldMessenger.of(context).clearSnackBars();
 
-  Color backgroundColor = AppColors.orange;
+  Color backgroundColor = AppColors.appTheme;
   Color textColor = AppColors.white;
 
   return ScaffoldMessenger.of(context).showSnackBar(

@@ -9,6 +9,12 @@ class MyBookingsTabview extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(getMyBookingsPr).when(
           data: (data) {
+            ///For Empty Services List
+            if ((data.isEmpty)) {
+              return const EmptyDataWidget(
+                subTitle: Constants.emmptyMyBookings,
+              );
+            }
             return RefreshIndicator(
               onRefresh: () async => ref.refresh(getMyBookingsPr.future),
               child: _body(
@@ -42,69 +48,62 @@ class MyBookingsTabview extends ConsumerWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "My Bookings:",
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: Sizes.fontSize18,
-                    color: AppColors.blueGrey,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: AppTheme.boldFont,
-                  ),
-                ),
-                SizedBox(width: Sizes.spaceHeight),
-                Flexible(child: _MyBookingSegments()),
-              ],
-            ),
+            ///My Bookings Segments
+            const _MyBookingSegments(),
+            // const Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Text(
+            //       "My Bookings:",
+            //       overflow: TextOverflow.ellipsis,
+            //       style: TextStyle(
+            //         fontSize: Sizes.fontSize18,
+            //         color: AppColors.blueGrey,
+            //         fontWeight: FontWeight.bold,
+            //         fontFamily: AppTheme.boldFont,
+            //       ),
+            //     ),
+            //     SizedBox(width: Sizes.spaceHeight),
+            //     Flexible(child: _MyBookingSegments()),
+            //   ],
+            // ),
+
             const SizedBox(height: Sizes.spaceSmall),
 
-            ///Empty List
-            if (myBookings.isEmpty)
-              const Expanded(
-                child: EmptyDataWidget(
-                  subTitle:
-                      "Let’s land your first booking and get you SportZReady!",
-                ),
-              )
-
             ///List of Bookings
-            else
-              Expanded(
-                child: Consumer(
-                  builder: (context, WidgetRef ref, __) {
-                    final selectedSegment = ref.watch(myBookingSegemntIndexPr);
+            Expanded(
+              child: Consumer(
+                builder: (context, WidgetRef ref, __) {
+                  final selectedSegment = ref.watch(myBookingSegemntIndexPr);
 
-                    return AnimatedSwitcher(
-                      duration: Sizes.duration,
-                      child: selectedSegment == MyBookingType.upcoming
+                  return AnimatedSwitcher(
+                    duration: Sizes.duration,
+                    child: selectedSegment == MyBookingType.upcoming
 
-                          ///UpComing Bookings List
-                          ? _BookingListView(
-                              sendReminder: true,
-                              bookings: myBookings
-                                  .where((item) => item.status!
-                                      .toLowerCase()
-                                      .contains("pending"))
-                                  .toList(),
-                            )
-                          :
+                        ///UpComing Bookings List
+                        ? _BookingListView(
+                            sendReminder: true,
+                            bookings: myBookings
+                                .where((item) => item.status!
+                                    .toLowerCase()
+                                    .contains("pending"))
+                                .toList(),
+                          )
+                        :
 
-                          ///Past Bookings List
-                          _BookingListView(
-                              sendReminder: false,
-                              bookings: myBookings
-                                  .where((item) => !item.status!
-                                      .toLowerCase()
-                                      .contains("pending"))
-                                  .toList(),
-                            ),
-                    );
-                  },
-                ),
+                        ///Past Bookings List
+                        _BookingListView(
+                            sendReminder: false,
+                            bookings: myBookings
+                                .where((item) => !item.status!
+                                    .toLowerCase()
+                                    .contains("pending"))
+                                .toList(),
+                          ),
+                  );
+                },
               ),
+            ),
           ],
         ),
       );
@@ -136,18 +135,18 @@ class _MyBookingSegments extends ConsumerWidget {
                 color: selectedSegment == MyBookingType.upcoming
                     ? AppColors.white
                     : null,
-                size: Sizes.fontSize12,
+                // size: Sizes.fontSize18,
               ),
               const SizedBox(width: Sizes.space),
               Text(
                 "UpComing",
                 style: TextStyle(
-                  fontSize: Sizes.fontSize12,
+                  // fontSize: Sizes.fontSize12,
                   color: selectedSegment == MyBookingType.upcoming
                       ? AppColors.white
                       : null,
                   fontWeight: selectedSegment == MyBookingType.upcoming
-                      ? FontWeight.w800
+                      ? FontWeight.bold
                       : null,
                 ),
               )
@@ -168,18 +167,18 @@ class _MyBookingSegments extends ConsumerWidget {
                 color: selectedSegment == MyBookingType.past
                     ? AppColors.white
                     : null,
-                size: Sizes.fontSize12,
+                // size: Sizes.fontSize18,
               ),
               const SizedBox(width: Sizes.space),
               Text(
                 "Past",
                 style: TextStyle(
-                  fontSize: Sizes.fontSize12,
+                  // fontSize: Sizes.fontSize12,
                   color: selectedSegment == MyBookingType.past
                       ? AppColors.white
                       : null,
                   fontWeight: selectedSegment == MyBookingType.past
-                      ? FontWeight.w800
+                      ? FontWeight.bold
                       : null,
                 ),
               ),
@@ -238,7 +237,6 @@ class _BookingCard extends StatelessWidget {
   });
 
   final BookingsJson booking;
-
   final bool sendReminder;
 
   @override
@@ -292,23 +290,25 @@ class _BookingCard extends StatelessWidget {
                 fontSize: Sizes.fontSize16,
               ),
             ),
-            const SizedBox(height: Sizes.spaceSmall),
+            const SizedBox(height: Sizes.spaceMed),
 
             ///Date
-            CustomTile(
+            CustomListTile(
               iconData: CupertinoIcons.calendar,
               text: Utils.instance.formatDateToString(booking.date),
             ),
 
             ///Time
-            CustomTile(
+            CustomListTile(
               iconData: CupertinoIcons.time,
               text: booking.timeSlot!,
             ),
 
             ///Status
-            CustomTile(
-              iconData: CupertinoIcons.question_circle,
+            CustomListTile(
+              iconData: booking.status!.toLowerCase().contains("pending")
+                  ? CupertinoIcons.hourglass
+                  : CupertinoIcons.check_mark_circled_solid,
               text: booking.status!.capitalizeFirst,
               textColor: booking.status!.toLowerCase().contains("pending")
                   ? AppColors.orange
@@ -316,16 +316,37 @@ class _BookingCard extends StatelessWidget {
               fontWeight: FontWeight.w600,
             ),
 
-            const SizedBox(height: Sizes.spaceSmall),
+            ///Send Reminder Button and Delete Button
+            if (sendReminder)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ///Send Reminder Button
 
-            if (sendReminder) ...[
-              CommonOutlineButton(
-                onPressed: () {},
-                text: "Send Reminder",
-                dense: true,
+                  Expanded(
+                    child: CommonOutlineButton(
+                      onPressed: () {
+                        showSuccessSnackBar(
+                            context: context, content: "Feature coming soon");
+                      },
+                      text: "Send Reminder",
+                      dense: true,
+                    ),
+                  ),
+                  const SizedBox(width: Sizes.space),
+
+                  ///Delete Button
+                  Consumer(
+                    builder: (context, ref, _) {
+                      return DeleteIconButton(
+                        onPressed: () => ref
+                            .read(sportzHubControllerPr.notifier)
+                            .deleteBooking(context: context),
+                      );
+                    },
+                  ),
+                ],
               ),
-              const SizedBox(height: Sizes.space),
-            ]
           ],
         ),
       ),

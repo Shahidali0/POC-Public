@@ -1,4 +1,5 @@
 import 'package:cricket_poc/lib_exports.dart';
+import 'package:flutter/material.dart';
 
 final sportzHubControllerPr = StateNotifierProvider<SportzHubController, bool>(
   (ref) => SportzHubController(
@@ -34,4 +35,7 @@ class SportzHubController extends StateNotifier<bool> {
 
   //* Get User Bookings List
   Future<List<BookingsJson>> getMyBookings() => _repository.getMyBookings();
+
+  //! Delete Booking
+  FutureVoid deleteBooking({required BuildContext context}) async {}
 }

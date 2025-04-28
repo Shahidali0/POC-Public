@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cricket_poc/lib_exports.dart';
 
 final homeServicesPr = Provider<HomeServices>(
@@ -24,6 +26,9 @@ sealed class HomeServices {
   Future<String?> createBooking({required CreateBookingDto bookingDto});
 
   Future<String?> getAllCategories();
+
+  Future<String?> deleteBooking(
+      {required String userId, required String bookingId});
 }
 
 class _HomeServicesImpl implements HomeServices {
@@ -146,6 +151,32 @@ class _HomeServicesImpl implements HomeServices {
     final headers = await _apiHeaders.getHeadersWithToken();
 
     final response = await BaseHttpClient.postService(
+      urlEndPoint: url,
+      body: body,
+      headers: headers,
+    );
+
+    return response;
+  }
+
+  //! Delete Booking
+  @override
+  Future<String?> deleteBooking({
+    required String userId,
+    required String bookingId,
+  }) async {
+    const url = "booking";
+
+    final body = jsonEncode(
+      <String, dynamic>{
+        "userId": userId,
+        "bookingId": bookingId,
+      },
+    );
+
+    final headers = await _apiHeaders.getHeadersWithToken();
+
+    final response = await BaseHttpClient.patchService(
       urlEndPoint: url,
       body: body,
       headers: headers,

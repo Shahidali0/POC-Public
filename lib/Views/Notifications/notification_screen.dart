@@ -22,7 +22,7 @@ class NotificationScreen extends StatelessWidget {
             ),
           ),
           Text(
-            "You dont have any new notification, Will notify you if you have any..Thanks",
+            Constants.emptyNotification,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: Sizes.fontSize18,

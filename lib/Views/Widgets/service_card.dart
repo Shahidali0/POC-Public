@@ -61,19 +61,19 @@ class ServiceCardWidget extends StatelessWidget {
               const SizedBox(height: Sizes.spaceMed),
 
               ///Tag
-              CustomTile(
+              CustomListTile(
                 iconData: CupertinoIcons.tag,
                 text:
                     "${serviceJson.category!.capitalizeFirst} (${serviceJson.sport!.capitalizeFirst})",
               ),
 
               ///Details
-              CustomTile(
+              CustomListTile(
                 iconData: CupertinoIcons.map_pin_ellipse,
                 text: serviceJson.location!,
               ),
 
-              CustomTile(
+              CustomListTile(
                 iconData: CupertinoIcons.timer,
                 text: Utils.instance.getDuration(serviceJson.duration),
               ),

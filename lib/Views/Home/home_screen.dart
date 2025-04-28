@@ -156,12 +156,12 @@ class HomeScreen extends ConsumerWidget {
     return [
       const SizedBox(height: Sizes.spaceHeight),
       const Text(
-        "All product names, logos, and brands are property of their respective. All company, product and service names used in this website are for identification purposes only. Use of these names, logos, and brands does not imply endorsement.",
+        Constants.copyRightInfo,
         textAlign: TextAlign.center,
       ),
       const SizedBox(height: Sizes.spaceHeightSm),
       Text(
-        "Copyright @ 2025 SportZReady All rights reserved",
+        Constants.copyRight,
         textAlign: TextAlign.center,
         style: Theme.of(context).textTheme.titleSmall?.copyWith(
               color: AppColors.black,
