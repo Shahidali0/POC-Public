@@ -1,9 +1,8 @@
 import 'package:cricket_poc/lib_exports.dart';
 
-final myServicesControllerPr =
-    StateNotifierProvider<MyServciesController, bool>(
-  (ref) => MyServciesController(
-    myServiceRepo: ref.read(myServicesRepositoryPr),
+final sportzHubControllerPr = StateNotifierProvider<SportzHubController, bool>(
+  (ref) => SportzHubController(
+    sportzHubRepo: ref.read(sportzHubRepositoryPr),
   ),
 );
 
@@ -14,19 +13,19 @@ final myBookingSegemntIndexPr = StateProvider<MyBookingType>(
 );
 
 final getMyServicesListPr = FutureProvider<AllServicesJson?>((ref) async {
-  return ref.read(myServicesControllerPr.notifier).getMyServicesList();
+  return ref.read(sportzHubControllerPr.notifier).getMyServicesList();
 });
 
 final getMyBookingsPr = FutureProvider<List<BookingsJson>>((ref) async {
-  return ref.read(myServicesControllerPr.notifier).getMyBookings();
+  return ref.read(sportzHubControllerPr.notifier).getMyBookings();
 });
 
-class MyServciesController extends StateNotifier<bool> {
-  final MyServicesRepository _repository;
+class SportzHubController extends StateNotifier<bool> {
+  final SportzHubRepository _repository;
 
-  MyServciesController({
-    required MyServicesRepository myServiceRepo,
-  })  : _repository = myServiceRepo,
+  SportzHubController({
+    required SportzHubRepository sportzHubRepo,
+  })  : _repository = sportzHubRepo,
         super(false);
 
   //* Find My Services

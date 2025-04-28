@@ -14,7 +14,7 @@ class FindServicesScreen extends ConsumerWidget {
     return RefreshIndicator(
       edgeOffset: 20,
       displacement: 100,
-      onRefresh: () async => ref.refresh(getFindServciesListPr.future),
+      onRefresh: () async => ref.refresh(getFindServciesListPr),
       child: CupertinoPageScaffold(
         navigationBar: CupertinoAppbar(
           title: "Find Services",
@@ -35,7 +35,13 @@ class FindServicesScreen extends ConsumerWidget {
                   skipLoadingOnRefresh: false,
                   data: (data) {
                     if (data == null || (data.services?.isEmpty ?? false)) {
-                      return const EmptyDataWidget();
+                      return EmptyDataWidget(
+                        padding: EdgeInsets.only(
+                          top: Sizes.screenSize(context).height * 0.4,
+                        ),
+                        subTitle:
+                            "No services available yet. Stay tuned and get SportZReady!",
+                      );
                     }
 
                     return _body(

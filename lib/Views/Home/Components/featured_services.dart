@@ -9,8 +9,8 @@ class FeaturedServicesList extends ConsumerWidget {
     return ref.watch(getFeaturedServicesPr).when(
           skipLoadingOnRefresh: false,
           data: (data) {
-            if (data == null) {
-              return const EmptyDataWidget();
+            if (data == null || data.services!.isEmpty) {
+              return const SizedBox.shrink();
             }
 
             return _body(
@@ -35,25 +35,39 @@ class FeaturedServicesList extends ConsumerWidget {
     required BuildContext context,
     required List<ServiceJson> featuredServices,
   }) =>
-      SizedBox(
-        height: 220,
-        child: ListView.separated(
-          scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(vertical: Sizes.spaceHeightSm),
-          itemCount: featuredServices.length,
-          itemBuilder: (BuildContext context, int index) {
-            final item = featuredServices[index];
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ///Header
+          const HomeHeaderText(
+            title: "Featured Services",
+          ),
 
-            final size = Sizes.screenSize(context);
+          ///Featured List
+          SizedBox(
+            height: 220,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              padding:
+                  const EdgeInsets.symmetric(vertical: Sizes.spaceHeightSm),
+              itemCount: featuredServices.length,
+              itemBuilder: (BuildContext context, int index) {
+                final item = featuredServices[index];
 
-            return SizedBox(
-              width: size.width * 0.75,
-              child: ServiceCardWidget(serviceJson: item),
-            );
-          },
-          separatorBuilder: (BuildContext context, int index) =>
-              const SizedBox(width: Sizes.spaceHeight),
-        ),
+                return SizedBox(
+                  width: 310,
+                  // width: size.width * 0.75,
+                  child: ServiceCardWidget(serviceJson: item),
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) =>
+                  const SizedBox(width: Sizes.spaceHeight),
+            ),
+          ),
+
+          const SizedBox(height: Sizes.spaceHeightSm),
+        ],
       );
 }
 

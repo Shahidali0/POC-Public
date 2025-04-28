@@ -95,7 +95,7 @@ class ServiceDetailsController extends StateNotifier<_ServiceDetailsState> {
       ),
       (success) {
         ///Go back
-        AppRouter.instance.pop(context, rootNavigator: true);
+        AppRouter.instance.popUntil(context);
 
         ///Now Change BottomNav Index -- To see MyBooking
         _ref.read(navbarControllerPr.notifier).updateNavbarIndex(index: 2);

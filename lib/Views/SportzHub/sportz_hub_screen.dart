@@ -2,8 +2,8 @@ import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class MyServicesScreen extends StatelessWidget {
-  const MyServicesScreen({super.key});
+class SportzHubScreen extends StatelessWidget {
+  const SportzHubScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +11,7 @@ class MyServicesScreen extends StatelessWidget {
       length: 2,
       child: CupertinoPageScaffold(
         navigationBar: const CupertinoAppbar(
-          title: "My Services",
+          title: "SportZHub",
           showNotificationIcon: true,
         ),
         child: NestedScrollView(
@@ -26,7 +26,10 @@ class MyServicesScreen extends StatelessWidget {
                   labelColor: AppColors.appTheme,
                   indicatorColor: AppColors.appTheme,
                   padding: const EdgeInsets.symmetric(horizontal: Sizes.space),
-                  tabs: myServicesTabsData
+                  tabs: [
+                    "My Services",
+                    "My Bookings",
+                  ]
                       .map(
                         (text) => Tab(text: text),
                       )

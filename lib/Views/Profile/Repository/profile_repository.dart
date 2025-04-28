@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter/material.dart';
 
@@ -28,10 +27,11 @@ class ProfileRepository {
         _ref = ref;
 
   ///Update User Json
-  void _updateUserJson({required UsersResponseJson userJson}) {
+  void _updateUserJson({required UsersResponseJson? userJson}) {
     _ref.read(userJsonPr.notifier).update((state) => state = userJson);
   }
 
+  ///Get Cuurrent User
   Future<UsersResponseJson?> getCurrentUser() async {
     //*Get userId
     final signInResponse = await _localStorage.getSignInResponse();
@@ -43,14 +43,17 @@ class ProfileRepository {
     }
 
     //* Now get user details
-    final user = await getUserByUserName(userName: "skummethi2@gmail.com");
-    // signInResponse.emailId!);
+    final user = await _getUserByUserName(userName: signInResponse.emailId!);
 
-    //* Update User Json
-    _ref
-        .read(userJsonPr.notifier)
-        .update((state) => state = user as UsersResponseJson);
-    return null;
+    //* If user is null then delete the login details
+    if (user == null) {
+      await _localStorage.deleteLoginDetails();
+    }
+
+    ///Update UserJson
+    _updateUserJson(userJson: user);
+
+    return user;
   }
 
   ///Get User Details by UserId
@@ -74,11 +77,12 @@ class ProfileRepository {
   }
 
   ///Get User Details by UserName
-  Future<UsersResponseJson?> getUserByUserName(
+  ///Here we are not throwing the error bcz we dont want to block
+  ///the UI if the user is not found
+  Future<UsersResponseJson?> _getUserByUserName(
       {required String userName}) async {
+    UsersResponseJson? userJson;
     try {
-      UsersResponseJson? userJson;
-
       final response = await _profileServices.getUserByUserName(
         userName: userName,
       );
@@ -86,17 +90,12 @@ class ProfileRepository {
       if (response != null) {
         userJson = UsersResponseJson.fromRawJson(response);
         // usersJson = await compute(UsersJson.fromRawJson, response);
-        _updateUserJson(userJson: userJson);
       }
-
-      return userJson;
-    } on SocketException catch (_) {
-      throw AppExceptions.instance.handleSocketException();
-    } on MyHttpClientException catch (error) {
-      throw AppExceptions.instance.handleMyHTTPClientException(error);
     } catch (e) {
-      throw AppExceptions.instance.handleException(error: e.toString());
+      debugPrint(e.toString());
     }
+
+    return userJson;
   }
 
   ///Is User Authorized
@@ -116,7 +115,7 @@ class ProfileRepository {
         await _localStorage.deleteLoginDetails();
 
         ///Refresh Some Providers
-        _ref.invalidate(isAuthorizedPr);
+
         _ref.invalidate(navbarControllerPr);
         _ref.invalidate(userJsonPr);
 

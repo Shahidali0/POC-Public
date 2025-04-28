@@ -7,31 +7,44 @@ class MyServicesTabview extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(getMyServicesListPr).when(
-          data: (data) {
-            if (data == null || (data.services?.isEmpty ?? false)) {
-              return const EmptyDataWidget();
-            }
+    return RefreshIndicator(
+      onRefresh: () async => ref.refresh(getMyServicesListPr.future),
+      child: ref.watch(getMyServicesListPr).when(
+            data: (data) {
+              ///For Empty Services List
+              if (data == null || (data.services?.isEmpty ?? false)) {
+                return EmptyDataWidget(
+                  subTitle:
+                      "Let’s add your first service and get you SportZReady!",
+                  widget: CommonOutlineButton(
+                    minButtonWidth: 100,
+                    dense: true,
+                    onPressed: () => AppRouter.instance.animatedPush(
+                      context: context,
+                      page: const PostServiceScreen(),
+                    ),
+                    text: "Post Service",
+                  ),
+                );
+              }
 
-            return RefreshIndicator.adaptive(
-              onRefresh: () async => ref.refresh(getMyServicesListPr),
-              child: _body(
+              return _body(
                 context: context,
                 myServices: data.services!,
                 ref: ref,
-              ),
-            );
-          },
-          error: (e, st) {
-            final error = e as Failure;
-            return ErrorText(
-              title: error.title,
-              error: error.message,
-              onRefresh: () async => ref.invalidate(getMyServicesListPr),
-            );
-          },
-          loading: () => const ShowDataLoader(),
-        );
+              );
+            },
+            error: (e, st) {
+              final error = e as Failure;
+              return ErrorText(
+                title: error.title,
+                error: error.message,
+                onRefresh: () async => ref.invalidate(getMyServicesListPr),
+              );
+            },
+            loading: () => const ShowDataLoader(),
+          ),
+    );
 
     //   return FutureBuilder<AllServicesJson?>(
     //     future: _futureData,

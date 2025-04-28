@@ -72,7 +72,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
                 subtitle: FadeAnimations(
                   child: Text(
-                    "Welcome back to your account",
+                    "Let's get you back in the game!",
                     style: TextStyle(
                       fontSize: Sizes.fontSize18,
                     ),

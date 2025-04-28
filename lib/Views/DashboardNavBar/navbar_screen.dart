@@ -51,7 +51,7 @@ class NavbarScreen extends ConsumerWidget {
           ///This is For PostButton(+)
           SizedBox.shrink(),
 
-          MyServicesScreen(key: PageStorageKey("MyServicesScreen")),
+          SportzHubScreen(key: PageStorageKey("MyServicesScreen")),
           ProfileScreen(key: PageStorageKey("ProfileScreen")),
         ],
       ),
@@ -112,12 +112,13 @@ class _CustomNavigationBar extends StatelessWidget {
             label: "",
           ),
 
-          ///My Services
+          ///SportZHub
+
           const BottomNavigationBarItem(
             icon: Icon(Icons.assignment_outlined),
             // icon: Icon(Icons.design_services_outlined),
             activeIcon: Icon(CupertinoIcons.settings_solid),
-            label: "My Services",
+            label: "SportZHub",
           ),
 
           ///Profile

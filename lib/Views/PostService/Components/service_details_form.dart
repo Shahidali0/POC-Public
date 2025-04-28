@@ -96,7 +96,7 @@ class _ServiceDescriptionField extends StatelessWidget {
         controller: controller,
         keyboardType: TextInputType.multiline,
         validator: FieldValidators.instance.commonValidator,
-        textCapitalization: TextCapitalization.words,
+
         maxLines: 7,
         minLines: 4,
         textInputAction: TextInputAction.newline,

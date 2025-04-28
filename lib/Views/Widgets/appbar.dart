@@ -48,7 +48,7 @@ class CupertinoAppbar extends StatelessWidget
         style: const TextStyle(
           color: AppColors.appTheme,
           fontSize: Sizes.fontSize18,
-          fontStyle: FontStyle.italic,
+          fontFamily: AppTheme.boldFont,
         ),
       ),
     );

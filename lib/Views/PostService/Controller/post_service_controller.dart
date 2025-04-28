@@ -403,8 +403,21 @@ class PostServiceController extends StateNotifier<_PostServiceStatus> {
     ///Get Time Slots
     final timeSlots = _getTimeSlotsData();
 
+    ///Get Userid
+    final userId = _ref.read(profileControllerPr.notifier).getUserId();
+
+    ///If No userId then return Alert
+    if (userId.isEmpty) {
+      showErrorSnackBar(
+        context: context,
+        content: "User not found",
+      );
+      return;
+    }
+
+    ///PostServiceDto
     final postServiceDto = PostServiceDto(
-      providerId: "123asf234234",
+      providerId: userId,
       title: serviceTitleController.text.trim(),
       sport: state.selectedSport!,
       description: serviceDescriptionController.text.trim(),
@@ -432,10 +445,13 @@ class PostServiceController extends StateNotifier<_PostServiceStatus> {
           context: context,
           content: success,
         );
-        return AppRouter.instance.pop(
-          context,
-          rootNavigator: true,
-        );
+        AppRouter.instance.popUntil(context);
+
+        ///After posting the service Update Bottom navbar index to
+        ///FindService index to see the posted service
+        _ref.read(navbarControllerPr.notifier).updateNavbarIndex(index: 1);
+
+        return;
       },
     );
   }

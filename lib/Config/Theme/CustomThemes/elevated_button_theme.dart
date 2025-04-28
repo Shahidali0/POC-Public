@@ -11,12 +11,12 @@ class MyElevatedButtonTheme {
     return ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         foregroundColor: AppColors.white,
-        backgroundColor: AppColors.button,
+        backgroundColor: AppColors.appTheme,
         overlayColor: AppColors.appTheme,
         elevation: 0,
         minimumSize: const Size(200, Sizes.buttonHeight),
         maximumSize: const Size(700, Sizes.buttonHeight),
-        disabledBackgroundColor: AppColors.button.withOpacity(0.3),
+        disabledBackgroundColor: AppColors.appTheme.withOpacity(0.3),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(Sizes.borderRadius),
         ),

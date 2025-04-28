@@ -75,6 +75,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
       goal: _selectedGoal.value,
       userType: _aboutYourSelf.value,
       abn: _abnController.text.trim(),
+      createdDate: DateTime.now(),
     );
 
     await ref.read(authControllerPr.notifier).signUpUser(

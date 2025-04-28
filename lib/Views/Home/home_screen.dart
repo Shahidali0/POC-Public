@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:cricket_poc/lib_exports.dart';
 
@@ -21,85 +22,161 @@ class HomeScreen extends ConsumerWidget {
           ];
         },
         body: ListView(
+          shrinkWrap: true,
+          primary: false,
           physics: const NeverScrollableScrollPhysics(),
           padding: Sizes.globalMargin,
           children: [
-            const _HeaderText(title: "Featured Services"),
             const FeaturedServicesList(),
 
-            ///
-            ///
             ///How it Works
-            const SizedBox(height: Sizes.spaceHeightSm),
-            const _HeaderText(title: "How It Works"),
+            ..._howItWorks(context),
 
-            const SizedBox(height: Sizes.spaceHeight),
-            ListTile(
-              shape: RoundedRectangleBorder(
-                side: const BorderSide(color: AppColors.border),
-                borderRadius: BorderRadius.circular(Sizes.borderRadius),
-              ),
-              tileColor: AppColors.card,
-              leading: const Icon(CupertinoIcons.search),
-              title: const Text("Find Services"),
-              subtitle: const Text(
-                  "Browse through our verified game services and select what you need"),
-            ),
-
-            const SizedBox(height: Sizes.spaceHeight),
-            ListTile(
-              shape: RoundedRectangleBorder(
-                side: const BorderSide(color: AppColors.border),
-                borderRadius: BorderRadius.circular(Sizes.borderRadius),
-              ),
-              tileColor: AppColors.card,
-              leading: const Icon(CupertinoIcons.calendar),
-              title: const Text("Book Time Slot"),
-              subtitle: const Text(
-                  "Choose your preferred date and time slot for the service"),
-            ),
-
-            const SizedBox(height: Sizes.spaceHeight),
-            ListTile(
-              shape: RoundedRectangleBorder(
-                side: const BorderSide(color: AppColors.border),
-                borderRadius: BorderRadius.circular(Sizes.borderRadius),
-              ),
-              tileColor: AppColors.card,
-              leading: const Icon(Icons.school_outlined),
-              title: const Text("Enjoy Quality Service"),
-              subtitle: const Text(
-                  "Experience professional game services from verified providers"),
-            ),
-
-            ///
-            ///
             ///About Us
             //  _AboutUs(),
 
             ///CopyRights
-            const SizedBox(height: Sizes.spaceHeight),
-            const Text(
-              "All product names, logos, and brands are property of their respective. All company, product and service names used in this website are for identification purposes only. Use of these names, logos, and brands does not imply endorsement.",
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: Sizes.spaceHeightSm),
-
-            const Text(
-              "Copyright @ 2025 GameMate All rights reserved",
-              textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
+            ..._copyRights(context),
           ],
         ),
       ),
     );
   }
+
+  ///How it Works Widget
+  List<Widget> _howItWorks(BuildContext context) {
+    return [
+      const HomeHeaderText(title: "How It Works"),
+      const SizedBox(height: Sizes.spaceHeight),
+      ExpansionPanelList.radio(
+        elevation: 1,
+        dividerColor: AppColors.border,
+        materialGapSize: Sizes.spaceHeight,
+        expandedHeaderPadding: EdgeInsets.zero,
+        children: howItWorksData
+            .map(
+              (item) => ExpansionPanelRadio(
+                value: item,
+                canTapOnHeader: true,
+                backgroundColor: AppColors.card,
+                headerBuilder: (context, isExpanded) {
+                  return ListTile(
+                    leading: Icon(item.iconData),
+                    title: Text(item.title),
+                  );
+                },
+                body: ListTile(
+                  titleAlignment: ListTileTitleAlignment.top,
+                  title: Text(
+                    item.description,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ),
+              ),
+            )
+            .toList(),
+      )
+    ];
+  }
+  // ///How it Works Widget
+  // List<Widget> _howItWorks() {
+  //   return [
+  //     const SizedBox(height: Sizes.spaceHeightSm),
+  //     const _HeaderText(title: "How It Works"),
+  //     const SizedBox(height: Sizes.spaceHeight),
+  //     ///Item 1 --Find Services
+  //     ListTile(
+  //       shape: RoundedRectangleBorder(
+  //         side: const BorderSide(color: AppColors.border),
+  //         borderRadius: BorderRadius.circular(Sizes.borderRadius),
+  //       ),
+  //       tileColor: AppColors.card,
+  //       leading: const Icon(CupertinoIcons.search),
+  //       title: const Text("Find Services"),
+  //       subtitle: const Text(
+  //           "Browse through our verified game services and select what you need"),
+  //     ),
+  //     const SizedBox(height: Sizes.spaceHeight),
+  //     ///Item 2 --Book Time Slot
+  //     ListTile(
+  //       shape: RoundedRectangleBorder(
+  //         side: const BorderSide(color: AppColors.border),
+  //         borderRadius: BorderRadius.circular(Sizes.borderRadius),
+  //       ),
+  //       tileColor: AppColors.card,
+  //       leading: const Icon(CupertinoIcons.calendar_today),
+  //       title: const Text("Book Time Slot"),
+  //       subtitle: const Text(
+  //           "Choose your preferred date and time slot for the service"),
+  //     ),
+  //     const SizedBox(height: Sizes.spaceHeight),
+  //     ///Item 3 --Enjoy Quality Service
+  //     ListTile(
+  //       shape: RoundedRectangleBorder(
+  //         side: const BorderSide(color: AppColors.border),
+  //         borderRadius: BorderRadius.circular(Sizes.borderRadius),
+  //       ),
+  //       tileColor: AppColors.card,
+  //       leading: const Icon(Icons.school_outlined),
+  //       title: const Text("Enjoy Quality Service"),
+  //       subtitle: const Text(
+  //         "Experience professional game services from verified providers",
+  //       ),
+  //     ),
+  //     ///Item 4 --Make Payment
+  //     const SizedBox(height: Sizes.spaceHeight),
+  //     ListTile(
+  //       shape: RoundedRectangleBorder(
+  //         side: const BorderSide(color: AppColors.border),
+  //         borderRadius: BorderRadius.circular(Sizes.borderRadius),
+  //       ),
+  //       tileColor: AppColors.card,
+  //       leading: const Icon(Icons.payment_outlined),
+  //       title: const Text("Make Payment"),
+  //       subtitle: const Text(
+  //           "Securely pay for the service using our trusted payment gateway"),
+  //     ),
+  //     const SizedBox(height: Sizes.spaceHeight),
+  //     ///Item 5 --Secure & Reliable
+  //     ListTile(
+  //       shape: RoundedRectangleBorder(
+  //         side: const BorderSide(color: AppColors.border),
+  //         borderRadius: BorderRadius.circular(Sizes.borderRadius),
+  //       ),
+  //       tileColor: AppColors.card,
+  //       leading: const Icon(Icons.security_outlined),
+  //       title: const Text("Secure & Reliable"),
+  //       subtitle: const Text("Your data and transactions are safe with us"),
+  //     ),
+  //   ];
+  // }
+
+  ///CopyRights Widget
+  List<Widget> _copyRights(BuildContext context) {
+    return [
+      const SizedBox(height: Sizes.spaceHeight),
+      const Text(
+        "All product names, logos, and brands are property of their respective. All company, product and service names used in this website are for identification purposes only. Use of these names, logos, and brands does not imply endorsement.",
+        textAlign: TextAlign.center,
+      ),
+      const SizedBox(height: Sizes.spaceHeightSm),
+      Text(
+        "Copyright @ 2025 SportZReady All rights reserved",
+        textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              color: AppColors.black,
+              fontFamily: AppTheme.boldFont,
+            ),
+      ),
+      const SizedBox(height: Sizes.spaceHeight),
+    ];
+  }
 }
 
 ///Header Text Widget
-class _HeaderText extends StatelessWidget {
-  const _HeaderText({
+class HomeHeaderText extends StatelessWidget {
+  const HomeHeaderText({
+    super.key,
     required this.title,
   });
 
@@ -147,7 +224,6 @@ class _HeaderText extends StatelessWidget {
 //     );
 //   }
 // }
-
 
 ///About Us Card
 // class _AboutUs extends StatelessWidget {
@@ -278,4 +354,3 @@ class _HeaderText extends StatelessWidget {
 //     );
 //   }
 // }
-

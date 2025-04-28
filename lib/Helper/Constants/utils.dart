@@ -7,10 +7,11 @@ class Utils {
 
   static Utils get instance => Utils._();
 
-  //* Hide Focus of TextFormField
+  // //* Hide Focus of TextFormField
   void hideFoucs(BuildContext context) {
-    if (FocusScope.of(context).hasFocus) {
-      FocusScope.of(context).unfocus();
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+      currentFocus.focusedChild!.unfocus();
     }
   }
 

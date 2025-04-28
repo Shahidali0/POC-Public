@@ -50,14 +50,14 @@ export 'FindServices/Controller/find_servcies_controller.dart';
 
 //* My Services
 
-export 'MyServices/my_services_screen.dart';
+export 'SportzHub/sportz_hub_screen.dart';
 
-export 'MyServices/Components/my_bookings_tabview.dart';
-export 'MyServices/Components/my_services_tabview.dart';
+export 'SportzHub/Components/my_bookings_tabview.dart';
+export 'SportzHub/Components/my_services_tabview.dart';
 
-export 'MyServices/Repository/my_services_repository.dart';
+export 'SportzHub/Repository/sportz_hub_repository.dart';
 
-export 'MyServices/Controller/my_servcies_controller.dart';
+export 'SportzHub/Controller/sportz_hub_controller.dart';
 
 //* Post Service
 

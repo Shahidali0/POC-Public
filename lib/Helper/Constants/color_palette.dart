@@ -9,19 +9,22 @@ class AppColors {
   static const Color scaffoldBackColor = CupertinoColors.white;
 
   static const Color black = CupertinoColors.black;
-  static const Color blueGrey = Color(0xFF3f556e);
+  static const Color blueGrey = Color(0xFF37474F);
+  // static const Color blueGrey = Color(0xFF3f556e);
   static const Color card = CupertinoColors.secondarySystemGroupedBackground;
   static const Color grey = Color(0xFFABBBCE);
   static Color lightGrey = CupertinoColors.extraLightBackgroundGray;
   static const Color lightBlue = Color(0xFF95ADF3);
-  static const Color button = Color(0xFF678CEA);
+  // static const Color button = Color(0xFF678CEA);
   static const Color border = Color(0xFFEDEDED);
-  static const Color orange =
-      CupertinoColors.systemOrange; // Color(0xFFF0A03C);
+  static const Color orange = Color(0xFFE07A5F);
+  // static const Color orange = Color(0xFFFFB347);
+  // CupertinoColors.systemOrange;
   static const Color green = CupertinoColors.systemGreen;
 
   static const Color red = Color.fromARGB(255, 181, 14, 2);
   static Color transparent = CupertinoColors.systemBackground.withOpacity(0);
+  static const Color tag = Color(0xFFFFD700);
   static const Color white = CupertinoColors.white;
 
   ///Gradient
@@ -29,8 +32,8 @@ class AppColors {
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
     colors: [
-      // appTheme,
-      lightBlue,
+      appTheme,
+      // lightBlue,
       white,
     ],
   );

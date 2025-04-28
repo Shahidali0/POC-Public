@@ -11,8 +11,8 @@ class _HomeTitleAppBar extends StatelessWidget {
       leadingWidth: 0,
       pinned: true,
       centerTitle: true,
-      scrolledUnderElevation: 0,
-      backgroundColor: AppColors.lightBlue,
+      // scrolledUnderElevation: 0,
+      backgroundColor: AppColors.appTheme,
       actions: [
         FadeAnimations(
           child: Padding(
@@ -42,7 +42,7 @@ class _HomeTitleAppBar extends StatelessWidget {
             ///Running Logo
             Positioned(
               left: -40,
-              top: -10,
+              top: -5,
               bottom: 0,
               child: Image.asset(
                 AppImages.personRunningLogo,
@@ -75,112 +75,181 @@ class _HomeSearchbarWithCategories extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: Sizes.spaceHeightSm),
+            const SizedBox(height: Sizes.spaceHeight),
 
-            ///User Wish
-            RichText(
-              text: TextSpan(
-                style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                      color: AppColors.white,
-                      fontWeight: FontWeight.normal,
-                    ),
-                text: user != null ? "Welcome back, " : "Welcome, ",
-                children: [
-                  ///UserName
-                  if (user != null)
-                    TextSpan(
-                      text: "${user.firstName} ${user.lastName}",
-                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.white,
-                          ),
-                    ),
-                ],
-              ),
+            /// WishUser
+            _buildWishUser(
+              context: context,
+              user: user,
             ),
 
             ///Header
-            const SizedBox(height: Sizes.spaceHeightSm),
-            const Text(
+            Text(
               "Discover. Book. Get SportZReady",
-              style: TextStyle(
-                color: AppColors.white,
-                fontWeight: FontWeight.w600,
-                fontStyle: FontStyle.italic,
-                fontSize: Sizes.fontSize22,
-              ),
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: AppColors.tag,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: AppTheme.boldFont,
+                    fontStyle: FontStyle.italic,
+                  ),
             ),
 
             ///Search Field
-            const SizedBox(height: Sizes.spaceHeightSm),
-            InkWell(
-              onTap: () => ref
-                  .read(homeControllerPr.notifier)
-                  .showSearchWidget(context: context),
-              child: Container(
-                padding: Sizes.globalPadding,
-                decoration: BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.circular(Sizes.borderRadius),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(
-                      CupertinoIcons.search,
-                      color: AppColors.grey,
-                    ),
-                    const SizedBox(width: Sizes.space),
-                    Text(
-                      "Search for coaching, training or services…",
-                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                            color: AppColors.blueGrey,
-                          ),
-                    ),
-                  ],
-                ),
-              ),
+            const SizedBox(height: Sizes.spaceHeight * 1.2),
+            _buildSearchField(
+              ref: ref,
+              context: context,
             ),
 
-            ///Post Button
-            const SizedBox(height: Sizes.spaceHeight),
-            CommonButton(
-              onPressed: () => AppRouter.instance.animatedPush(
-                context: context,
-                scaleTransition: true,
-                page: const PostServiceScreen(),
-              ),
-              text: "Post Your Service for free",
-              backgroundColor: AppColors.white,
-              textColor: AppColors.appTheme,
-            ),
+            ///Content
+            const SizedBox(height: Sizes.spaceHeight * 1.2),
+            _buildContent(context),
 
             ///Categories
             const SizedBox(height: Sizes.spaceHeight * 1.4),
-            SizedBox(
-              height: 50,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemCount: categories.length,
-                separatorBuilder: (BuildContext context, int index) =>
-                    const SizedBox(width: Sizes.space),
-                itemBuilder: (BuildContext context, int index) {
-                  final item = categories[index];
+            const HomeHeaderText(title: "Top Categories"),
+            const SizedBox(height: Sizes.space),
 
-                  return ActionChip.elevated(
-                    onPressed: () =>
-                        ref.read(homeControllerPr.notifier).onTapCategory(
-                              context: context,
-                              sport: item.sport,
-                              category: item.category,
-                            ),
-                    padding: Sizes.globalPadding,
-                    label: Text(item.category!),
-                  );
-                },
+            _buildCategories(categories, ref),
+          ],
+        ),
+      ),
+    );
+  }
+
+  ///Wish User
+  Widget _buildWishUser({
+    required BuildContext context,
+    required UserJson? user,
+  }) {
+    return RichText(
+      text: TextSpan(
+        style: Theme.of(context).textTheme.titleMedium!.copyWith(
+              color: AppColors.white,
+              fontWeight: FontWeight.normal,
+              fontSize: Sizes.fontSize18,
+            ),
+        text: user != null ? "Hey " : "Hey, ",
+        children: [
+          ///UserName
+          if (user != null)
+            TextSpan(
+              text: "${user.firstName}, ",
+              style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.white,
+                    fontSize: Sizes.fontSize20,
+                    fontFamily: AppTheme.boldFont,
+                  ),
+            ),
+          TextSpan(
+            text: "Let’s Get You SportZReady!",
+            style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                  color: AppColors.white,
+                  fontWeight: FontWeight.normal,
+                  fontSize: Sizes.fontSize18,
+                ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  ///Search Field
+  Widget _buildSearchField({
+    required WidgetRef ref,
+    required BuildContext context,
+  }) {
+    return InkWell(
+      onTap: () => ref
+          .read(homeControllerPr.notifier)
+          .showSearchWidget(context: context),
+      child: Container(
+        padding: Sizes.globalPadding * 0.7,
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(Sizes.borderRadius),
+        ),
+        child: Row(
+          children: [
+            const Icon(
+              CupertinoIcons.search,
+              color: AppColors.grey,
+            ),
+            const SizedBox(width: Sizes.space),
+
+            ///Search Text
+            Flexible(
+              child: Text(
+                "Search coaching, training, or services near you...",
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                      color: AppColors.blueGrey,
+                    ),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  ///Categories
+  Widget _buildCategories(List<CategoryJson> categories, WidgetRef ref) {
+    return SizedBox(
+      height: 50,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemCount: categories.length,
+        separatorBuilder: (BuildContext context, int index) =>
+            const SizedBox(width: Sizes.space),
+        itemBuilder: (BuildContext context, int index) {
+          final item = categories[index];
+
+          return ActionChip.elevated(
+            onPressed: () => ref.read(homeControllerPr.notifier).onTapCategory(
+                  context: context,
+                  sport: item.sport,
+                  category: item.category,
+                ),
+            padding: Sizes.globalPadding,
+            label: Text(item.category!),
+          );
+        },
+      ),
+    );
+  }
+
+  ///Content Widget
+  Widget _buildContent(BuildContext context) {
+    return RichText(
+      text: TextSpan(
+        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              color: AppColors.blueGrey,
+              fontFamily: AppTheme.regularFont,
+            ),
+        text:
+            "Your next booking starts with one click. Add your service and get SportZReady! ",
+        children: [
+          ///Clickable Text
+          TextSpan(
+            text: "Post Service",
+            recognizer: TapGestureRecognizer()
+              ..onTap = () => AppRouter.instance.animatedPush(
+                    context: context,
+                    page: const PostServiceScreen(),
+                  ),
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: AppColors.orange,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: AppTheme.boldFont,
+                  decoration: TextDecoration.underline,
+                  decorationColor: AppColors.orange,
+                  decorationThickness: 2,
+                  decorationStyle: TextDecorationStyle.solid,
+                ),
+          ),
+        ],
       ),
     );
   }

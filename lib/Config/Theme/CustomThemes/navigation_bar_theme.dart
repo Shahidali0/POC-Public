@@ -71,7 +71,6 @@ class MyNavigationBarTheme {
           ),
           selectedLabelStyle: const TextStyle(
             color: AppColors.appTheme,
-            fontStyle: FontStyle.italic,
             fontSize: Sizes.fontSize12,
             fontWeight: FontWeight.w600,
             overflow: TextOverflow.ellipsis,

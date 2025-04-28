@@ -8,7 +8,7 @@ final profileControllerPr = StateNotifierProvider<ProfileController, bool>(
   ),
 );
 
-final isAuthorizedPr = StateProvider<bool?>((ref) => null);
+// final isAuthorizedPr = StateProvider<bool?>((ref) => null);
 
 class ProfileController extends StateNotifier<bool> {
   final ProfileRepository _profileRepository;
@@ -26,8 +26,7 @@ class ProfileController extends StateNotifier<bool> {
     required BuildContext context,
     required VoidCallback redirectTo,
   }) async {
-    final isAuthorized =
-        _ref.read(isAuthorizedPr) ?? await _profileRepository.isAuthorized();
+    final isAuthorized = await _profileRepository.isAuthorized();
 
     if (!context.mounted) return;
 
@@ -49,4 +48,14 @@ class ProfileController extends StateNotifier<bool> {
   ///Logout
   FutureVoid logout(BuildContext context) async =>
       await _profileRepository.logout(context);
+
+  ///Get User Id From UserJson
+  String getUserId() {
+    final userJson = _ref.read(userJsonPr)?.user;
+    if (userJson != null) {
+      return userJson.userId!;
+    } else {
+      return "";
+    }
+  }
 }

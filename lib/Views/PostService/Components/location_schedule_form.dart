@@ -7,49 +7,54 @@ class _LocationScheduleForm extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.read(postServiceControllerPr.notifier);
 
-    return Form(
-      key: controller.locationScheduleFormKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            "Location & Schedule",
-            style: TextStyle(
-              fontSize: Sizes.fontSize18,
-              fontWeight: FontWeight.bold,
-              color: AppColors.black,
+    return GestureDetector(
+      onTap: () {
+        Utils.instance.hideFoucs(context);
+      },
+      child: Form(
+        key: controller.locationScheduleFormKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Location & Schedule",
+              style: TextStyle(
+                fontSize: Sizes.fontSize18,
+                fontWeight: FontWeight.bold,
+                color: AppColors.black,
+              ),
             ),
-          ),
-          const Text(
-            "Set where and when your service is available",
-          ),
-          const SizedBox(height: Sizes.spaceSmall),
+            const Text(
+              "Set where and when your service is available",
+            ),
+            const SizedBox(height: Sizes.spaceSmall),
 
-          ///Location
-          _LocationField(controller: controller.locationController),
+            ///Location
+            _LocationField(controller: controller.locationController),
 
-          ///Available Dates
-          _AvailableDates(ref: ref),
-          _ValidationErrorMessage(listenable: controller.datesValidation),
+            ///Available Dates
+            _AvailableDates(ref: ref),
+            _ValidationErrorMessage(listenable: controller.datesValidation),
 
-          ///Available Time Slots
-          _AvailableTimeSlots(
-            controller: controller,
-            ref: ref,
-          ),
-          _ValidationErrorMessage(listenable: controller.timeSlotValidation),
+            ///Available Time Slots
+            _AvailableTimeSlots(
+              controller: controller,
+              ref: ref,
+            ),
+            _ValidationErrorMessage(listenable: controller.timeSlotValidation),
 
-          ///Session Duration
-          _SessionDurationField(
-            controller: controller,
-            ref: ref,
-          ),
-          _ValidationErrorMessage(
-            listenable: controller.sessionDurationValidation,
-          ),
+            ///Session Duration
+            _SessionDurationField(
+              controller: controller,
+              ref: ref,
+            ),
+            _ValidationErrorMessage(
+              listenable: controller.sessionDurationValidation,
+            ),
 
-          const SizedBox(height: Sizes.spaceHeight),
-        ],
+            const SizedBox(height: Sizes.spaceHeight),
+          ],
+        ),
       ),
     );
   }

@@ -9,7 +9,7 @@ class MyBookingsTabview extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(getMyBookingsPr).when(
           data: (data) {
-            return RefreshIndicator.adaptive(
+            return RefreshIndicator(
               onRefresh: () async => ref.refresh(getMyBookingsPr.future),
               child: _body(
                 context: context,
@@ -50,11 +50,9 @@ class MyBookingsTabview extends ConsumerWidget {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: Sizes.fontSize18,
-                    color: AppColors.appTheme,
+                    color: AppColors.blueGrey,
                     fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.underline,
-                    decorationColor: AppColors.appTheme,
-                    decorationStyle: TextDecorationStyle.dashed,
+                    fontFamily: AppTheme.boldFont,
                   ),
                 ),
                 SizedBox(width: Sizes.spaceHeight),
@@ -63,40 +61,50 @@ class MyBookingsTabview extends ConsumerWidget {
             ),
             const SizedBox(height: Sizes.spaceSmall),
 
+            ///Empty List
+            if (myBookings.isEmpty)
+              const Expanded(
+                child: EmptyDataWidget(
+                  subTitle:
+                      "Let’s land your first booking and get you SportZReady!",
+                ),
+              )
+
             ///List of Bookings
-            Expanded(
-              child: Consumer(
-                builder: (context, WidgetRef ref, __) {
-                  final selectedSegment = ref.watch(myBookingSegemntIndexPr);
+            else
+              Expanded(
+                child: Consumer(
+                  builder: (context, WidgetRef ref, __) {
+                    final selectedSegment = ref.watch(myBookingSegemntIndexPr);
 
-                  return AnimatedSwitcher(
-                    duration: Sizes.duration,
-                    child: selectedSegment == MyBookingType.upcoming
+                    return AnimatedSwitcher(
+                      duration: Sizes.duration,
+                      child: selectedSegment == MyBookingType.upcoming
 
-                        ///UpComing Bookings List
-                        ? _BookingListView(
-                            sendReminder: true,
-                            bookings: myBookings
-                                .where((item) => item.status!
-                                    .toLowerCase()
-                                    .contains("pending"))
-                                .toList(),
-                          )
-                        :
+                          ///UpComing Bookings List
+                          ? _BookingListView(
+                              sendReminder: true,
+                              bookings: myBookings
+                                  .where((item) => item.status!
+                                      .toLowerCase()
+                                      .contains("pending"))
+                                  .toList(),
+                            )
+                          :
 
-                        ///Past Bookings List
-                        _BookingListView(
-                            sendReminder: false,
-                            bookings: myBookings
-                                .where((item) => !item.status!
-                                    .toLowerCase()
-                                    .contains("pending"))
-                                .toList(),
-                          ),
-                  );
-                },
+                          ///Past Bookings List
+                          _BookingListView(
+                              sendReminder: false,
+                              bookings: myBookings
+                                  .where((item) => !item.status!
+                                      .toLowerCase()
+                                      .contains("pending"))
+                                  .toList(),
+                            ),
+                    );
+                  },
+                ),
               ),
-            ),
           ],
         ),
       );
@@ -112,7 +120,7 @@ class _MyBookingSegments extends ConsumerWidget {
 
     return CupertinoSlidingSegmentedControl<MyBookingType>(
       groupValue: selectedSegment,
-      thumbColor: AppColors.orange,
+      thumbColor: AppColors.blueGrey,
       padding: const EdgeInsets.all(Sizes.spaceMed),
       children: <MyBookingType, Widget>{
         ///UpComing
@@ -203,10 +211,6 @@ class _BookingListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (bookings.isEmpty) {
-      return const EmptyDataWidget();
-    }
-
     return ListView.separated(
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.only(

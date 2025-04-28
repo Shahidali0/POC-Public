@@ -1,25 +1,32 @@
 import 'dart:io';
 import 'package:cricket_poc/lib_exports.dart';
 
-final myServicesRepositoryPr = Provider<MyServicesRepository>(
-  (ref) => MyServicesRepository(
+final sportzHubRepositoryPr = Provider<SportzHubRepository>(
+  (ref) => SportzHubRepository(
+    ref: ref,
     homeServices: ref.read(homeServicesPr),
   ),
 );
 
-class MyServicesRepository {
+class SportzHubRepository {
   final HomeServices _homeServices;
+  final Ref _ref;
 
-  MyServicesRepository({required HomeServices homeServices})
-      : _homeServices = homeServices;
+  SportzHubRepository({required HomeServices homeServices, required Ref ref})
+      : _homeServices = homeServices,
+        _ref = ref;
 
   ///Get My Service
   Future<AllServicesJson?> getMyServicesList() async {
     try {
       AllServicesJson? getMyServices;
 
+      ///Get Userid
+      final userId = _ref.read(profileControllerPr.notifier).getUserId();
+
+      ///Get My Services
       final response = await _homeServices.findUserServices(
-        userId: "592e1478-f071-70e2-c2e2-a92acc58cc5f",
+        userId: userId,
       );
 
       if (response != null) {
@@ -42,9 +49,12 @@ class MyServicesRepository {
     try {
       List<BookingsJson> userBookings = [];
 
+      ///Get Userid
+      final userId = _ref.read(profileControllerPr.notifier).getUserId();
+
+      ///Get User Bookings
       final response = await _homeServices.getUserBookings(
-        userId: "592e1478-f071-70e2-c2e2-a92acc58cc5f",
-        // userId: "f9ee84d8-d0c1-7094-e0cf-5f9ecc4b3900",
+        userId: userId,
       );
 
       if (response != null) {

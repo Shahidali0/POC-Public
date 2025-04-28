@@ -6,31 +6,22 @@ import 'package:fpdart/fpdart.dart';
 
 final authRepositoryPr = Provider<AuthRepository>(
   (ref) => AuthRepository(
-    ref: ref,
     authServices: ref.read(authServicesPr),
     localStorage: LocalStorage(),
   ),
 );
 
-final autoSignInPr = FutureProvider<bool>((ref) async {
-  final authRepository = ref.read(authRepositoryPr);
-  return await authRepository.autoSignIn();
-});
-
 class AuthRepository {
   final AuthServices _authServices;
   final LocalStorage _localStorage;
-  final Ref _ref;
 
   AuthRepository({
     required AuthServices authServices,
     required LocalStorage localStorage,
-    required Ref ref,
   })  : _authServices = authServices,
-        _localStorage = localStorage,
-        _ref = ref;
+        _localStorage = localStorage;
 
-  ///Authenticate
+  ///Authenticate User
   FutureEither<bool> authenticateUser({
     required String emailId,
     required String password,
@@ -78,11 +69,11 @@ class AuthRepository {
       ///Get Login Details
       final signInResult = await _localStorage.getSignInResponse();
 
-      ///Check for authorization
-      final isAuthorized = await _localStorage.isAuthorized();
-      _ref
-          .read(isAuthorizedPr.notifier)
-          .update((state) => state = isAuthorized);
+      // ///Check for authorization
+      // final isAuthorized = await _localStorage.isAuthorized();
+      // _ref
+      //     .read(isAuthorizedPr.notifier)
+      //     .update((state) => state = isAuthorized);
 
       ///Get Show Intro Screen Value
       final showIntro = await _localStorage.getShowIntro();
@@ -103,7 +94,6 @@ class AuthRepository {
     } on SocketException {
       throw left(AppExceptions.instance.handleSocketException());
     } on MyHttpClientException catch (error) {
-      ///Here --> error type: Failure
       throw left(
         AppExceptions.instance.handleMyHTTPClientException(error),
       );

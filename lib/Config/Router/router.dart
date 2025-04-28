@@ -90,8 +90,13 @@ class AppRouter {
   }
 
   //* Pop syntax -> To go back to previous  screen
-  void pop(BuildContext context, {dynamic result, bool rootNavigator = false}) {
-    return Navigator.of(context, rootNavigator: rootNavigator).pop(result);
+  void pop(BuildContext context, {dynamic result}) {
+    return Navigator.of(context).pop(result);
+  }
+
+  //* Pop syntax -> To go back to First Screen
+  void popUntil(BuildContext context) {
+    return Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
   ///Get OffSet For PageTransition Animation

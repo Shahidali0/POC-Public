@@ -7,24 +7,29 @@ class _PricingForm extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.read(postServiceControllerPr.notifier);
 
-    return Form(
-      key: controller.pricingFormKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            "Pricing",
-            style: TextStyle(
-              fontSize: Sizes.fontSize18,
-              fontWeight: FontWeight.bold,
-              color: AppColors.black,
+    return GestureDetector(
+      onTap: () {
+        Utils.instance.hideFoucs(context);
+      },
+      child: Form(
+        key: controller.pricingFormKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Pricing",
+              style: TextStyle(
+                fontSize: Sizes.fontSize18,
+                fontWeight: FontWeight.bold,
+                color: AppColors.black,
+              ),
             ),
-          ),
-          const Text("Set your pricing information"),
-          const SizedBox(height: Sizes.spaceSmall),
-          _ServicePriceField(controller: controller.priceController),
-          const SizedBox(height: Sizes.spaceHeight),
-        ],
+            const Text("Set your pricing information"),
+            const SizedBox(height: Sizes.spaceSmall),
+            _ServicePriceField(controller: controller.priceController),
+            const SizedBox(height: Sizes.spaceHeight),
+          ],
+        ),
       ),
     );
   }

@@ -127,12 +127,14 @@ class CommonTextButton extends _PlatformWidget {
     required this.onPressed,
     required this.text,
     this.textColor,
+    this.backgroundColor,
     this.decoration,
   });
 
   final void Function()? onPressed;
   final String text;
   final Color? textColor;
+  final Color? backgroundColor;
   final TextDecoration? decoration;
 
   @override
@@ -140,6 +142,7 @@ class CommonTextButton extends _PlatformWidget {
     return CupertinoButton(
       padding: const EdgeInsets.only(right: Sizes.space),
       onPressed: onPressed,
+      color: backgroundColor,
       child: FittedBox(
         child: Text(
           text,
@@ -154,20 +157,17 @@ class CommonTextButton extends _PlatformWidget {
   Widget buildMaterialWidget(BuildContext context) {
     return TextButton(
       onPressed: onPressed,
+      style: TextButton.styleFrom(
+          backgroundColor: backgroundColor, textStyle: _style),
 
       ///FittedBox --> To fix the font-overflow issue on buttons
-      child: Text(
-        text,
-        style: _style,
-      ),
+      child: Text(text),
     );
   }
 
   TextStyle get _style => TextStyle(
         fontSize: Sizes.defaultSize,
-        // fontWeight: FontWeight.w700,
-        fontWeight: FontWeight.bold,
-        fontFamily: AppTheme.boldFont,
+        fontWeight: FontWeight.w600,
         color: textColor ?? AppColors.appTheme,
         decoration: decoration,
       );

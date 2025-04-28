@@ -9,6 +9,7 @@ class SignUpDto {
   final String? goal;
   final String? userType;
   final String? abn;
+  final DateTime? createdDate;
 
   SignUpDto({
     required this.username,
@@ -19,6 +20,7 @@ class SignUpDto {
     required this.goal,
     required this.userType,
     required this.abn,
+    required this.createdDate,
   });
 
   String toRawJson() => json.encode(toJson());
@@ -32,5 +34,6 @@ class SignUpDto {
         "goal": goal,
         "userType": userType,
         "abn": abn,
+        "createdDate": createdDate?.toIso8601String(),
       };
 }

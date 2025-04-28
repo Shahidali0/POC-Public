@@ -14,6 +14,14 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.lightTheme(context),
       themeMode: ThemeMode.light,
 
+      builder: (context, child) => Listener(
+        behavior: HitTestBehavior.translucent,
+        onPointerDown: (_) {
+          FocusManager.instance.primaryFocus?.unfocus();
+        },
+        child: child!,
+      ),
+
       home: Consumer(
         builder: (_, WidgetRef ref, __) {
           return ref.watch(autoSignInPr).when(

@@ -8,7 +8,8 @@ class PostServiceReviewScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.read(postServiceControllerPr.notifier);
-    final state = ref.read(postServiceControllerPr);
+
+    final state = ref.watch(postServiceControllerPr);
 
     return LoadingProgressBar(
       isLoading: state.loading,

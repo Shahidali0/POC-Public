@@ -8,9 +8,11 @@ class OtpVerificationScreen extends ConsumerStatefulWidget {
   const OtpVerificationScreen({
     super.key,
     required this.emailId,
+    required this.password,
   });
 
   final String emailId;
+  final String password;
 
   @override
   ConsumerState<OtpVerificationScreen> createState() =>
@@ -84,6 +86,7 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
         context: context,
         otp: _otpController.text.trim(),
         email: widget.emailId,
+        password: widget.password,
       );
 
   @override

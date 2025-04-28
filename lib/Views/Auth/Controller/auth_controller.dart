@@ -16,6 +16,11 @@ final obSecurePasswordPr = StateProvider<bool>((ref) => true);
 final signupGoalErrorPr = StateProvider<String>((ref) => "");
 final signupAbouYouSelfErrorPr = StateProvider<String>((ref) => "");
 
+final autoSignInPr = FutureProvider<bool>((ref) async {
+  final authController = ref.read(authControllerPr.notifier);
+  return authController.autoSignIn();
+});
+
 class AuthController extends StateNotifier<bool> {
   final AuthRepository _authRepository;
   final Ref _ref;
@@ -98,7 +103,7 @@ class AuthController extends StateNotifier<bool> {
         content: failure.message,
       ),
       (success) {
-        _ref.invalidate(isAuthorizedPr);
+        // _ref.invalidate(isAuthorizedPr);
 
         return AppRouter.instance.pushOff(
           context: context,
@@ -157,6 +162,7 @@ class AuthController extends StateNotifier<bool> {
           context: context,
           page: OtpVerificationScreen(
             emailId: signUpDto.username!,
+            password: signUpDto.password!,
           ),
         );
       },
@@ -167,6 +173,7 @@ class AuthController extends StateNotifier<bool> {
   void onTapVerifyOtp({
     required BuildContext context,
     required String email,
+    required String password,
     required String otp,
   }) async {
     ///Clear error if any
@@ -201,17 +208,25 @@ class AuthController extends StateNotifier<bool> {
           content: failure.message,
         );
       },
-      (success) {
+      (success) async {
         showSuccessSnackBar(
           context: context,
           content: success,
         );
 
-        ///Goto Dashboard
-        return AppRouter.instance.pushReplacement(
+        ///Sign In User -->bcz otp verified
+        await signInUser(
           context: context,
-          page: const LoginScreen(),
+          email: email,
+          password: password,
         );
+        return;
+
+        // ///Goto Dashboard
+        // return AppRouter.instance.pushReplacement(
+        //   context: context,
+        //   page: const LoginScreen(),
+        // );
       },
     );
   }
