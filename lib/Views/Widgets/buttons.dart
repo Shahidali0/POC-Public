@@ -158,7 +158,9 @@ class CommonTextButton extends _PlatformWidget {
     return TextButton(
       onPressed: onPressed,
       style: TextButton.styleFrom(
-          backgroundColor: backgroundColor, textStyle: _style),
+        backgroundColor: backgroundColor,
+        textStyle: _style,
+      ),
 
       ///FittedBox --> To fix the font-overflow issue on buttons
       child: Text(text),
@@ -167,8 +169,8 @@ class CommonTextButton extends _PlatformWidget {
 
   TextStyle get _style => TextStyle(
         fontSize: Sizes.defaultSize,
-        fontWeight: FontWeight.w600,
-        color: textColor ?? AppColors.appTheme,
+        fontWeight: FontWeight.w700,
+        color: textColor ?? AppColors.orange,
         decoration: decoration,
       );
 }
@@ -273,14 +275,20 @@ class CommonIconButton extends _PlatformWidget {
   }
 }
 
-///Common Delete Icon Buttton Widget
-class DeleteIconButton extends StatelessWidget {
-  const DeleteIconButton({
+///Common Circle Icon Buttton Widget
+class CommonCircleButton extends StatelessWidget {
+  const CommonCircleButton({
     super.key,
+    required this.iconData,
     required this.onPressed,
+    this.color = AppColors.red,
+    this.loading = false,
   });
 
+  final IconData iconData;
   final VoidCallback? onPressed;
+  final Color color;
+  final bool loading;
 
   @override
   Widget build(BuildContext context) {
@@ -292,18 +300,21 @@ class DeleteIconButton extends StatelessWidget {
         ),
         padding: const EdgeInsets.symmetric(
           horizontal: Sizes.space,
-          vertical: Sizes.space * 0.6,
+          vertical: Sizes.space * 0.45,
         ),
         decoration: ShapeDecoration(
           shape: ContinuousRectangleBorder(
             borderRadius: BorderRadius.circular(Sizes.borderRadius),
+            side: BorderSide(color: color),
           ),
-          color: AppColors.red.withOpacity(0.2),
+          color: color.withOpacity(0.2),
         ),
-        child: const Icon(
-          CupertinoIcons.delete,
-          color: AppColors.red,
-        ),
+        child: loading
+            ? const ShowPlatformLoader()
+            : Icon(
+                iconData,
+                color: color,
+              ),
       ),
     );
   }

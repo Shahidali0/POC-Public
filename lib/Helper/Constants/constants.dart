@@ -11,6 +11,12 @@ class Constants {
   static const String emmptyMyBookings =
       "Let’s land your first booking and get you SportZReady!";
 
+  static const String emmptyUpcomingBookings =
+      "No bookings yet? Let’s change that and get you SportZReady!";
+
+  static const String emmptyPastBookings =
+      "No past bookings yet — let’s get your game on and create your first one!";
+
   static const String emptyMyServices =
       "Let’s add your first service and get you SportZReady!";
 

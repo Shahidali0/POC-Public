@@ -445,11 +445,17 @@ class PostServiceController extends StateNotifier<_PostServiceStatus> {
           context: context,
           content: success,
         );
-        AppRouter.instance.popUntil(context);
 
         ///After posting the service Update Bottom navbar index to
-        ///FindService index to see the posted service
-        _ref.read(navbarControllerPr.notifier).updateNavbarIndex(index: 1);
+        ///SportzHub index to see the posted service
+        _ref.read(navbarControllerPr.notifier).updateNavbarIndex(index: 2);
+
+        ///Refresh the Providers
+        _ref.invalidate(getMyServicesListPr);
+        _ref.invalidate(getFindServciesListPr);
+
+        ///Pop the screen
+        AppRouter.instance.popUntil(context);
 
         return;
       },

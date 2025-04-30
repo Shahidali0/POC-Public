@@ -42,8 +42,9 @@ class NavbarScreen extends ConsumerWidget {
     final currentIndex = ref.watch(_navBarIndexPr);
 
     return Scaffold(
-      body: IndexedStack(
+      body: LazyLoadIndexedStack(
         index: currentIndex,
+        preloadIndexes: const [0],
         children: const [
           HomeScreen(key: PageStorageKey("Homescreen")),
           FindServicesScreen(key: PageStorageKey("FindServicesScreen")),

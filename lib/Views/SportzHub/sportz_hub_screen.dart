@@ -22,6 +22,9 @@ class SportzHubScreen extends StatelessWidget {
               ///Appbar
               SliverAppBar(
                 toolbarHeight: 0,
+                floating: true,
+                snap: true,
+                surfaceTintColor: AppColors.transparent,
                 bottom: TabBar(
                   labelColor: AppColors.appTheme,
                   indicatorColor: AppColors.appTheme,

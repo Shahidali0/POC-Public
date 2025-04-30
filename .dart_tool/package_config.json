@@ -248,6 +248,12 @@
       "languageVersion": "3.0"
     },
     {
+      "name": "lazy_load_indexed_stack",
+      "rootUri": "file:///Users/apple/.pub-cache/hosted/pub.dev/lazy_load_indexed_stack-1.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
       "name": "leak_tracker",
       "rootUri": "file:///Users/apple/.pub-cache/hosted/pub.dev/leak_tracker-10.0.5",
       "packageUri": "lib/",
@@ -288,6 +294,18 @@
       "rootUri": "file:///Users/apple/.pub-cache/hosted/pub.dev/meta-1.15.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
+    },
+    {
+      "name": "package_info_plus",
+      "rootUri": "file:///Users/apple/.pub-cache/hosted/pub.dev/package_info_plus-8.3.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "package_info_plus_platform_interface",
+      "rootUri": "file:///Users/apple/.pub-cache/hosted/pub.dev/package_info_plus_platform_interface-3.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
     },
     {
       "name": "path",
@@ -518,7 +536,7 @@
       "languageVersion": "3.5"
     }
   ],
-  "generated": "2025-04-27T15:48:18.445439Z",
+  "generated": "2025-04-30T08:59:12.286498Z",
   "generator": "pub",
   "generatorVersion": "3.5.2",
   "flutterRoot": "file:///Users/apple/Developer/flutter",

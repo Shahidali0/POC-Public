@@ -56,6 +56,10 @@ class Sizes {
     vertical: Sizes.spaceHeightSm,
   );
 
+  static EdgeInsets topSafeAreaPadding(BuildContext context) => EdgeInsets.only(
+        top: MediaQuery.of(context).padding.top,
+      );
+
   static EdgeInsets cupertinoScaffoldPadding(BuildContext context) =>
       EdgeInsets.only(
         top: MediaQuery.of(context).padding.top + kToolbarHeight,

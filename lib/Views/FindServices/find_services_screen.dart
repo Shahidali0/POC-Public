@@ -110,13 +110,9 @@ class _AppliedFiltersCard extends ConsumerWidget {
 
     return Positioned(
       top: -10,
-      // right: 0,
-      // left: 0,
       child: Container(
         margin: EdgeInsets.only(
           top: MediaQuery.of(context).padding.top,
-          // left: Sizes.space,
-          // right: Sizes.space,
         ),
         height: filterHeight,
         width: Sizes.screenWidth(context),

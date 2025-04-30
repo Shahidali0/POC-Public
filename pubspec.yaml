@@ -71,6 +71,12 @@ dependencies:
   # Stripe Payment Gateway 
   flutter_stripe: ^9.4.1
 
+  # For accessing version of the app
+  package_info_plus: ^8.3.0
+
+  #LazyLoading Bottomnavbar
+  lazy_load_indexed_stack: ^1.2.1
+
   # # For Location access
   # geocoding: ^3.0.0
   # geolocator: ^13.0.3

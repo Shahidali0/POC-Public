@@ -45,9 +45,7 @@ class ProfileScreen extends ConsumerWidget {
           ),
 
           ///Version
-          const Center(
-            child: Text("App version 1.0.0"),
-          ),
+          const Center(child: AppVersionText()),
         ],
       ),
     );

@@ -370,19 +370,19 @@ class _MainGoalWidget extends StatelessWidget {
                 thumbColor: AppColors.appTheme,
                 children: <String?, Widget>{
                   ///Get Things Done
-                  "Done": _CardWidgetForSegments(
+                  "Get Things Done": _CardWidgetForSegments(
                     iconData: CupertinoIcons.check_mark_circled,
                     text: "Get Things Done",
-                    color: goal != null && goal == "Done"
+                    color: goal != null && goal == "Get Things Done"
                         ? AppColors.white
                         : AppColors.blueGrey,
                   ),
 
                   ///Earn Money
-                  "Money": _CardWidgetForSegments(
+                  "Earn Money": _CardWidgetForSegments(
                     iconData: CupertinoIcons.money_dollar,
                     text: "Earn Money",
-                    color: goal != null && goal == "Money"
+                    color: goal != null && goal == "Earn Money"
                         ? AppColors.white
                         : AppColors.blueGrey,
                   ),

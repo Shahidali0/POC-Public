@@ -2,7 +2,7 @@ import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ServiceDetailsScreen extends ConsumerWidget {
+class ServiceDetailsScreen extends StatelessWidget {
   const ServiceDetailsScreen({
     super.key,
     required this.serviceJson,
@@ -11,9 +11,7 @@ class ServiceDetailsScreen extends ConsumerWidget {
   final ServiceJson serviceJson;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final controller = ref.read(findServicesControllerPr.notifier);
-
+  Widget build(BuildContext context) {
     return MyCupertinoSliverScaffold(
       previousPageTitle: "Home",
       title: "Service Details",
@@ -26,21 +24,18 @@ class ServiceDetailsScreen extends ConsumerWidget {
         padding: EdgeInsets.zero,
         children: [
           ///About the Provider
-          ..._aboutProvider(
-            context: context,
-            controller: controller,
-          ),
+          ServiceProviderWidget(serviceJson: serviceJson),
 
           const Divider(),
 
           ///Description
-          ..._description(),
+          ServiceDescriptionWidget(serviceJson: serviceJson),
 
           ///Available Session Dates
-          ..._availableSessionDates(),
+          ServiceAvailableDatesWidget(serviceJson: serviceJson),
 
           ///Available Session TimeSlots
-          ..._availableSessionTimeSlots(),
+          ServiceAvailableTimeSlotsWidget(serviceJson: serviceJson),
 
           ///Location Details
           ..._locationDetails(),
@@ -49,149 +44,6 @@ class ServiceDetailsScreen extends ConsumerWidget {
       ),
     );
   }
-
-  ///About the Provider
-  List<Widget> _aboutProvider({
-    required BuildContext context,
-    required FindServciesController controller,
-  }) =>
-      [
-        ///Profile
-        ListTile(
-          contentPadding: EdgeInsets.zero,
-          horizontalTitleGap: Sizes.spaceMed,
-          leading: CircleAvatar(
-            radius: 30,
-            backgroundColor: AppColors.lightBlue,
-            child: Text(
-              controller.getInitials(serviceJson.title!),
-              style: const TextStyle(
-                color: AppColors.white,
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-          ),
-          title: Text(
-            serviceJson.title!,
-            style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  fontSize: Sizes.fontSize18,
-                  fontWeight: FontWeight.w600,
-                ),
-          ),
-          subtitle: Text(
-            "${serviceJson.category} (${serviceJson.sport})",
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: AppColors.orange,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ),
-        const SizedBox(height: Sizes.spaceMed),
-
-        CustomListTile(
-          iconData: CupertinoIcons.person,
-          text:
-              "Member since ${Utils.instance.formatDateYMMM(serviceJson.createdAt)}",
-        ),
-
-        CustomListTile(
-          iconData: CupertinoIcons.calendar,
-          text: "${serviceJson.timeSlots!.length} available dates",
-        ),
-
-        CustomListTile(
-          iconData: CupertinoIcons.map_pin_ellipse,
-          text: serviceJson.location!,
-        ),
-
-        CustomListTile(
-          iconData: CupertinoIcons.timer,
-          text: Utils.instance.getDuration(serviceJson.duration),
-        ),
-      ];
-
-  ///Description Widget
-  List<Widget> _description() => [
-        // const SizedBox(height: Sizes.spaceHeight),
-        const Text(
-          "Description:",
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontSize: Sizes.fontSize18,
-            color: AppColors.black,
-            fontWeight: FontWeight.w800,
-          ),
-        ),
-        const SizedBox(height: Sizes.spaceMed),
-        Text(
-          serviceJson.description!,
-          style: const TextStyle(
-            color: AppColors.black,
-            fontSize: Sizes.fontSize16,
-          ),
-        ),
-      ];
-
-  ///Available Session Dates
-  List<Widget> _availableSessionDates() => [
-        const SizedBox(height: Sizes.spaceHeight),
-        const Text(
-          "Available Session Dates:",
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontSize: Sizes.fontSize18,
-            color: AppColors.black,
-            fontWeight: FontWeight.w800,
-          ),
-        ),
-        const SizedBox(height: Sizes.spaceMed),
-        Wrap(
-          spacing: Sizes.space,
-          children: serviceJson.timeSlots!.entries.map(
-            (entry) {
-              return Card(
-                elevation: 2,
-                margin: EdgeInsets.zero,
-                child: Padding(
-                  padding: Sizes.cardPadding,
-                  child: Text(entry.key),
-                ),
-              );
-            },
-          ).toList(),
-        ),
-      ];
-
-  ///Available Session TimeSlots
-  List<Widget> _availableSessionTimeSlots() => [
-        const SizedBox(height: Sizes.spaceHeight),
-        const Text(
-          "Available Time Slots:",
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontSize: Sizes.fontSize18,
-            color: AppColors.black,
-            fontWeight: FontWeight.w800,
-          ),
-        ),
-        const SizedBox(height: Sizes.spaceMed),
-        Wrap(
-          spacing: Sizes.space,
-          children: serviceJson.timeSlots!.values.first.map(
-            (entry) {
-              return Card(
-                elevation: 2,
-                margin: EdgeInsets.zero,
-                child: Padding(
-                  padding: Sizes.cardPadding,
-                  child: Text(entry),
-                ),
-              );
-            },
-          ).toList(),
-        ),
-      ];
 
   ///Location Details
   List<Widget> _locationDetails() => [
@@ -225,6 +77,241 @@ class ServiceDetailsScreen extends ConsumerWidget {
           ),
         ),
       ];
+}
+
+///Service Provider Details Widget
+class ServiceProviderWidget extends ConsumerWidget {
+  const ServiceProviderWidget({
+    super.key,
+    required this.serviceJson,
+    this.trailing,
+  });
+
+  final ServiceJson serviceJson;
+  final Widget? trailing;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ///Profile
+        ListTile(
+          contentPadding: EdgeInsets.zero,
+          horizontalTitleGap: Sizes.spaceMed,
+          leading: CircleAvatar(
+            radius: 30,
+            backgroundColor: AppColors.lightBlue,
+            child: Text(
+              ref
+                  .read(findServicesControllerPr.notifier)
+                  .getInitials(serviceJson.title!),
+              style: const TextStyle(
+                color: AppColors.white,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ),
+          title: Text(
+            serviceJson.title!,
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  fontSize: Sizes.fontSize18,
+                  fontWeight: FontWeight.w600,
+                ),
+          ),
+          subtitle: Text(
+            "${serviceJson.category} (${serviceJson.sport})",
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              color: AppColors.orange,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          trailing: trailing,
+        ),
+        const SizedBox(height: Sizes.spaceMed),
+
+        ///Member Since
+        CustomListTile(
+          iconSize: 22,
+          fontSize: Sizes.fontSize16,
+          maxLines: 4,
+          iconData: CupertinoIcons.person,
+          text:
+              "Member since ${Utils.instance.formatDateYMMM(serviceJson.createdAt)}",
+        ),
+        const SizedBox(height: Sizes.spaceMed),
+
+        ///TimeSlots
+        CustomListTile(
+          iconSize: 22,
+          fontSize: Sizes.fontSize16,
+          maxLines: 4,
+          iconData: CupertinoIcons.calendar,
+          text: "${serviceJson.timeSlots!.length} available date's",
+        ),
+        const SizedBox(height: Sizes.spaceMed),
+
+        ///Location
+        CustomListTile(
+          iconSize: 22,
+          fontSize: Sizes.fontSize16,
+          maxLines: 4,
+          iconData: CupertinoIcons.map_pin_ellipse,
+          text: serviceJson.location!,
+        ),
+        const SizedBox(height: Sizes.spaceMed),
+
+        ///Duration
+        CustomListTile(
+          iconSize: 22,
+          fontSize: Sizes.fontSize16,
+          maxLines: 4,
+          iconData: CupertinoIcons.timer,
+          text: Utils.instance.getDuration(serviceJson.duration),
+        ),
+        const SizedBox(height: Sizes.spaceMed),
+      ],
+    );
+  }
+}
+
+///Service Description Widget
+class ServiceDescriptionWidget extends StatelessWidget {
+  const ServiceDescriptionWidget({
+    super.key,
+    required this.serviceJson,
+  });
+
+  final ServiceJson serviceJson;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: Sizes.spaceMed),
+        const Text(
+          "Description:",
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontSize: Sizes.fontSize18,
+            color: AppColors.black,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+        const SizedBox(height: Sizes.spaceMed),
+        Text(
+          serviceJson.description!,
+          style: const TextStyle(
+            color: AppColors.black,
+            fontSize: Sizes.fontSize16,
+          ),
+        ),
+        const SizedBox(height: Sizes.spaceMed),
+      ],
+    );
+  }
+}
+
+///Service Dates Widget
+class ServiceAvailableDatesWidget extends StatelessWidget {
+  const ServiceAvailableDatesWidget({
+    super.key,
+    required this.serviceJson,
+  });
+
+  final ServiceJson serviceJson;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: Sizes.space),
+        const Text(
+          "Available Session Dates:",
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontSize: Sizes.fontSize18,
+            color: AppColors.black,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+        const SizedBox(height: Sizes.spaceMed),
+
+        ///Dates List
+        Wrap(
+          spacing: Sizes.space,
+          children: serviceJson.timeSlots!.entries.map(
+            (entry) {
+              return Card(
+                elevation: 2,
+                margin: EdgeInsets.zero,
+                child: Padding(
+                  padding: Sizes.cardPadding,
+                  child: Text(entry.key),
+                ),
+              );
+            },
+          ).toList(),
+        ),
+
+        const SizedBox(height: Sizes.spaceMed),
+      ],
+    );
+  }
+}
+
+///Service Time Slots Widget
+class ServiceAvailableTimeSlotsWidget extends StatelessWidget {
+  const ServiceAvailableTimeSlotsWidget({
+    super.key,
+    required this.serviceJson,
+  });
+
+  final ServiceJson serviceJson;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: Sizes.space),
+        const Text(
+          "Available Time Slots:",
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontSize: Sizes.fontSize18,
+            color: AppColors.black,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+        const SizedBox(height: Sizes.spaceMed),
+
+        ///TimeSlots List
+        Wrap(
+          spacing: Sizes.space,
+          children: serviceJson.timeSlots!.values.first.map(
+            (entry) {
+              return Card(
+                elevation: 2,
+                margin: EdgeInsets.zero,
+                child: Padding(
+                  padding: Sizes.cardPadding,
+                  child: Text(entry),
+                ),
+              );
+            },
+          ).toList(),
+        ),
+        const SizedBox(height: Sizes.spaceMed),
+      ],
+    );
+  }
 }
 
 ///Book Now Button Widget

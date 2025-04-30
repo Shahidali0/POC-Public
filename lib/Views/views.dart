@@ -48,12 +48,14 @@ export 'FindServices/Repository/find_services_repository.dart';
 
 export 'FindServices/Controller/find_servcies_controller.dart';
 
-//* My Services
+//* SportZHub
 
 export 'SportzHub/sportz_hub_screen.dart';
+export 'SportzHub/my_bookings_tabview.dart';
+export 'SportzHub/my_services_tabview.dart';
 
-export 'SportzHub/Components/my_bookings_tabview.dart';
-export 'SportzHub/Components/my_services_tabview.dart';
+export 'SportzHub/Components/my_services_details.dart';
+export 'SportzHub/Components/service_offers_page.dart';
 
 export 'SportzHub/Repository/sportz_hub_repository.dart';
 
@@ -79,6 +81,7 @@ export 'ServiceDetails/Controller/service_details_controller.dart';
 
 export 'Profile/profile_screen.dart';
 
+export 'Profile/Components/app_version.dart';
 export 'Profile/Components/profile_details_page.dart';
 
 export 'Profile/Repository/profile_repository.dart';

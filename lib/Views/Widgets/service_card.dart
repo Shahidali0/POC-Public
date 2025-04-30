@@ -12,7 +12,7 @@ class ServiceCardWidget extends StatelessWidget {
   final ServiceJson serviceJson;
 
   ///OnTap BookNow
-  void _onBookNow(BuildContext context) => AppRouter.instance.push(
+  void _onViewDetails(BuildContext context) => AppRouter.instance.push(
         context: context,
         page: ServiceDetailsScreen(serviceJson: serviceJson),
       );
@@ -20,7 +20,7 @@ class ServiceCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => _onBookNow(context),
+      onTap: () => _onViewDetails(context),
       child: Card(
         margin: EdgeInsets.zero,
         child: Padding(
@@ -40,7 +40,7 @@ class ServiceCardWidget extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: Sizes.fontSize16,
                         color: AppColors.black,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
@@ -80,7 +80,7 @@ class ServiceCardWidget extends StatelessWidget {
 
               ///View Details Button
               CommonTextButton(
-                onPressed: () => _onBookNow(context),
+                onPressed: () => _onViewDetails(context),
                 text: "View Details",
               ),
             ],

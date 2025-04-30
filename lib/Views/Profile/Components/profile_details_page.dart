@@ -15,53 +15,47 @@ class ProfileDetailsPage extends StatelessWidget {
         children: [
           ///FullName
           _CustomTile(
+            leadingText: "FullName: ",
             title: "${userJson.firstName} ${userJson.lastName}",
             leadingIcon: CupertinoIcons.person,
           ),
 
           ///Email
           _CustomTile(
+            leadingText: "Email: ",
             title: userJson.username ?? "--",
             leadingIcon: CupertinoIcons.mail,
           ),
 
           ///Goal
           _CustomTile(
+            leadingText: "Main Goal: ",
             title: userJson.goal ?? "--",
             leadingIcon: CupertinoIcons.bolt,
           ),
 
           ///UserType
           _CustomTile(
-            title: userJson.userType ?? "--",
+            leadingText: "User Type: ",
+            title: "${userJson.userType}",
             leadingIcon: CupertinoIcons.person_2,
           ),
 
           ///Suburb
           _CustomTile(
+            leadingText: "Suburb: ",
             title: userJson.suburb ?? "--",
             leadingIcon: CupertinoIcons.location,
           ),
 
           ///ABN
           _CustomTile(
-            title: "ABN: ${userJson.abn} ",
+            leadingText: "ABN: ",
+            title: userJson.abn ?? "--",
             leadingIcon: CupertinoIcons.building_2_fill,
           ),
 
           const SizedBox(height: Sizes.spaceHeight * 2),
-
-          // ///Logout Button
-          // Consumer(
-          //   builder: (_, WidgetRef ref, __) {
-          //     return CommonButton(
-          //       onPressed: () =>
-          //           ref.read(profileControllerPr.notifier).logout(context),
-          //       text: "Logout",
-          //       backgroundColor: AppColors.red,
-          //     );
-          //   },
-          // ),
         ],
       ),
     );
@@ -71,10 +65,12 @@ class ProfileDetailsPage extends StatelessWidget {
 ///Custom Tile
 class _CustomTile extends StatelessWidget {
   const _CustomTile({
+    required this.leadingText,
     required this.title,
     required this.leadingIcon,
   });
 
+  final String leadingText;
   final String title;
   final IconData leadingIcon;
 
@@ -83,12 +79,21 @@ class _CustomTile extends StatelessWidget {
     return ListTile(
       contentPadding: EdgeInsets.zero,
       leading: Icon(leadingIcon),
-      title: Text(
-        title,
-        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w600,
-              fontSize: Sizes.fontSize18,
+      title: RichText(
+        text: TextSpan(
+          text: leadingText,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontSize: Sizes.fontSize18,
+              ),
+          children: [
+            TextSpan(
+              text: title,
+              style: const TextStyle(
+                fontWeight: FontWeight.w600,
+              ),
             ),
+          ],
+        ),
       ),
     );
   }

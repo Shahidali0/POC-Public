@@ -37,37 +37,59 @@ class MyCupertinoSliverScaffold extends StatelessWidget {
           floatHeaderSlivers: true,
           headerSliverBuilder:
               (BuildContext context, bool innerBoxIsScrolled) => [
-            CupertinoSliverNavigationBar(
-              backgroundColor: AppColors.transparent,
-              border: Border(bottom: BorderSide(color: AppColors.lightGrey)),
-              previousPageTitle: previousPageTitle ?? "Back",
+            MyCupertinoSliverAppbar(
+              previousPageTitle: previousPageTitle,
               trailing: trailing,
-              alwaysShowMiddle: false,
-              // automaticallyImplyLeading: false,
-              middle: Text(
-                title,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.appTheme,
-                  fontFamily: AppTheme.boldFont,
-                ),
-              ),
-              largeTitle: Text(
-                title,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.black,
-                  fontSize: Sizes.fontSize24,
-                  fontFamily: AppTheme.boldFont,
-                ),
-              ),
+              title: title,
             ),
           ],
           body: Padding(
             padding: margin,
             child: body,
           ),
+        ),
+      ),
+    );
+  }
+}
+
+///CupertinoStyle Sliver Appbar
+class MyCupertinoSliverAppbar extends StatelessWidget {
+  const MyCupertinoSliverAppbar({
+    super.key,
+    this.previousPageTitle,
+    this.trailing,
+    required this.title,
+  });
+
+  final String? previousPageTitle;
+  final Widget? trailing;
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoSliverNavigationBar(
+      backgroundColor: AppColors.transparent,
+      border: Border(bottom: BorderSide(color: AppColors.lightGrey)),
+      previousPageTitle: previousPageTitle ?? "Back",
+      trailing: trailing,
+      alwaysShowMiddle: false,
+      middle: Text(
+        title,
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          color: AppColors.appTheme,
+          fontFamily: AppTheme.boldFont,
+        ),
+      ),
+      largeTitle: Text(
+        title,
+        overflow: TextOverflow.ellipsis,
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          color: AppColors.black,
+          fontSize: Sizes.fontSize24,
+          fontFamily: AppTheme.boldFont,
         ),
       ),
     );

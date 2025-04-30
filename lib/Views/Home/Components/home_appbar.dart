@@ -101,16 +101,16 @@ class _HomeSearchbarWithCategories extends ConsumerWidget {
               context: context,
             ),
 
-            ///Content
-            const SizedBox(height: Sizes.spaceHeight * 1.2),
-            _buildContent(context),
-
             ///Categories
             const SizedBox(height: Sizes.spaceHeight * 1.4),
             const HomeHeaderText(title: "Top Categories"),
             const SizedBox(height: Sizes.space),
 
             _buildCategories(categories, ref),
+
+            ///Content
+            const SizedBox(height: Sizes.spaceHeight * 1.2),
+            _buildContent(context),
           ],
         ),
       ),

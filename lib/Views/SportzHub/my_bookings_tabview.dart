@@ -10,11 +10,13 @@ class MyBookingsTabview extends ConsumerWidget {
     return ref.watch(getMyBookingsPr).when(
           data: (data) {
             ///For Empty Services List
-            if ((data.isEmpty)) {
+            if (data.isEmpty) {
               return const EmptyDataWidget(
                 subTitle: Constants.emmptyMyBookings,
               );
             }
+
+            ///Data not empty
             return RefreshIndicator(
               onRefresh: () async => ref.refresh(getMyBookingsPr.future),
               child: _body(
@@ -83,6 +85,7 @@ class MyBookingsTabview extends ConsumerWidget {
                         ///UpComing Bookings List
                         ? _BookingListView(
                             sendReminder: true,
+                            emptyBookingText: Constants.emmptyUpcomingBookings,
                             bookings: myBookings
                                 .where((item) => item.status!
                                     .toLowerCase()
@@ -94,6 +97,7 @@ class MyBookingsTabview extends ConsumerWidget {
                         ///Past Bookings List
                         _BookingListView(
                             sendReminder: false,
+                            emptyBookingText: Constants.emmptyPastBookings,
                             bookings: myBookings
                                 .where((item) => !item.status!
                                     .toLowerCase()
@@ -203,13 +207,19 @@ class _BookingListView extends StatelessWidget {
   const _BookingListView({
     required this.bookings,
     required this.sendReminder,
+    required this.emptyBookingText,
   });
 
   final List<BookingsJson> bookings;
   final bool sendReminder;
+  final String emptyBookingText;
 
   @override
   Widget build(BuildContext context) {
+    if (bookings.isEmpty) {
+      return EmptyDataWidget(subTitle: emptyBookingText);
+    }
+
     return ListView.separated(
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.only(
@@ -230,7 +240,7 @@ class _BookingListView extends StatelessWidget {
 }
 
 ///Booking Card Widget
-class _BookingCard extends StatelessWidget {
+class _BookingCard extends ConsumerWidget {
   const _BookingCard({
     required this.booking,
     required this.sendReminder,
@@ -240,7 +250,10 @@ class _BookingCard extends StatelessWidget {
   final bool sendReminder;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = ref.read(sportzHubControllerPr.notifier);
+    final loading = ref.watch(sportzHubControllerPr) == booking.bookingId!;
+
     return Card(
       margin: EdgeInsets.zero,
       child: Padding(
@@ -306,15 +319,13 @@ class _BookingCard extends StatelessWidget {
 
             ///Status
             CustomListTile(
-              iconData: booking.status!.toLowerCase().contains("pending")
-                  ? CupertinoIcons.hourglass
-                  : CupertinoIcons.check_mark_circled_solid,
+              iconData: CupertinoIcons.info,
               text: booking.status!.capitalizeFirst,
-              textColor: booking.status!.toLowerCase().contains("pending")
-                  ? AppColors.orange
-                  : AppColors.green,
+              textColor: controller.getStatusColor(booking.status!),
               fontWeight: FontWeight.w600,
             ),
+
+            if (!sendReminder) const SizedBox(height: Sizes.space),
 
             ///Send Reminder Button and Delete Button
             if (sendReminder)
@@ -322,12 +333,13 @@ class _BookingCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   ///Send Reminder Button
-
                   Expanded(
                     child: CommonOutlineButton(
                       onPressed: () {
                         showSuccessSnackBar(
-                            context: context, content: "Feature coming soon");
+                          context: context,
+                          content: "Feature coming soon",
+                        );
                       },
                       text: "Send Reminder",
                       dense: true,
@@ -336,14 +348,14 @@ class _BookingCard extends StatelessWidget {
                   const SizedBox(width: Sizes.space),
 
                   ///Delete Button
-                  Consumer(
-                    builder: (context, ref, _) {
-                      return DeleteIconButton(
-                        onPressed: () => ref
-                            .read(sportzHubControllerPr.notifier)
-                            .deleteBooking(context: context),
-                      );
-                    },
+                  CommonCircleButton(
+                    iconData: CupertinoIcons.trash,
+                    loading: loading,
+                    onPressed: () => controller.deleteBooking(
+                      context: context,
+                      bookingId: booking.bookingId!,
+                      userId: booking.userId!,
+                    ),
                   ),
                 ],
               ),

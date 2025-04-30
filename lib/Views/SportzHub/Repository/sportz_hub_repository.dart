@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:cricket_poc/lib_exports.dart';
 import 'package:fpdart/fpdart.dart';
@@ -88,7 +89,8 @@ class SportzHubRepository {
       );
 
       if (response != null) {
-        message = "";
+        final decoded = jsonDecode(response);
+        message = decoded["message"];
       }
 
       return right(message);
