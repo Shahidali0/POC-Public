@@ -83,6 +83,7 @@ export 'Profile/profile_screen.dart';
 
 export 'Profile/Components/app_version.dart';
 export 'Profile/Components/profile_details_page.dart';
+export 'Profile/Components/change_password_page.dart';
 
 export 'Profile/Repository/profile_repository.dart';
 

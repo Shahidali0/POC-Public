@@ -34,6 +34,17 @@ class ProfileScreen extends ConsumerWidget {
             trailing: Icon(Icons.chevron_right),
           ),
 
+          ///Change Password
+          ListTile(
+            onTap: () => AppRouter.instance.push(
+              context: context,
+              page: const ChangePasswordPage(),
+            ),
+            leading: const Icon(CupertinoIcons.lock_fill),
+            title: const Text("Change Password"),
+            trailing: const Icon(Icons.chevron_right),
+          ),
+
           ///Logout
           ListTile(
             onTap: () => ref.read(profileControllerPr.notifier).logout(context),

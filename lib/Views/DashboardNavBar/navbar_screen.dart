@@ -7,36 +7,6 @@ part "Controller/navbar_controller.dart";
 class NavbarScreen extends ConsumerWidget {
   const NavbarScreen({super.key});
 
-  // ///OnNotification Update
-  // bool _onNotification({
-  //   required UserScrollNotification notification,
-  //   required bool showNavbar,
-  //   required WidgetRef ref,
-  // }) {
-  //   if (notification.direction == ScrollDirection.forward) {
-  //     ///Show Bottom NavBar
-  //     if (!showNavbar) {
-  //       ref.read(_showOrHideNavBarPr.notifier).update((st) => st = true);
-  //     }
-  //   } else if (notification.direction == ScrollDirection.reverse) {
-  //     ///Hide Bottom NavBar
-  //     if (showNavbar) {
-  //       ref.read(_showOrHideNavBarPr.notifier).update((st) => st = false);
-  //     }
-  //   } else if (notification.direction == ScrollDirection.idle) {
-  //     ///Show Bottom NavBar
-  //     Future.delayed(
-  //       const Duration(seconds: 1, milliseconds: 500),
-  //       () {
-  //         if (!showNavbar) {
-  //           ref.read(_showOrHideNavBarPr.notifier).update((st) => st = true);
-  //         }
-  //       },
-  //     );
-  //   }
-  //   return true;
-  // }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = ref.watch(_navBarIndexPr);

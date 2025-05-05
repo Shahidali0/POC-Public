@@ -356,6 +356,9 @@ class _MainGoalWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String doneText = "Get Things Done";
+    String earnText = "Earn Money";
+
     return FadeAnimations(
       child: FormFiledWidget(
         title: "What is your main goal on PlayMate?",
@@ -370,19 +373,19 @@ class _MainGoalWidget extends StatelessWidget {
                 thumbColor: AppColors.appTheme,
                 children: <String?, Widget>{
                   ///Get Things Done
-                  "Get Things Done": _CardWidgetForSegments(
+                  doneText: _CardWidgetForSegments(
                     iconData: CupertinoIcons.check_mark_circled,
-                    text: "Get Things Done",
-                    color: goal != null && goal == "Get Things Done"
+                    text: doneText,
+                    color: goal != null && goal == doneText
                         ? AppColors.white
                         : AppColors.blueGrey,
                   ),
 
                   ///Earn Money
-                  "Earn Money": _CardWidgetForSegments(
+                  earnText: _CardWidgetForSegments(
                     iconData: CupertinoIcons.money_dollar,
-                    text: "Earn Money",
-                    color: goal != null && goal == "Earn Money"
+                    text: earnText,
+                    color: goal != null && goal == earnText
                         ? AppColors.white
                         : AppColors.blueGrey,
                   ),
@@ -413,6 +416,9 @@ class _AboutYourSelfWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String individualText = "Individual";
+    String businessText = "Business User";
+
     return FadeAnimations(
       child: FormFiledWidget(
         title: "Tell us about yourself",
@@ -427,19 +433,19 @@ class _AboutYourSelfWidget extends StatelessWidget {
                 thumbColor: AppColors.appTheme,
                 children: <String?, Widget>{
                   ///Individual
-                  "Individual": _CardWidgetForSegments(
+                  individualText: _CardWidgetForSegments(
                     iconData: CupertinoIcons.person,
-                    text: "Individual",
-                    color: aboutYou != null && aboutYou == "Individual"
+                    text: individualText,
+                    color: aboutYou != null && aboutYou == individualText
                         ? AppColors.white
                         : AppColors.blueGrey,
                   ),
 
                   ///Business user
-                  "Business": _CardWidgetForSegments(
+                  businessText: _CardWidgetForSegments(
                     iconData: CupertinoIcons.building_2_fill,
-                    text: "Business User",
-                    color: aboutYou != null && aboutYou == "Business"
+                    text: businessText,
+                    color: aboutYou != null && aboutYou == businessText
                         ? AppColors.white
                         : AppColors.blueGrey,
                   ),

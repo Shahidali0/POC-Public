@@ -292,7 +292,7 @@ class CommonCircleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: onPressed,
       child: Container(
         margin: const EdgeInsets.symmetric(

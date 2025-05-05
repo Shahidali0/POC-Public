@@ -6,10 +6,6 @@ final allCategoriesPr = StateProvider<List<CategoryJson>>((ref) {
   return [];
 });
 
-// final _loadDashboardDataPr = FutureProvider<List<CategoryJson>>((ref) async {
-//   return ref.watch(navbarControllerPr.notifier).loadData();
-// });
-
 final navbarControllerPr = StateNotifierProvider<NavbarController, bool>(
   (ref) => NavbarController(
     navBarRepository: ref.read(navbarRepositoryPr),
