@@ -17,8 +17,6 @@ FutureVoid _initialize() async {
 
   //Apply Settings --For Stripe
   await Stripe.instance.applySettings();
-
-  // LocalStorage().deleteLoginDetails();
 }
 
 ///Entry point of the application

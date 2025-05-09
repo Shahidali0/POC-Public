@@ -11,15 +11,13 @@ export 'Intro/Controller/intro_controller.dart';
 //* Auth
 
 export 'Auth/login_screen.dart';
-export 'Auth/sign_up_screen.dart';
 export 'Auth/otp_verification_screen.dart';
+export 'Auth/forgot_password_screen.dart';
 
 export 'Auth/Components/auth_background.dart';
 export 'Auth/Components/user_registration.dart';
 export 'Auth/Components/have_account_widget.dart';
 export 'Auth/Components/otp_fields.dart';
-
-export 'Auth/Controller/auth_controller.dart';
 
 export 'Auth/Repository/auth_repository.dart';
 
@@ -54,8 +52,7 @@ export 'SportzHub/sportz_hub_screen.dart';
 export 'SportzHub/my_bookings_tabview.dart';
 export 'SportzHub/my_services_tabview.dart';
 
-export 'SportzHub/Components/my_services_details.dart';
-export 'SportzHub/Components/service_offers_page.dart';
+export 'SportzHub/Components/my_service_details.dart';
 
 export 'SportzHub/Repository/sportz_hub_repository.dart';
 

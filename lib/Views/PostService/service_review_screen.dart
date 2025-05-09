@@ -11,7 +11,7 @@ class PostServiceReviewScreen extends ConsumerWidget {
 
     final state = ref.watch(postServiceControllerPr);
 
-    return LoadingProgressBar(
+    return LoadingOverlay(
       isLoading: state.loading,
       child: MyCupertinoSliverScaffold(
         title: "Post Service",
@@ -89,9 +89,7 @@ class PostServiceReviewScreen extends ConsumerWidget {
             ///Duration and Price
             _VerticalTile(
               header: "Duration",
-              body: Utils.instance.getDuration(
-                state.selectedSessionDuration,
-              ),
+              body: state.selectedSessionDuration.getDuration,
               iconData: CupertinoIcons.time,
             ),
 
@@ -172,7 +170,7 @@ class _AvailableDatesWidget extends StatelessWidget {
               color: AppColors.black,
             ),
             label: Text(
-              Utils.instance.formatDateToString(selectedDays[index]),
+              selectedDays[index].formatDateToString,
               style: const TextStyle(
                 fontWeight: FontWeight.w600,
               ),

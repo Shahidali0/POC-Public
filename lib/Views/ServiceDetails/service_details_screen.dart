@@ -85,10 +85,12 @@ class ServiceProviderWidget extends ConsumerWidget {
     super.key,
     required this.serviceJson,
     this.trailing,
+    this.showOnlyProfile = false,
   });
 
   final ServiceJson serviceJson;
   final Widget? trailing;
+  final bool showOnlyProfile;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -132,46 +134,49 @@ class ServiceProviderWidget extends ConsumerWidget {
         ),
         const SizedBox(height: Sizes.spaceMed),
 
-        ///Member Since
-        CustomListTile(
-          iconSize: 22,
-          fontSize: Sizes.fontSize16,
-          maxLines: 4,
-          iconData: CupertinoIcons.person,
-          text:
-              "Member since ${Utils.instance.formatDateYMMM(serviceJson.createdAt)}",
-        ),
-        const SizedBox(height: Sizes.spaceMed),
+        ///IIf Selected to show only profile then skip this
+        if (!showOnlyProfile) ...[
+          ///Member Since
+          CustomListTile(
+            iconSize: 22,
+            fontSize: Sizes.fontSize16,
+            maxLines: 4,
+            iconData: CupertinoIcons.person,
+            text:
+                "Member since ${serviceJson.createdAt.formatDateToYMMMFormat}",
+          ),
+          const SizedBox(height: Sizes.spaceMed),
 
-        ///TimeSlots
-        CustomListTile(
-          iconSize: 22,
-          fontSize: Sizes.fontSize16,
-          maxLines: 4,
-          iconData: CupertinoIcons.calendar,
-          text: "${serviceJson.timeSlots!.length} available date's",
-        ),
-        const SizedBox(height: Sizes.spaceMed),
+          ///TimeSlots
+          CustomListTile(
+            iconSize: 22,
+            fontSize: Sizes.fontSize16,
+            maxLines: 4,
+            iconData: CupertinoIcons.calendar,
+            text: "${serviceJson.timeSlots!.length} available date's",
+          ),
+          const SizedBox(height: Sizes.spaceMed),
 
-        ///Location
-        CustomListTile(
-          iconSize: 22,
-          fontSize: Sizes.fontSize16,
-          maxLines: 4,
-          iconData: CupertinoIcons.map_pin_ellipse,
-          text: serviceJson.location!,
-        ),
-        const SizedBox(height: Sizes.spaceMed),
+          ///Location
+          CustomListTile(
+            iconSize: 22,
+            fontSize: Sizes.fontSize16,
+            maxLines: 4,
+            iconData: CupertinoIcons.map_pin_ellipse,
+            text: serviceJson.location!,
+          ),
+          const SizedBox(height: Sizes.spaceMed),
 
-        ///Duration
-        CustomListTile(
-          iconSize: 22,
-          fontSize: Sizes.fontSize16,
-          maxLines: 4,
-          iconData: CupertinoIcons.timer,
-          text: Utils.instance.getDuration(serviceJson.duration),
-        ),
-        const SizedBox(height: Sizes.spaceMed),
+          ///Duration
+          CustomListTile(
+            iconSize: 22,
+            fontSize: Sizes.fontSize16,
+            maxLines: 4,
+            iconData: CupertinoIcons.timer,
+            text: serviceJson.duration.getDuration,
+          ),
+          const SizedBox(height: Sizes.spaceMed),
+        ],
       ],
     );
   }

@@ -154,7 +154,7 @@ class _AvailableDates extends StatelessWidget {
                           side: const BorderSide(color: AppColors.lightBlue),
                         ),
                         label: Text(
-                          Utils.instance.formatDateToString(day),
+                          day.formatDateToString,
                           style: const TextStyle(
                             color: AppColors.black,
                             fontWeight: FontWeight.w600,

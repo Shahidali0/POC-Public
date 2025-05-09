@@ -79,7 +79,7 @@ class _MyServiceCard extends StatelessWidget {
 
   void _onViewDetails(BuildContext context) => AppRouter.instance.push(
         context: context,
-        page: MyServicesDetailsPage(serviceJson: serviceJson),
+        page: MyServiceDetailsPage(serviceJson: serviceJson),
       );
 
   @override
@@ -132,7 +132,7 @@ class _MyServiceCard extends StatelessWidget {
               ///Duration
               CustomListTile(
                 iconData: CupertinoIcons.time,
-                text: Utils.instance.getDuration(serviceJson.duration),
+                text: serviceJson.duration.getDuration,
               ),
 
               ///View Details Button

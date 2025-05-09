@@ -1,5 +1,9 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter/material.dart';
+import 'package:fpdart/fpdart.dart';
 
 final profileRepositoryPr = Provider<ProfileRepository>(
   (ref) => ProfileRepository(
@@ -101,6 +105,35 @@ class ProfileRepository {
   ///Is User Authorized
   Future<bool> isAuthorized() async {
     return await _localStorage.isAuthorized();
+  }
+
+  ///Change User Password
+  FutureEither<String> changePassword({
+    required String currentPassword,
+    required String newPassword,
+  }) async {
+    try {
+      String message = "";
+
+      final otpResult = await _profileServices.changePassword(
+        currentPassword: currentPassword,
+        newPassword: newPassword,
+      );
+
+      if (otpResult != null) {
+        final otpResponse = jsonDecode(otpResult);
+        message = otpResponse["message"];
+      }
+
+      return right(message);
+    } on SocketException {
+      return left(AppExceptions.instance.handleSocketException());
+    } on MyHttpClientException catch (error) {
+      return left(AppExceptions.instance.handleMyHTTPClientException(error));
+    } catch (error) {
+      return left(
+          AppExceptions.instance.handleException(error: error.toString()));
+    }
   }
 
   ///Logout User

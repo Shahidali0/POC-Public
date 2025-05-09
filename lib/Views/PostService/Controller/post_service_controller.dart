@@ -31,7 +31,7 @@ class PostServiceController extends StateNotifier<_PostServiceStatus> {
             /// Using a `LinkedHashSet` is recommended due to equality comparison override
             selectedDates: LinkedHashSet<DateTime>(
               equals: isSameDay,
-              hashCode: Utils.instance.getHashCode,
+              hashCode: (dt) => dt.getHashCode,
             ),
             loading: false,
           ),
@@ -385,7 +385,7 @@ class PostServiceController extends StateNotifier<_PostServiceStatus> {
     Map<String, List<String>> data = {};
 
     for (var day in sortedDates) {
-      final currentDay = Utils.instance.formatDateToString(day);
+      final currentDay = day.formatDateToString;
 
       data[currentDay] = state.selectedTimeSlots;
     }
@@ -448,7 +448,7 @@ class PostServiceController extends StateNotifier<_PostServiceStatus> {
 
         ///After posting the service Update Bottom navbar index to
         ///SportzHub index to see the posted service
-        _ref.read(navbarControllerPr.notifier).updateNavbarIndex(index: 2);
+        _ref.read(navbarControllerPr.notifier).updateNavbarIndex(index: 3);
 
         ///Refresh the Providers
         _ref.invalidate(getMyServicesListPr);

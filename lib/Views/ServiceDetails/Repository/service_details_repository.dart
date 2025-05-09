@@ -117,7 +117,7 @@ class ServiceDetailsRepository {
       userId: user!.userId,
       serviceId: serviceJson.serviceId,
       providerId: serviceJson.providerId,
-      date: selectedDate,
+      date: selectedDate.formatYMMMdToDateTime.toIso8601String(),
       timeSlot: selectedTimeSlot,
       price: serviceJson.price,
       serviceTitle: serviceJson.title,

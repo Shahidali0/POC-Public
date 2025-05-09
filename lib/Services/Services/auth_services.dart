@@ -17,9 +17,20 @@ abstract class AuthServices {
   Future<String?> signUpUser({
     required SignUpDto signUpDto,
   });
+
   Future<String?> verifyOtp({
     required String email,
     required String otp,
+  });
+
+  Future<String?> forgotPassword({
+    required String email,
+  });
+
+  Future<String?> confirmForgotPassword({
+    required String email,
+    required String otp,
+    required String newPassword,
   });
 }
 
@@ -54,7 +65,7 @@ class _AuthServicesImpl extends AuthServices {
     return response;
   }
 
-//* SignUp User
+  //* SignUp User
   @override
   Future<String?> signUpUser({required SignUpDto signUpDto}) async {
     const url = "signup";
@@ -81,6 +92,54 @@ class _AuthServicesImpl extends AuthServices {
       <String, dynamic>{
         "username": email,
         "confirmationCode": otp,
+      },
+    );
+
+    final response = await BaseHttpClient.postService(
+      urlEndPoint: url,
+      body: body,
+      headers: _apiHeaders.headers,
+      isAuthUrl: true,
+    );
+
+    return response;
+  }
+
+  //* Forgot Password
+  @override
+  Future<String?> forgotPassword({required String email}) async {
+    const url = "forgotPassword";
+
+    final body = jsonEncode(
+      <String, dynamic>{
+        "username": email,
+      },
+    );
+
+    final response = await BaseHttpClient.postService(
+      urlEndPoint: url,
+      body: body,
+      headers: _apiHeaders.headers,
+      isAuthUrl: true,
+    );
+
+    return response;
+  }
+
+  //* Update New Password to DB
+  @override
+  Future<String?> confirmForgotPassword({
+    required String email,
+    required String otp,
+    required String newPassword,
+  }) async {
+    const url = "confirmForgotPassword";
+
+    final body = jsonEncode(
+      <String, dynamic>{
+        "username": email,
+        "confirmationCode": otp,
+        "newPassword": newPassword,
       },
     );
 

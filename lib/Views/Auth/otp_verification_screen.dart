@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:cricket_poc/lib_exports.dart';
@@ -9,10 +10,12 @@ class OtpVerificationScreen extends ConsumerStatefulWidget {
     super.key,
     required this.emailId,
     required this.password,
+    this.verificationType = OtpVerificationType.signup,
   });
 
   final String emailId;
   final String password;
+  final OtpVerificationType verificationType;
 
   @override
   ConsumerState<OtpVerificationScreen> createState() =>
@@ -21,14 +24,19 @@ class OtpVerificationScreen extends ConsumerStatefulWidget {
 
 class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
   late TextEditingController _otpController;
-  String userEmailId = "";
+  late TextEditingController _passwordController;
+
   late AuthController _authController;
   final ValueNotifier<int> _start = ValueNotifier(0);
+  final ValueNotifier<bool> _hidePassword = ValueNotifier(true);
+
   Timer? _timer;
+  String userEmailId = "";
 
   @override
   void initState() {
     _otpController = TextEditingController();
+    _passwordController = TextEditingController();
     _authController = ref.read(authControllerPr.notifier);
 
     ///Init error controller for OTP field
@@ -46,6 +54,7 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
   @override
   void dispose() {
     _otpController.dispose();
+    _passwordController.dispose();
     _authController.disposeM();
     _timer?.cancel();
     super.dispose();
@@ -67,9 +76,19 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
     );
   }
 
+  ///Hide Password
+  void _hidePasswordFunction() {
+    _hidePassword.value = !_hidePassword.value;
+  }
+
   ///On Tap Resend
   void _onPressedResend() {
     _startTimer();
+
+    showSuccessSnackBar(
+      context: context,
+      content: "Feature coming soon",
+    );
     // ref.read(authControllerPr).sendOtp(
     //       context: context,
     //       emailId: widget.emailId,
@@ -82,12 +101,26 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
   }
 
   ///Verify OTP
-  void _verifyOtp() => _authController.onTapVerifyOtp(
+  void _verifyOtp() {
+    ///Otp verification for -- Signup
+    if (widget.verificationType == OtpVerificationType.signup) {
+      _authController.onSignUpOtpVerification(
         context: context,
         otp: _otpController.text.trim(),
         email: widget.emailId,
         password: widget.password,
       );
+      return;
+    }
+
+    ///Forgot Password Otp verification
+    _authController.confirmForgotPasswordOtpVerification(
+      context: context,
+      otp: _otpController.text.trim(),
+      email: widget.emailId,
+      newPassword: _passwordController.text.trim(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,22 +139,38 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontSize: Sizes.fontSize18),
               ),
+
+              ///Image
               Image.asset(AppImages.verifyOtp),
+
+              ///Otp Fields
               OtpFieldsWidget(
                 errorController: _authController.errorController,
                 otpController: _otpController,
               ),
               _OtpErrorWidget(otpErrorText),
+
+              ///Resend OTP
               _ResendOTPWidget(
                 listenable: _start,
                 onTap: _onPressedResend,
               ),
-              const SizedBox(height: Sizes.spaceHeight),
+
+              ///For ForgotPassword Otp Verification
+              if (widget.verificationType == OtpVerificationType.forgotPassword)
+                _NewPasswordField(
+                  controller: _passwordController,
+                  hidePassword: _hidePassword,
+                  hidePasswordFunction: _hidePasswordFunction,
+                ),
+              const SizedBox(height: Sizes.spaceHeight * 1.5),
 
               ///Verify OTP Button
               CommonButton(
                 onPressed: _verifyOtp,
-                text: "Verify OTP",
+                text: widget.verificationType == OtpVerificationType.signup
+                    ? "Verify OTP"
+                    : "Reset Password",
                 isLoading: isLoading,
               ),
               const SizedBox(height: Sizes.spaceHeight),
@@ -249,6 +298,51 @@ class _ResendOTPWidget extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+}
+
+///New Password Field
+class _NewPasswordField extends StatelessWidget {
+  const _NewPasswordField({
+    required this.controller,
+    required this.hidePassword,
+    required this.hidePasswordFunction,
+  });
+
+  final TextEditingController controller;
+  final ValueNotifier hidePassword;
+  final VoidCallback? hidePasswordFunction;
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeAnimations(
+      child: FormFiledWidget(
+        title: "New Password",
+        isRequired: true,
+        child: ValueListenableBuilder(
+          valueListenable: hidePassword,
+          builder: (BuildContext context, value, Widget? child) {
+            return TextFormField(
+              controller: controller,
+              keyboardType: TextInputType.text,
+              obscureText: value,
+              validator: FieldValidators.instance.passwordValidator,
+              decoration: InputDecoration(
+                hintText: "Enter a new password",
+                suffixIcon: IconButton(
+                  onPressed: hidePasswordFunction,
+                  icon: Icon(
+                    value
+                        ? CupertinoIcons.eye_slash_fill
+                        : CupertinoIcons.eye_fill,
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 }

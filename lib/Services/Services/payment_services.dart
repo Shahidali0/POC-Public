@@ -43,11 +43,11 @@ class _StripePaymentServicesImpl implements StripePaymentServices {
       'currency': currency ?? "AUD",
     });
 
-    // final headers = await _apiHeaders.getHeadersWithToken();
+    final headers = await _apiHeaders.getHeadersWithToken();
 
     final response = await BaseHttpClient.postService(
       urlEndPoint: url,
-      headers: _apiHeaders.headers,
+      headers: headers,
       body: body,
     );
 

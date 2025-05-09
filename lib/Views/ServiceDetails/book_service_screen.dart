@@ -11,7 +11,7 @@ class BookServiceScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isLoading = ref.watch(serviceDetailsControllerPr).loading;
 
-    return LoadingProgressBar(
+    return LoadingOverlay(
       isLoading: isLoading,
       child: MyCupertinoSliverScaffold(
         title: "Book Now",

@@ -11,6 +11,9 @@ class Constants {
   static const String emmptyMyBookings =
       "Let’s land your first booking and get you SportZReady!";
 
+  static const String emmptyMyServicesBookings =
+      "Waiting for your first booking? \nHang tight, it's coming!";
+
   static const String emmptyUpcomingBookings =
       "No bookings yet? Let’s change that and get you SportZReady!";
 
@@ -19,6 +22,9 @@ class Constants {
 
   static const String emptyMyServices =
       "Let’s add your first service and get you SportZReady!";
+
+  static const String emptyMyServicesBooking =
+      "You don’t have any bookings at the moment on SportZReady.";
 
   static const String copyRight =
       "Copyright @ 2025 $appName All rights reserved";

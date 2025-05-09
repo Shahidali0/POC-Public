@@ -125,7 +125,7 @@ class AuthRepository {
   }
 
   ///Verify Otp and SignIn
-  FutureEither<String> verifyOtpAndSignIn({
+  FutureEither<String> verifySignUpOtpAndSignIn({
     required String email,
     required String otp,
   }) async {
@@ -135,6 +135,60 @@ class AuthRepository {
       final otpResult = await _authServices.verifyOtp(
         email: email,
         otp: otp,
+      );
+
+      if (otpResult != null) {
+        final otpResponse = jsonDecode(otpResult);
+        message = otpResponse["message"];
+      }
+
+      return right(message);
+    } on SocketException {
+      return left(AppExceptions.instance.handleSocketException());
+    } on MyHttpClientException catch (error) {
+      return left(AppExceptions.instance.handleMyHTTPClientException(error));
+    } catch (error) {
+      return left(
+          AppExceptions.instance.handleException(error: error.toString()));
+    }
+  }
+
+  ///Forgot password
+  FutureEither<String> forgotPassword({required String email}) async {
+    try {
+      String message = "";
+
+      final otpResult = await _authServices.forgotPassword(email: email);
+
+      if (otpResult != null) {
+        final otpResponse = jsonDecode(otpResult);
+        message = otpResponse["message"];
+      }
+
+      return right(message);
+    } on SocketException {
+      return left(AppExceptions.instance.handleSocketException());
+    } on MyHttpClientException catch (error) {
+      return left(AppExceptions.instance.handleMyHTTPClientException(error));
+    } catch (error) {
+      return left(
+          AppExceptions.instance.handleException(error: error.toString()));
+    }
+  }
+
+  ///Confirm Forgot password
+  FutureEither<String> confirmForgotPassword({
+    required String email,
+    required String otp,
+    required String newPassword,
+  }) async {
+    try {
+      String message = "";
+
+      final otpResult = await _authServices.confirmForgotPassword(
+        email: email,
+        otp: otp,
+        newPassword: newPassword,
       );
 
       if (otpResult != null) {

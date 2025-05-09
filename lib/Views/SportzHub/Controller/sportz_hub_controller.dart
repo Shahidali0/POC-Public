@@ -18,7 +18,14 @@ final getMyServicesListPr = FutureProvider<AllServicesJson?>((ref) async {
 });
 
 final getMyBookingsPr = FutureProvider<List<BookingsJson>>((ref) async {
-  return ref.read(sportzHubControllerPr.notifier).getMyBookings();
+  return ref.read(sportzHubControllerPr.notifier).getMyBookingsList();
+});
+
+final getMyServicesBookingsPr = FutureProvider.family
+    .autoDispose<List<BookingsJson>, String>((ref, String serviceId) async {
+  return ref
+      .read(sportzHubControllerPr.notifier)
+      .getMyServicesBookingList(serviceId: serviceId);
 });
 
 class SportzHubController extends StateNotifier<String?> {
@@ -32,28 +39,55 @@ class SportzHubController extends StateNotifier<String?> {
         _ref = ref,
         super(null);
 
-  Color getStatusColor(String text) {
-    switch (text.toLowerCase()) {
-      case "pending":
-        return AppColors.orange;
-
-      case "canceled":
-        return AppColors.red;
-
-      case "completed":
-        return AppColors.green;
-
-      default:
-        return AppColors.black;
-    }
-  }
-
-  //* Find My Services
+  //* Get My Services
   Future<AllServicesJson?> getMyServicesList() =>
       _repository.getMyServicesList();
 
+  // //* Get My Services -- Bookings List
+  Future<List<BookingsJson>> getMyServicesBookingList({
+    required String serviceId,
+  }) =>
+      _repository.getMyServicesBookings(serviceId: serviceId);
+
   //* Get User Bookings List
-  Future<List<BookingsJson>> getMyBookings() => _repository.getMyBookings();
+  Future<List<BookingsJson>> getMyBookingsList() => _repository.getMyBookings();
+
+  //* Update My Service Booking Status
+  FutureVoid updateMyServiceBookingStatus({
+    required BuildContext context,
+    required String providerId,
+    required String bookingId,
+    required BookingStatus status,
+  }) async {
+    ///Assign booking Id to state so that the particular item
+    ///Should show loading indicator
+    state = bookingId;
+
+    final response = await _repository.updateMyServiceBookingStatus(
+      providerId: providerId,
+      bookingId: bookingId,
+      status: status,
+    );
+
+    state = null;
+
+    response.fold(
+      (failure) => showErrorSnackBar(
+        context: context,
+        title: failure.title,
+        content: failure.message,
+      ),
+      (success) {
+        ///Refresh My Services Bookings
+        _ref.invalidate(getMyServicesBookingsPr);
+
+        showSuccessSnackBar(
+          context: context,
+          content: success,
+        );
+      },
+    );
+  }
 
   //! Delete Booking
   FutureVoid deleteBooking({
@@ -62,7 +96,7 @@ class SportzHubController extends StateNotifier<String?> {
     required String bookingId,
   }) async {
     ///Assign booking Id to state so that the particular item
-    ///Show show loading indicator
+    ///Should show loading indicator
     state = bookingId;
 
     final response = await _repository.deleteBooking(

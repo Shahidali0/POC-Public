@@ -1,6 +1,4 @@
-import 'package:cricket_poc/lib_exports.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+part of 'package:cricket_poc/Views/Auth/login_screen.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});
@@ -56,7 +54,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   void _updateAboutYourSelf(String value) => _aboutYourSelf.value = value;
 
   ///Hide Password
-  void hidePasswordFunction() {
+  void _hidePasswordFunction() {
     _hidePassword.value = !_hidePassword.value;
   }
 
@@ -134,13 +132,13 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 ),
 
                 ///Email
-                _EmailField(controller: _emailController),
+                _SignUpEmailField(controller: _emailController),
 
                 ///New Password
                 _NewPasswordField(
                   controller: _passwordController,
                   hidePassword: _hidePassword,
-                  hidePasswordFunction: hidePasswordFunction,
+                  hidePasswordFunction: _hidePasswordFunction,
                 ),
 
                 ///HomeSubhurb
@@ -248,8 +246,8 @@ class _FullNameField extends StatelessWidget {
 }
 
 ///Email Field
-class _EmailField extends StatelessWidget {
-  const _EmailField({
+class _SignUpEmailField extends StatelessWidget {
+  const _SignUpEmailField({
     required this.controller,
   });
 

@@ -276,8 +276,8 @@ class CommonIconButton extends _PlatformWidget {
 }
 
 ///Common Circle Icon Buttton Widget
-class CommonCircleButton extends StatelessWidget {
-  const CommonCircleButton({
+class CommonRectangleButton extends StatelessWidget {
+  const CommonRectangleButton({
     super.key,
     required this.iconData,
     required this.onPressed,

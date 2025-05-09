@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cricket_poc/lib_exports.dart';
 
 final profileServicesPr = Provider<ProfileServices>(
@@ -8,6 +10,11 @@ sealed class ProfileServices {
   Future<String?> getUser({required String userId});
 
   Future<String?> getUserByUserName({required String userName});
+
+  Future<String?> changePassword({
+    required String currentPassword,
+    required String newPassword,
+  });
 }
 
 class _ProfileServicesImpl implements ProfileServices {
@@ -41,6 +48,31 @@ class _ProfileServicesImpl implements ProfileServices {
     final response = await BaseHttpClient.getService(
       urlEndPoint: url,
       headers: headers,
+    );
+
+    return response;
+  }
+
+  //* Change User Password
+  @override
+  Future<String?> changePassword({
+    required String currentPassword,
+    required String newPassword,
+  }) async {
+    const url = "changePassword";
+
+    final body = jsonEncode(<String, dynamic>{
+      "oldPassword": currentPassword,
+      "newPassword": newPassword,
+    });
+
+    final headers = await _apiHeaders.getHeadersWithToken();
+
+    final response = await BaseHttpClient.postService(
+      urlEndPoint: url,
+      headers: headers,
+      body: body,
+      isAuthUrl: true,
     );
 
     return response;

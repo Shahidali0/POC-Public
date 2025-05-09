@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:cricket_poc/lib_exports.dart';
 
 final homeServicesPr = Provider<HomeServices>(
@@ -17,18 +15,25 @@ sealed class HomeServices {
 
   Future<String?> getFeaturedServices();
 
-  Future<String?> findUserServices({required String userId});
+  Future<String?> getMyServices({required String userId});
 
-  Future<String?> getUserBookings({required String userId});
+  Future<String?> getMyBookings({required String userId});
+
+  Future<String?> getMyServicesBookings({required String serviceId});
 
   Future<String?> postService({required PostServiceDto postServiceDto});
 
-  Future<String?> createBooking({required CreateBookingDto bookingDto});
-
   Future<String?> getAllCategories();
 
-  Future<String?> deleteBooking(
-      {required String userId, required String bookingId});
+  Future<String?> createBooking({required CreateBookingDto bookingDto});
+
+  Future<String?> cancelBooking({
+    required CancelBookingDto cancelBookingDto,
+  });
+
+  Future<String?> updateMyServiceBookingStatus({
+    required BookingStatusDto bookingStatusDto,
+  });
 }
 
 class _HomeServicesImpl implements HomeServices {
@@ -80,7 +85,7 @@ class _HomeServicesImpl implements HomeServices {
 
   //* Get User Services List
   @override
-  Future<String?> findUserServices({required String userId}) async {
+  Future<String?> getMyServices({required String userId}) async {
     final url = "services?providerId=$userId";
 
     final headers = await _apiHeaders.getHeadersWithToken();
@@ -95,8 +100,23 @@ class _HomeServicesImpl implements HomeServices {
 
   //* Get User Bookings
   @override
-  Future<String?> getUserBookings({required String userId}) async {
+  Future<String?> getMyBookings({required String userId}) async {
     final url = "booking?userId=$userId";
+
+    final headers = await _apiHeaders.getHeadersWithToken();
+
+    final response = await BaseHttpClient.getService(
+      urlEndPoint: url,
+      headers: headers,
+    );
+
+    return response;
+  }
+
+  //* Get My Services Bookings -- Someone booked my services List
+  @override
+  Future<String?> getMyServicesBookings({required String serviceId}) async {
+    final url = "booking?serviceId=$serviceId";
 
     final headers = await _apiHeaders.getHeadersWithToken();
 
@@ -159,20 +179,33 @@ class _HomeServicesImpl implements HomeServices {
     return response;
   }
 
-  //! Delete Booking
+  //! Delete Booking --user
   @override
-  Future<String?> deleteBooking({
-    required String userId,
-    required String bookingId,
+  Future<String?> cancelBooking(
+      {required CancelBookingDto cancelBookingDto}) async {
+    const url = "booking";
+
+    final body = cancelBookingDto.toJson();
+
+    final headers = await _apiHeaders.getHeadersWithToken();
+
+    final response = await BaseHttpClient.patchService(
+      urlEndPoint: url,
+      body: body,
+      headers: headers,
+    );
+
+    return response;
+  }
+
+  //* Update Booking Status
+  @override
+  Future<String?> updateMyServiceBookingStatus({
+    required BookingStatusDto bookingStatusDto,
   }) async {
     const url = "booking";
 
-    final body = jsonEncode(
-      <String, dynamic>{
-        "userId": userId,
-        "bookingId": bookingId,
-      },
-    );
+    final body = bookingStatusDto.toJson();
 
     final headers = await _apiHeaders.getHeadersWithToken();
 

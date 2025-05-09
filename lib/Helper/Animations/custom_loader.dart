@@ -7,21 +7,24 @@ import 'package:cricket_poc/lib_exports.dart';
 const _duration = Duration(milliseconds: 1200);
 
 //* This screen is to show overlay loading animation for entire screen
-class LoadingProgressBar extends StatelessWidget {
-  const LoadingProgressBar({
+class LoadingOverlay extends StatelessWidget {
+  const LoadingOverlay({
     super.key,
     required this.child,
     required this.isLoading,
     this.opacity = 0.75,
+    this.showPlatformLoader = false,
   });
 
   final Widget child;
   final bool isLoading;
   final double opacity;
+  final bool showPlatformLoader;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
+      alignment: Alignment.center,
       children: [
         child,
         if (isLoading) ...[
@@ -29,10 +32,17 @@ class LoadingProgressBar extends StatelessWidget {
             opacity: opacity,
             child: ModalBarrier(
               dismissible: false,
-              color: Theme.of(context).colorScheme.onSurface,
+              color: showPlatformLoader
+                  ? AppColors.card.withOpacity(0.45)
+                  : Theme.of(context).colorScheme.onSurface,
             ),
           ),
-          _buildCenterWidget(context),
+
+          ///Loader Widget
+          if (showPlatformLoader)
+            const ShowPlatformLoader()
+          else
+            _buildCenterWidget(context),
         ],
       ],
     );

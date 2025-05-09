@@ -111,7 +111,7 @@ flutter:
 
   #--- Local Assests---#
   assets:
-    - assets/icons/
+    # - assets/icons/
     - assets/images/
     - assets/logos/
 

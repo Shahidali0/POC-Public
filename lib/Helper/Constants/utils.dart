@@ -21,38 +21,38 @@ class Utils {
     HapticFeedback.vibrate();
   }
 
-  //* FormatDate to String
-  String formatDateToString(DateTime? dateTime) {
-    if (dateTime == null) return "";
-    final formattedDate = DateFormat.yMMMd().format(dateTime);
-    return formattedDate;
-  }
+  // //* FormatDate to String
+  // String formatDateToString(DateTime? dateTime) {
+  //   if (dateTime == null) return "";
+  //   final formattedDate = DateFormat.yMMMd().format(dateTime);
+  //   return formattedDate;
+  // }
 
-  //* FormatDate to Specific String Format (Month, Year)
-  String formatDateYMMM(DateTime? dateTime) {
-    if (dateTime == null) return "";
+  // //* FormatDate to Specific String Format (Month, Year)
+  // String formatDateYMMM(DateTime? dateTime) {
+  //   if (dateTime == null) return "";
 
-    final formattedDate = DateFormat.yMMM().format(dateTime);
-    return formattedDate;
-  }
+  //   final formattedDate = DateFormat.yMMM().format(dateTime);
+  //   return formattedDate;
+  // }
 
-  //* FormatDate to Specific String Format (Month, Year)
-  String getDuration(List<String>? data) {
-    final duration =
-        data!.map((e) => "$e min").toString().replaceAll(RegExp(r"[()]"), "");
+  // //* Format String to DateTime
+  // DateTime formatyMMMdToDateTime(String dateString) {
+  //   DateFormat dateFormat = DateFormat.yMMMd();
 
-    return duration;
-  }
+  //   // Convert the string to DateTime
+  //   DateTime dateTime = dateFormat.parse(dateString);
 
-  //* Format String to DateTime
-  DateTime formatStringToDateTime(String dateString) {
-    DateFormat dateFormat = DateFormat.yMMMd();
+  //   return dateTime;
+  // }
 
-    // Convert the string to DateTime
-    DateTime dateTime = dateFormat.parse(dateString);
+  // //* FormatDate to Specific String Format (Month, Year)
+  // String getDuration(List<String>? data) {
+  //   final duration =
+  //       data!.map((e) => "$e min").toString().replaceAll(RegExp(r"[()]"), "");
 
-    return dateTime;
-  }
+  //   return duration;
+  // }
 
   //* DatePicker Theme --For Android
   Theme datePickerTheme({
@@ -76,9 +76,4 @@ class Utils {
         ),
         child: child,
       );
-
-  //* Get HashCodes based on dates
-  int getHashCode(DateTime key) {
-    return key.day * 1000000 + key.month * 10000 + key.year;
-  }
 }

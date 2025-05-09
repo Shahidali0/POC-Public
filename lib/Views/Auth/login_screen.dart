@@ -1,6 +1,10 @@
+import 'dart:async';
 import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+part 'Controller/auth_controller.dart';
+part 'package:cricket_poc/Views/Auth/sign_up_screen.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -29,7 +33,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     super.dispose();
   }
 
-  ///OnTap SendCode
+  ///OnTap SignIn
   void _onTapSignIn({
     required BuildContext context,
     required WidgetRef ref,
@@ -41,6 +45,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           password: _passwordController.text.trim(),
         );
     return;
+  }
+
+  ///OnTap Forgot Password
+  void _onForgotPassword({
+    required BuildContext context,
+  }) async {
+    return AppRouter.instance.push(
+      context: context,
+      page: const ForgotPasswordScreen(),
+    );
   }
 
   @override
@@ -87,8 +101,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               ///Password
               _PasswordField(controller: _passwordController),
 
+              ///Forgot Password
+              FadeAnimations(
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: CommonTextButton(
+                    onPressed: () => _onForgotPassword(context: context),
+                    text: "Forgot Password?",
+                  ),
+                ),
+              ),
+
               ///SignIn Button
-              const SizedBox(height: Sizes.space * 2),
+              const SizedBox(height: Sizes.space * 1.5),
               FadeAnimations(
                 child: CommonButton(
                   onPressed: () => _onTapSignIn(
@@ -143,7 +168,7 @@ class _PasswordField extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final obSecureText = ref.watch(obSecurePasswordPr);
+    final obSecureText = ref.watch(_obSecurePasswordPr);
 
     return FadeAnimations(
       child: FormFiledWidget(
@@ -156,7 +181,7 @@ class _PasswordField extends ConsumerWidget {
             hintText: "Enter your password",
             suffixIcon: GestureDetector(
               onTap: () => ref
-                  .read(obSecurePasswordPr.notifier)
+                  .read(_obSecurePasswordPr.notifier)
                   .update((state) => state = !obSecureText),
               child: Icon(
                 obSecureText ? CupertinoIcons.eye_slash : CupertinoIcons.eye,

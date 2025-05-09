@@ -6,7 +6,7 @@ export 'BaseHttpClient/response_handler.dart';
 export 'Exception/app_exceptions.dart';
 export 'Exception/failure.dart';
 
-export 'ServicesImpl/auth_services.dart';
-export 'ServicesImpl/home_services.dart';
-export 'ServicesImpl/payment_services.dart';
-export 'ServicesImpl/profile_services.dart';
+export 'Services/auth_services.dart';
+export 'Services/home_services.dart';
+export 'Services/payment_services.dart';
+export 'Services/profile_services.dart';

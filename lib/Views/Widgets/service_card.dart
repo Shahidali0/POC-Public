@@ -75,7 +75,7 @@ class ServiceCardWidget extends StatelessWidget {
 
               CustomListTile(
                 iconData: CupertinoIcons.timer,
-                text: Utils.instance.getDuration(serviceJson.duration),
+                text: serviceJson.duration.getDuration,
               ),
 
               ///View Details Button

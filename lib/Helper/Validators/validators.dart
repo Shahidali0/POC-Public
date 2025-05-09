@@ -5,12 +5,12 @@ class FieldValidators {
 
   String requiredText = "Please provide the necessary details";
 
-  String? get strongPasswordText => 'Required Strong Password';
+  String get strongPasswordText => 'Required Strong Password';
 
-  String? get passwordIncorrectFormat =>
+  String get passwordIncorrectFormat =>
       'Password must be at least 8 characters long, one uppercase, one lowercase, one number & one special character';
 
-  String? get passwordMisMatchText => 'Password does not match';
+  String get passwordMisMatchText => 'Password does not match';
 
   ///Common Validator --- Null value check
   String? commonValidator(String? value) {
@@ -33,12 +33,23 @@ class FieldValidators {
       return requiredText;
     } else if (value.length < 3) {
       return strongPasswordText;
-    } else if (!value.contains(
-      RegExp(
-          r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$'),
-      // RegExp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$'),
-    )) {
+    } else if (!value.contains(RegExp(
+        r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$'))) {
       return passwordIncorrectFormat;
+    }
+
+    return null;
+  }
+
+  ///Confirm Password Validator
+  String? confirmPasswordValidator({
+    required String? value,
+    required String newPassword,
+  }) {
+    if (value!.isEmpty) {
+      return requiredText;
+    } else if (value != newPassword) {
+      return passwordMisMatchText;
     }
 
     return null;

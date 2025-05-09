@@ -1,6 +1,8 @@
 export 'Dto/signup_dto.dart';
 export 'Dto/create_booking_dto.dart';
 export 'Dto/post_service_dto.dart';
+export 'Dto/cancel_booking_dto.dart';
+export 'Dto/booking_status_dto.dart';
 
 export 'Local/post_service_data.dart';
 export 'Local/search_filter_model.dart';

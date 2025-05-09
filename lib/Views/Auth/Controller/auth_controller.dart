@@ -1,6 +1,4 @@
-import 'dart:async';
-import 'package:cricket_poc/lib_exports.dart';
-import 'package:flutter/material.dart';
+part of 'package:cricket_poc/Views/Auth/login_screen.dart';
 
 final authControllerPr = StateNotifierProvider<AuthController, bool>(
   (ref) => AuthController(
@@ -9,9 +7,7 @@ final authControllerPr = StateNotifierProvider<AuthController, bool>(
   ),
 );
 
-final signUpTabIndexPr = StateProvider<int>((ref) => 0);
-
-final obSecurePasswordPr = StateProvider<bool>((ref) => true);
+final _obSecurePasswordPr = StateProvider<bool>((ref) => true);
 
 final signupGoalErrorPr = StateProvider<String>((ref) => "");
 final signupAbouYouSelfErrorPr = StateProvider<String>((ref) => "");
@@ -169,8 +165,8 @@ class AuthController extends StateNotifier<bool> {
     );
   }
 
-  ///Ontap Verify OTP
-  void onTapVerifyOtp({
+  ///Verify OTP for SignUp
+  void onSignUpOtpVerification({
     required BuildContext context,
     required String email,
     required String password,
@@ -190,7 +186,7 @@ class AuthController extends StateNotifier<bool> {
 
     state = true;
 
-    final isOtpVerified = await _authRepository.verifyOtpAndSignIn(
+    final isOtpVerified = await _authRepository.verifySignUpOtpAndSignIn(
       otp: otp,
       email: email,
     );
@@ -214,19 +210,99 @@ class AuthController extends StateNotifier<bool> {
           content: success,
         );
 
-        ///Sign In User -->bcz otp verified
+        ///Sign In User --> bcz otp verified
         await signInUser(
           context: context,
           email: email,
           password: password,
         );
         return;
+      },
+    );
+  }
 
-        // ///Goto Dashboard
-        // return AppRouter.instance.pushReplacement(
-        //   context: context,
-        //   page: const LoginScreen(),
-        // );
+  ///ForgotPassword
+  void forgotPassword({
+    required BuildContext context,
+    required String email,
+  }) async {
+    Utils.instance.hideFoucs(context);
+
+    state = true;
+
+    final response = await _authRepository.forgotPassword(email: email);
+
+    state = false;
+
+    response.fold(
+      (failure) {
+        showErrorSnackBar(
+          context: context,
+          title: failure.title,
+          content: failure.message,
+        );
+        return;
+      },
+      (success) async {
+        showSuccessSnackBar(
+          context: context,
+          content: success,
+        );
+
+        return AppRouter.instance.pushReplacement(
+          context: context,
+          page: OtpVerificationScreen(
+            emailId: email,
+            password: "",
+            verificationType: OtpVerificationType.forgotPassword,
+          ),
+        );
+      },
+    );
+  }
+
+  ///ForgotPassword
+  void confirmForgotPasswordOtpVerification({
+    required BuildContext context,
+    required String email,
+    required String otp,
+    required String newPassword,
+  }) async {
+    Utils.instance.hideFoucs(context);
+
+    state = true;
+
+    final response = await _authRepository.confirmForgotPassword(
+      email: email,
+      otp: otp,
+      newPassword: newPassword,
+    );
+
+    state = false;
+
+    response.fold(
+      (failure) {
+        showErrorSnackBar(
+          context: context,
+          title: failure.title,
+          content: failure.message,
+        );
+        return;
+      },
+      (success) async {
+        showSuccessSnackBar(
+          context: context,
+          content: success,
+        );
+
+        ///Sign In User --> bcz otp verified
+        await signInUser(
+          context: context,
+          email: email,
+          password: newPassword,
+        );
+
+        return;
       },
     );
   }

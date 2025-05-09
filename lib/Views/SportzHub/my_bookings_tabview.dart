@@ -7,35 +7,35 @@ class MyBookingsTabview extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(getMyBookingsPr).when(
-          data: (data) {
-            ///For Empty Services List
-            if (data.isEmpty) {
-              return const EmptyDataWidget(
-                subTitle: Constants.emmptyMyBookings,
-              );
-            }
+    return RefreshIndicator(
+      onRefresh: () async => ref.refresh(getMyBookingsPr.future),
+      child: ref.watch(getMyBookingsPr).when(
+            data: (data) {
+              ///For Empty Services List
+              if (data.isEmpty) {
+                return const EmptyDataWidget(
+                  subTitle: Constants.emmptyMyBookings,
+                );
+              }
 
-            ///Data not empty
-            return RefreshIndicator(
-              onRefresh: () async => ref.refresh(getMyBookingsPr.future),
-              child: _body(
+              ///Data not empty
+              return _body(
                 context: context,
                 myBookings: data,
                 ref: ref,
-              ),
-            );
-          },
-          error: (e, st) {
-            final error = e as Failure;
-            return ErrorText(
-              title: error.title,
-              error: error.message,
-              onRefresh: () async => ref.invalidate(getMyBookingsPr),
-            );
-          },
-          loading: () => const ShowDataLoader(),
-        );
+              );
+            },
+            error: (e, st) {
+              final error = e as Failure;
+              return ErrorText(
+                title: error.title,
+                error: error.message,
+                onRefresh: () async => ref.invalidate(getMyBookingsPr),
+              );
+            },
+            loading: () => const ShowDataLoader(),
+          ),
+    );
   }
 
   ///Body Widget
@@ -43,74 +43,72 @@ class MyBookingsTabview extends ConsumerWidget {
     required List<BookingsJson> myBookings,
     required WidgetRef ref,
     required BuildContext context,
-  }) =>
-      Padding(
-        key: const PageStorageKey('MyBookingsTabview'),
-        padding: Sizes.globalMargin,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ///My Bookings Segments
-            const _MyBookingSegments(),
-            // const Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //   children: [
-            //     Text(
-            //       "My Bookings:",
-            //       overflow: TextOverflow.ellipsis,
-            //       style: TextStyle(
-            //         fontSize: Sizes.fontSize18,
-            //         color: AppColors.blueGrey,
-            //         fontWeight: FontWeight.bold,
-            //         fontFamily: AppTheme.boldFont,
-            //       ),
-            //     ),
-            //     SizedBox(width: Sizes.spaceHeight),
-            //     Flexible(child: _MyBookingSegments()),
-            //   ],
-            // ),
+  }) {
+    ///UpComing Booking
+    final upComing = myBookings
+        .where(
+          (item) =>
+              item.status!.toLowerCase().contains(BookingStatus.pending.name) &&
+              item.status!.toLowerCase().contains(BookingStatus.confirmed.name),
+        )
+        .toList();
 
-            const SizedBox(height: Sizes.spaceSmall),
+    ///Past Booking
+    final past = myBookings
+        .where(
+          (item) =>
+              !item.status!
+                  .toLowerCase()
+                  .contains(BookingStatus.pending.name) &&
+              !item.status!
+                  .toLowerCase()
+                  .contains(BookingStatus.confirmed.name),
+        )
+        .toList();
 
-            ///List of Bookings
-            Expanded(
-              child: Consumer(
-                builder: (context, WidgetRef ref, __) {
-                  final selectedSegment = ref.watch(myBookingSegemntIndexPr);
+    return Padding(
+      key: const PageStorageKey('MyBookingsTabview'),
+      padding: Sizes.globalMargin,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ///My Bookings Segments
+          const _MyBookingSegments(),
 
-                  return AnimatedSwitcher(
-                    duration: Sizes.duration,
-                    child: selectedSegment == MyBookingType.upcoming
+          const SizedBox(height: Sizes.spaceSmall),
 
-                        ///UpComing Bookings List
-                        ? _BookingListView(
-                            sendReminder: true,
-                            emptyBookingText: Constants.emmptyUpcomingBookings,
-                            bookings: myBookings
-                                .where((item) => item.status!
-                                    .toLowerCase()
-                                    .contains("pending"))
-                                .toList(),
-                          )
-                        :
+          ///List of Bookings
+          Expanded(
+            child: Consumer(
+              builder: (context, WidgetRef ref, __) {
+                final selectedSegment = ref.watch(myBookingSegemntIndexPr);
 
-                        ///Past Bookings List
-                        _BookingListView(
-                            sendReminder: false,
-                            emptyBookingText: Constants.emmptyPastBookings,
-                            bookings: myBookings
-                                .where((item) => !item.status!
-                                    .toLowerCase()
-                                    .contains("pending"))
-                                .toList(),
-                          ),
-                  );
-                },
-              ),
+                return AnimatedSwitcher(
+                  duration: Sizes.duration,
+                  child: selectedSegment == MyBookingType.upcoming
+
+                      ///UpComing Bookings List
+                      ? _BookingListView(
+                          sendReminder: true,
+                          emptyBookingText: Constants.emmptyUpcomingBookings,
+                          bookings: upComing,
+                        )
+                      :
+
+                      ///Past Bookings List
+                      _BookingListView(
+                          sendReminder: false,
+                          emptyBookingText: Constants.emmptyPastBookings,
+                          bookings: past,
+                        ),
+                );
+              },
             ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 ///myBooking Tabs
@@ -308,7 +306,7 @@ class _BookingCard extends ConsumerWidget {
             ///Date
             CustomListTile(
               iconData: CupertinoIcons.calendar,
-              text: Utils.instance.formatDateToString(booking.date),
+              text: booking.date.formatDateToString,
             ),
 
             ///Time
@@ -321,7 +319,7 @@ class _BookingCard extends ConsumerWidget {
             CustomListTile(
               iconData: CupertinoIcons.info,
               text: booking.status!.capitalizeFirst,
-              textColor: controller.getStatusColor(booking.status!),
+              textColor: booking.status!.getStatusColor,
               fontWeight: FontWeight.w600,
             ),
 
@@ -348,7 +346,7 @@ class _BookingCard extends ConsumerWidget {
                   const SizedBox(width: Sizes.space),
 
                   ///Delete Button
-                  CommonCircleButton(
+                  CommonRectangleButton(
                     iconData: CupertinoIcons.trash,
                     loading: loading,
                     onPressed: () => controller.deleteBooking(
