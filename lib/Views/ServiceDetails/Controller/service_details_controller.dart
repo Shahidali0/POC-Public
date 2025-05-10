@@ -29,6 +29,15 @@ class ServiceDetailsController extends StateNotifier<_ServiceDetailsState> {
           ),
         );
 
+  //* Is Service Provided by Same User
+  bool isSameUserService(String? providerId) {
+    final user = _ref.read(userJsonPr)?.user;
+
+    if (user == null) return true;
+
+    return user.userId == providerId;
+  }
+
   //* Update Selected Date Value
   void updateSelectedDate(String value) {
     state = state.copyWith(selectedDate: value);

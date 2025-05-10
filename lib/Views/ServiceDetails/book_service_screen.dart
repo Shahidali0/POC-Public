@@ -52,15 +52,16 @@ class BookServiceScreen extends ConsumerWidget {
               dates: serviceJson.timeSlots!.keys.toList(),
             ),
 
+            ///Time Slots
             _TimeSlotsField(
               timeSlotsData: serviceJson.timeSlots!.values.first,
             ),
 
+            ///Duration
             _DurationField(
               sessionDurations: serviceJson.duration!,
             ),
 
-            // _NameField(controller: _nameController),
             const SizedBox(height: Sizes.spaceHeight),
 
             ///Continue Button

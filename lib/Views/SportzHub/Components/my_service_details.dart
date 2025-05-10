@@ -22,36 +22,21 @@ class MyServiceDetailsPage extends ConsumerWidget {
                 title: "My Service",
               ),
 
-              /// My Details
+              ///About Provider
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: Sizes.space),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ///About Provider
-                      ServiceProviderWidget(
-                        showOnlyProfile: true,
-                        serviceJson: serviceJson,
-                        trailing: Text(
-                          "\$ ${serviceJson.price}",
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: Sizes.fontSize16,
-                          ),
-                        ),
+                  child: ServiceProviderWidget(
+                    showOnlyProfile: true,
+                    serviceJson: serviceJson,
+                    trailing: Text(
+                      "\$ ${serviceJson.price}",
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: Sizes.fontSize16,
                       ),
-
-                      // /// Description
-                      // ServiceDescriptionWidget(serviceJson: serviceJson),
-
-                      // /// Available Session Dates
-                      // ServiceAvailableDatesWidget(serviceJson: serviceJson),
-
-                      // /// Available Session TimeSlots
-                      // ServiceAvailableTimeSlotsWidget(serviceJson: serviceJson),
-                    ],
+                    ),
                   ),
                 ),
               ),

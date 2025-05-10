@@ -29,13 +29,13 @@ class ServiceDetailsScreen extends StatelessWidget {
           const Divider(),
 
           ///Description
-          ServiceDescriptionWidget(serviceJson: serviceJson),
+          _DescriptionWidget(serviceJson: serviceJson),
 
           ///Available Session Dates
-          ServiceAvailableDatesWidget(serviceJson: serviceJson),
+          _AvailableDatesWidget(serviceJson: serviceJson),
 
           ///Available Session TimeSlots
-          ServiceAvailableTimeSlotsWidget(serviceJson: serviceJson),
+          _AvailableTimeSlotsWidget(serviceJson: serviceJson),
 
           ///Location Details
           ..._locationDetails(),
@@ -55,17 +55,6 @@ class ServiceDetailsScreen extends StatelessWidget {
             fontSize: Sizes.fontSize18,
             color: AppColors.black,
             fontWeight: FontWeight.w800,
-          ),
-        ),
-        const SizedBox(height: Sizes.spaceMed),
-        SizedBox(
-          height: 200,
-          child: Container(
-            decoration: BoxDecoration(
-              color: AppColors.lightGrey,
-              borderRadius: BorderRadius.circular(Sizes.borderRadius),
-            ),
-            child: const Icon(Icons.location_on_outlined),
           ),
         ),
         const SizedBox(height: Sizes.spaceMed),
@@ -183,9 +172,8 @@ class ServiceProviderWidget extends ConsumerWidget {
 }
 
 ///Service Description Widget
-class ServiceDescriptionWidget extends StatelessWidget {
-  const ServiceDescriptionWidget({
-    super.key,
+class _DescriptionWidget extends StatelessWidget {
+  const _DescriptionWidget({
     required this.serviceJson,
   });
 
@@ -221,9 +209,8 @@ class ServiceDescriptionWidget extends StatelessWidget {
 }
 
 ///Service Dates Widget
-class ServiceAvailableDatesWidget extends StatelessWidget {
-  const ServiceAvailableDatesWidget({
-    super.key,
+class _AvailableDatesWidget extends StatelessWidget {
+  const _AvailableDatesWidget({
     required this.serviceJson,
   });
 
@@ -250,6 +237,7 @@ class ServiceAvailableDatesWidget extends StatelessWidget {
         ///Dates List
         Wrap(
           spacing: Sizes.space,
+          runSpacing: Sizes.space,
           children: serviceJson.timeSlots!.entries.map(
             (entry) {
               return Card(
@@ -271,9 +259,8 @@ class ServiceAvailableDatesWidget extends StatelessWidget {
 }
 
 ///Service Time Slots Widget
-class ServiceAvailableTimeSlotsWidget extends StatelessWidget {
-  const ServiceAvailableTimeSlotsWidget({
-    super.key,
+class _AvailableTimeSlotsWidget extends StatelessWidget {
+  const _AvailableTimeSlotsWidget({
     required this.serviceJson,
   });
 
@@ -300,6 +287,7 @@ class ServiceAvailableTimeSlotsWidget extends StatelessWidget {
         ///TimeSlots List
         Wrap(
           spacing: Sizes.space,
+          runSpacing: Sizes.space,
           children: serviceJson.timeSlots!.values.first.map(
             (entry) {
               return Card(
@@ -327,6 +315,10 @@ class _BookNowButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    bool disableButton = ref
+        .read(serviceDetailsControllerPr.notifier)
+        .isSameUserService(serviceJson.providerId);
+
     return Card(
       margin: EdgeInsets.zero,
       child: SafeArea(
@@ -366,8 +358,9 @@ class _BookNowButton extends ConsumerWidget {
             Expanded(
               flex: 2,
               child: CommonButton(
-                onPressed: () =>
-                    ref.read(profileControllerPr.notifier).isAuthorized(
+                onPressed: disableButton
+                    ? null
+                    : () => ref.read(profileControllerPr.notifier).isAuthorized(
                           context: context,
                           redirectTo: () => AppRouter.instance.push(
                             context: context,
