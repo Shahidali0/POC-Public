@@ -7,14 +7,10 @@ final homeControllerPr = StateNotifierProvider<_HomeController, bool>(
   ),
 );
 
-final getFeaturedServicesPr =
+final getFeaturedServicesFtPr =
     FutureProvider.autoDispose<AllServicesJson?>((ref) async {
   return ref.read(homeControllerPr.notifier).getFeaturedServices();
 });
-
-// final getUserPr = FutureProvider<AllServicesJson?>((ref) async {
-//   return ref.read(homeControllerPr.notifier).getFeaturedServices();
-// });
 
 class _HomeController extends StateNotifier<bool> {
   final Ref _ref;

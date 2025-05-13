@@ -451,8 +451,8 @@ class PostServiceController extends StateNotifier<_PostServiceStatus> {
         _ref.read(navbarControllerPr.notifier).updateNavbarIndex(index: 3);
 
         ///Refresh the Providers
-        _ref.invalidate(getMyServicesListPr);
-        _ref.invalidate(getFindServciesListPr);
+        _ref.invalidate(getMyServicesListFtPr);
+        _ref.invalidate(getFindServciesListFtPr);
 
         ///Pop the screen
         AppRouter.instance.popUntil(context);

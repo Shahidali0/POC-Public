@@ -2,14 +2,14 @@ import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class MyServicesTabview extends ConsumerWidget {
-  const MyServicesTabview({super.key});
+class MyServicesTabviewPage extends ConsumerWidget {
+  const MyServicesTabviewPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return RefreshIndicator(
-      onRefresh: () async => ref.refresh(getMyServicesListPr.future),
-      child: ref.watch(getMyServicesListPr).when(
+      onRefresh: () async => ref.refresh(getMyServicesListFtPr.future),
+      child: ref.watch(getMyServicesListFtPr).when(
             data: (data) {
               ///For Empty Services List
               if (data == null || (data.services?.isEmpty ?? false)) {
@@ -38,7 +38,7 @@ class MyServicesTabview extends ConsumerWidget {
               return ErrorText(
                 title: error.title,
                 error: error.message,
-                onRefresh: () async => ref.invalidate(getMyServicesListPr),
+                onRefresh: () async => ref.invalidate(getMyServicesListFtPr),
               );
             },
             loading: () => const ShowDataLoader(),

@@ -7,3 +7,4 @@ export 'custom_scaffold.dart';
 export 'error.dart';
 export 'authorize.dart';
 export 'service_card.dart';
+export 'notification_icon.dart';

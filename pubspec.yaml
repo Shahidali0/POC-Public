@@ -77,6 +77,9 @@ dependencies:
   #LazyLoading Bottomnavbar
   lazy_load_indexed_stack: ^1.2.1
 
+  # Badges on Icons
+  badges: ^3.1.2
+
   # # For Location access
   # geocoding: ^3.0.0
   # geolocator: ^13.0.3

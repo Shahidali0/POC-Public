@@ -37,8 +37,6 @@ class SportzHubRepository {
       }
 
       return getMyServices;
-    } on SocketException catch (_) {
-      throw AppExceptions.instance.handleSocketException();
     } on MyHttpClientException catch (error) {
       throw AppExceptions.instance.handleMyHTTPClientException(error);
     } catch (e) {
@@ -92,8 +90,6 @@ class SportzHubRepository {
       }
 
       return myServicesBookings;
-    } on SocketException catch (_) {
-      throw AppExceptions.instance.handleSocketException();
     } on MyHttpClientException catch (error) {
       throw AppExceptions.instance.handleMyHTTPClientException(error);
     } catch (e) {
@@ -127,8 +123,6 @@ class SportzHubRepository {
       }
 
       return right(message);
-    } on SocketException catch (_) {
-      return left(AppExceptions.instance.handleSocketException());
     } on MyHttpClientException catch (error) {
       return left(AppExceptions.instance.handleMyHTTPClientException(error));
     } catch (e) {
@@ -159,8 +153,6 @@ class SportzHubRepository {
       }
 
       return right(message);
-    } on SocketException catch (_) {
-      return left(AppExceptions.instance.handleSocketException());
     } on MyHttpClientException catch (error) {
       return left(AppExceptions.instance.handleMyHTTPClientException(error));
     } catch (e) {

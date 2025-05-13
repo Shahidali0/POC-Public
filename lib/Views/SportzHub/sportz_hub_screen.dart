@@ -43,8 +43,8 @@ class SportzHubScreen extends StatelessWidget {
           },
           body: const TabBarView(
             children: [
-              MyServicesTabview(),
-              MyBookingsTabview(),
+              MyServicesTabviewPage(),
+              MyBookingsTabviewPage(),
             ],
           ),
         ),

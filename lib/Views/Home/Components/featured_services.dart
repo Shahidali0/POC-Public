@@ -6,7 +6,7 @@ class FeaturedServicesList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(getFeaturedServicesPr).when(
+    return ref.watch(getFeaturedServicesFtPr).when(
           skipLoadingOnRefresh: false,
           data: (data) {
             if (data == null || data.services!.isEmpty) {
@@ -23,7 +23,7 @@ class FeaturedServicesList extends ConsumerWidget {
             return ErrorText(
               title: error.title,
               error: error.message,
-              onRefresh: () async => ref.invalidate(getFindServciesListPr),
+              onRefresh: () async => ref.invalidate(getFindServciesListFtPr),
             );
           },
           loading: () => const _ShimmerCard(),

@@ -13,18 +13,11 @@ class _HomeTitleAppBar extends StatelessWidget {
       centerTitle: true,
       // scrolledUnderElevation: 0,
       backgroundColor: AppColors.appTheme,
-      actions: [
+      actions: const [
         FadeAnimations(
           child: Padding(
-            padding: const EdgeInsets.only(right: Sizes.spaceMed),
-            child: CommonIconButton(
-              onPressed: () => AppRouter.instance.push(
-                context: context,
-                page: const NotificationScreen(),
-              ),
-              iconData: CupertinoIcons.bell,
-              iconColor: AppColors.white,
-            ),
+            padding: EdgeInsets.only(right: Sizes.spaceMed),
+            child: NotificationIcon(iconColor: AppColors.white),
           ),
         )
       ],

@@ -33,14 +33,7 @@ class CupertinoAppbar extends StatelessWidget
         mainAxisSize: MainAxisSize.min,
         children: [
           if (trailing != null) trailing!,
-          if (showNotificationIcon)
-            CommonIconButton(
-              onPressed: () => AppRouter.instance.push(
-                context: context,
-                page: const NotificationScreen(),
-              ),
-              iconData: CupertinoIcons.bell,
-            ),
+          if (showNotificationIcon) const NotificationIcon(),
         ],
       ),
       middle: Text(

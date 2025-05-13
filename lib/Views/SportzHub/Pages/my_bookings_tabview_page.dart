@@ -2,14 +2,14 @@ import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class MyBookingsTabview extends ConsumerWidget {
-  const MyBookingsTabview({super.key});
+class MyBookingsTabviewPage extends ConsumerWidget {
+  const MyBookingsTabviewPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return RefreshIndicator(
-      onRefresh: () async => ref.refresh(getMyBookingsPr.future),
-      child: ref.watch(getMyBookingsPr).when(
+      onRefresh: () async => ref.refresh(getMyBookingsFtPr.future),
+      child: ref.watch(getMyBookingsFtPr).when(
             data: (data) {
               ///For Empty Services List
               if (data.isEmpty) {
@@ -30,7 +30,7 @@ class MyBookingsTabview extends ConsumerWidget {
               return ErrorText(
                 title: error.title,
                 error: error.message,
-                onRefresh: () async => ref.invalidate(getMyBookingsPr),
+                onRefresh: () async => ref.invalidate(getMyBookingsFtPr),
               );
             },
             loading: () => const ShowDataLoader(),
@@ -44,6 +44,8 @@ class MyBookingsTabview extends ConsumerWidget {
     required WidgetRef ref,
     required BuildContext context,
   }) {
+    final selectedSegment = ref.watch(myBookingSegemntIndexPr);
+
     ///UpComing Booking
     final upComing = myBookings
         .where(
@@ -79,30 +81,25 @@ class MyBookingsTabview extends ConsumerWidget {
 
           ///List of Bookings
           Expanded(
-            child: Consumer(
-              builder: (context, WidgetRef ref, __) {
-                final selectedSegment = ref.watch(myBookingSegemntIndexPr);
+            child: AnimatedCrossFade(
+              duration: Sizes.duration,
 
-                return AnimatedSwitcher(
-                  duration: Sizes.duration,
-                  child: selectedSegment == MyBookingType.upcoming
+              ///UpComing Bookings List
+              firstChild: _BookingListView(
+                sendReminder: true,
+                emptyBookingText: Constants.emmptyUpcomingBookings,
+                bookings: upComing,
+              ),
 
-                      ///UpComing Bookings List
-                      ? _BookingListView(
-                          sendReminder: true,
-                          emptyBookingText: Constants.emmptyUpcomingBookings,
-                          bookings: upComing,
-                        )
-                      :
-
-                      ///Past Bookings List
-                      _BookingListView(
-                          sendReminder: false,
-                          emptyBookingText: Constants.emmptyPastBookings,
-                          bookings: past,
-                        ),
-                );
-              },
+              ///Past Bookings List
+              secondChild: _BookingListView(
+                sendReminder: false,
+                emptyBookingText: Constants.emmptyPastBookings,
+                bookings: past,
+              ),
+              crossFadeState: selectedSegment == MyBookingType.upcoming
+                  ? CrossFadeState.showFirst
+                  : CrossFadeState.showSecond,
             ),
           ),
         ],

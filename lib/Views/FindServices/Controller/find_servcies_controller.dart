@@ -9,7 +9,7 @@ final findServicesControllerPr =
 
 final findServicesTabBarIndexPr = StateProvider<int>((ref) => 0);
 
-final getFindServciesListPr = FutureProvider<AllServicesJson?>(
+final getFindServciesListFtPr = FutureProvider<AllServicesJson?>(
   (ref) async {
     final updateFilter = ref.read(filtersControllerPr).updateFilters;
 

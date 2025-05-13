@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cricket_poc/lib_exports.dart';
 
 final homeServicesPr = Provider<HomeServices>(
@@ -7,6 +9,10 @@ final homeServicesPr = Provider<HomeServices>(
 );
 
 sealed class HomeServices {
+  Future<String?> getAllNotifications({
+    required String userId,
+  });
+
   Future<String?> getAllServices({
     required String sport,
     required String category,
@@ -34,6 +40,14 @@ sealed class HomeServices {
   Future<String?> updateMyServiceBookingStatus({
     required BookingStatusDto bookingStatusDto,
   });
+
+  Future<String?> getUserNotificationCount({
+    required String userId,
+  });
+  Future<String?> updateUserNotificationStatus({
+    required String userId,
+    required List<String> bookingIds,
+  });
 }
 
 class _HomeServicesImpl implements HomeServices {
@@ -41,6 +55,23 @@ class _HomeServicesImpl implements HomeServices {
 
   _HomeServicesImpl({required ApiHeaders apiHeaders})
       : _apiHeaders = apiHeaders;
+
+  //* Get All Notifications List
+  @override
+  Future<String?> getAllNotifications({
+    required String userId,
+  }) async {
+    String url = "notification?userId=$userId";
+
+    final headers = await _apiHeaders.getHeadersWithToken();
+
+    final response = await BaseHttpClient.getService(
+      urlEndPoint: url,
+      headers: headers,
+    );
+
+    return response;
+  }
 
   //* Get All Services List
   @override
@@ -206,6 +237,47 @@ class _HomeServicesImpl implements HomeServices {
     const url = "booking";
 
     final body = bookingStatusDto.toJson();
+
+    final headers = await _apiHeaders.getHeadersWithToken();
+
+    final response = await BaseHttpClient.patchService(
+      urlEndPoint: url,
+      body: body,
+      headers: headers,
+    );
+
+    return response;
+  }
+
+  //* Get User Notification Count
+  @override
+  Future<String?> getUserNotificationCount({
+    required String userId,
+  }) async {
+    String url = "notification/count?userId=$userId";
+
+    final headers = await _apiHeaders.getHeadersWithToken();
+
+    final response = await BaseHttpClient.getService(
+      urlEndPoint: url,
+      headers: headers,
+    );
+
+    return response;
+  }
+
+  //* Update User Notification to Read Status
+  @override
+  Future<String?> updateUserNotificationStatus({
+    required String userId,
+    required List<String> bookingIds,
+  }) async {
+    String url = "notification";
+
+    final body = json.encode({
+      "userId": userId,
+      "bookingIds": bookingIds,
+    });
 
     final headers = await _apiHeaders.getHeadersWithToken();
 

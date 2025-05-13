@@ -61,7 +61,7 @@ class _FiltersController extends StateNotifier<FiltersControllerState> {
     /// If filters are already applied and the user chooses to clear them,
     /// refresh the FindServices page to reset the view and show all results.
     if (state.updateFilters) {
-      _ref.invalidate(getFindServciesListPr);
+      _ref.invalidate(getFindServciesListFtPr);
     }
 
     state = state.copyWith(
@@ -81,7 +81,7 @@ class _FiltersController extends StateNotifier<FiltersControllerState> {
     state = state.copyWith(updateFilters: true);
 
     ///Now Refresh the Find Services List
-    _ref.invalidate(getFindServciesListPr);
+    _ref.invalidate(getFindServciesListFtPr);
 
     if (shouldPop) {
       return AppRouter.instance.pop(context);

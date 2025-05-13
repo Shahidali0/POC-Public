@@ -49,8 +49,8 @@ export 'FindServices/Controller/find_servcies_controller.dart';
 //* SportZHub
 
 export 'SportzHub/sportz_hub_screen.dart';
-export 'SportzHub/my_bookings_tabview.dart';
-export 'SportzHub/my_services_tabview.dart';
+export 'SportzHub/Pages/my_bookings_tabview_page.dart';
+export 'SportzHub/Pages/my_services_tabview_page.dart';
 
 export 'SportzHub/Components/my_service_details.dart';
 
@@ -87,6 +87,10 @@ export 'Profile/Repository/profile_repository.dart';
 export 'Profile/Controller/profile_controller.dart';
 
 //* Notifications
+
+export 'Notifications/Controller/notification_controller.dart';
+
+export 'Notifications/Repository/notification_repository.dart';
 
 export 'Notifications/notification_screen.dart';
 

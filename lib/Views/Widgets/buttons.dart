@@ -241,13 +241,13 @@ class CommonIconButton extends _PlatformWidget {
     super.key,
     required this.onPressed,
     required this.iconData,
-    this.iconColor = AppColors.appTheme,
+    this.iconColor,
     this.iconSize = 26,
   });
 
   final void Function()? onPressed;
   final IconData iconData;
-  final Color iconColor;
+  final Color? iconColor;
   final double iconSize;
 
   @override
@@ -258,7 +258,7 @@ class CommonIconButton extends _PlatformWidget {
       child: Icon(
         iconData,
         size: iconSize,
-        color: iconColor,
+        color: iconColor ?? AppColors.appTheme,
       ),
     );
   }
@@ -268,7 +268,7 @@ class CommonIconButton extends _PlatformWidget {
     return IconButton(
       padding: EdgeInsets.zero,
       onPressed: onPressed,
-      color: iconColor,
+      color: iconColor ?? AppColors.appTheme,
       iconSize: iconSize,
       icon: Icon(iconData),
     );

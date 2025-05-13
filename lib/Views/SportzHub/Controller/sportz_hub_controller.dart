@@ -13,15 +13,15 @@ final myBookingSegemntIndexPr = StateProvider<MyBookingType>(
   (ref) => MyBookingType.upcoming,
 );
 
-final getMyServicesListPr = FutureProvider<AllServicesJson?>((ref) async {
+final getMyServicesListFtPr = FutureProvider<AllServicesJson?>((ref) async {
   return ref.read(sportzHubControllerPr.notifier).getMyServicesList();
 });
 
-final getMyBookingsPr = FutureProvider<List<BookingsJson>>((ref) async {
+final getMyBookingsFtPr = FutureProvider<List<BookingsJson>>((ref) async {
   return ref.read(sportzHubControllerPr.notifier).getMyBookingsList();
 });
 
-final getMyServicesBookingsPr = FutureProvider.family
+final getMyServicesBookingsFtPr = FutureProvider.family
     .autoDispose<List<BookingsJson>, String>((ref, String serviceId) async {
   return ref
       .read(sportzHubControllerPr.notifier)
@@ -79,7 +79,7 @@ class SportzHubController extends StateNotifier<String?> {
       ),
       (success) {
         ///Refresh My Services Bookings
-        _ref.invalidate(getMyServicesBookingsPr);
+        _ref.invalidate(getMyServicesBookingsFtPr);
 
         showSuccessSnackBar(
           context: context,
@@ -114,7 +114,7 @@ class SportzHubController extends StateNotifier<String?> {
       ),
       (success) {
         ///Refresh My Bookings
-        _ref.invalidate(getMyBookingsPr);
+        _ref.invalidate(getMyBookingsFtPr);
 
         showSuccessSnackBar(
           context: context,

@@ -84,60 +84,61 @@ class MyServiceDetailsPage extends ConsumerWidget {
     required ServiceJson serviceJson,
   }) =>
       RefreshIndicator(
-        onRefresh: () async =>
-            ref.refresh(getMyServicesBookingsPr(serviceJson.serviceId!).future),
-        child: ref.watch(getMyServicesBookingsPr(serviceJson.serviceId!)).when(
-              data: (services) {
-                ///For Empty Services List
-                if (services.isEmpty) {
-                  return const EmptyDataWidget(
-                    subTitle: Constants.emmptyMyServicesBookings,
-                  );
-                }
+        onRefresh: () async => ref
+            .refresh(getMyServicesBookingsFtPr(serviceJson.serviceId!).future),
+        child:
+            ref.watch(getMyServicesBookingsFtPr(serviceJson.serviceId!)).when(
+                  data: (services) {
+                    ///For Empty Services List
+                    if (services.isEmpty) {
+                      return const EmptyDataWidget(
+                        subTitle: Constants.emmptyMyServicesBookings,
+                      );
+                    }
 
-                ///Data not empty
-                return TabBarView(
-                  children: [
-                    //* My Requests
-                    _MyServiceBookingsList(
-                      bookingsJson: services
-                          .where((service) => service.status!
-                              .toLowerCase()
-                              .contains(BookingStatus.pending.name))
-                          .toList(),
-                      showButtons: true,
-                    ),
+                    ///Data not empty
+                    return TabBarView(
+                      children: [
+                        //* My Requests
+                        _MyServiceBookingsList(
+                          bookingsJson: services
+                              .where((service) => service.status!
+                                  .toLowerCase()
+                                  .contains(BookingStatus.pending.name))
+                              .toList(),
+                          showButtons: true,
+                        ),
 
-                    //* Approved
-                    _MyServiceBookingsList(
-                      bookingsJson: services
-                          .where((service) => service.status!
-                              .toLowerCase()
-                              .contains(BookingStatus.confirmed.name))
-                          .toList(),
-                    ),
+                        //* Approved
+                        _MyServiceBookingsList(
+                          bookingsJson: services
+                              .where((service) => service.status!
+                                  .toLowerCase()
+                                  .contains(BookingStatus.confirmed.name))
+                              .toList(),
+                        ),
 
-                    //* Canceled
-                    _MyServiceBookingsList(
-                      bookingsJson: services
-                          .where((service) => service.status!
-                              .toLowerCase()
-                              .contains(BookingStatus.cancel.name))
-                          .toList(),
-                    ),
-                  ],
-                );
-              },
-              error: (e, st) {
-                final error = e as Failure;
-                return ErrorText(
-                  title: error.title,
-                  error: error.message,
-                  onRefresh: () async => ref.invalidate(getMyBookingsPr),
-                );
-              },
-              loading: () => const ShowDataLoader(),
-            ),
+                        //* Canceled
+                        _MyServiceBookingsList(
+                          bookingsJson: services
+                              .where((service) => service.status!
+                                  .toLowerCase()
+                                  .contains(BookingStatus.cancel.name))
+                              .toList(),
+                        ),
+                      ],
+                    );
+                  },
+                  error: (e, st) {
+                    final error = e as Failure;
+                    return ErrorText(
+                      title: error.title,
+                      error: error.message,
+                      onRefresh: () async => ref.invalidate(getMyBookingsFtPr),
+                    );
+                  },
+                  loading: () => const ShowDataLoader(),
+                ),
       );
 }
 

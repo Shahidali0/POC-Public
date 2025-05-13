@@ -44,6 +44,8 @@ class NavbarController extends StateNotifier<bool> {
     required BuildContext context,
     required int index,
   }) {
+    _ref.invalidate(getNotificationCountFtPr);
+
     ///This is for Post Service Buttton
     if (index == 2) {
       ///Check If User Authorized or not
