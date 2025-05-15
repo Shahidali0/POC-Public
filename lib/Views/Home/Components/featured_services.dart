@@ -7,7 +7,6 @@ class FeaturedServicesList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(getFeaturedServicesFtPr).when(
-          skipLoadingOnRefresh: false,
           data: (data) {
             if (data == null || data.services!.isEmpty) {
               return const SizedBox.shrink();
@@ -20,11 +19,8 @@ class FeaturedServicesList extends ConsumerWidget {
           },
           error: (e, st) {
             final error = e as Failure;
-            return ErrorText(
-              title: error.title,
-              error: error.message,
-              onRefresh: () async => ref.invalidate(getFindServciesListFtPr),
-            );
+            debugPrint("ERROR:${error.message.toString()}");
+            return const SizedBox.shrink();
           },
           loading: () => const _ShimmerCard(),
         );

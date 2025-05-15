@@ -50,7 +50,7 @@ class MyBookingsTabviewPage extends ConsumerWidget {
     final upComing = myBookings
         .where(
           (item) =>
-              item.status!.toLowerCase().contains(BookingStatus.pending.name) &&
+              item.status!.toLowerCase().contains(BookingStatus.pending.name) ||
               item.status!.toLowerCase().contains(BookingStatus.confirmed.name),
         )
         .toList();
@@ -81,25 +81,24 @@ class MyBookingsTabviewPage extends ConsumerWidget {
 
           ///List of Bookings
           Expanded(
-            child: AnimatedCrossFade(
+            child: AnimatedSwitcher(
               duration: Sizes.duration,
+              child: selectedSegment == MyBookingType.upcoming
 
-              ///UpComing Bookings List
-              firstChild: _BookingListView(
-                sendReminder: true,
-                emptyBookingText: Constants.emmptyUpcomingBookings,
-                bookings: upComing,
-              ),
+                  ///UpComing Bookings List
+                  ? _BookingListView(
+                      sendReminder: true,
+                      emptyBookingText: Constants.emmptyUpcomingBookings,
+                      bookings: upComing,
+                    )
+                  :
 
-              ///Past Bookings List
-              secondChild: _BookingListView(
-                sendReminder: false,
-                emptyBookingText: Constants.emmptyPastBookings,
-                bookings: past,
-              ),
-              crossFadeState: selectedSegment == MyBookingType.upcoming
-                  ? CrossFadeState.showFirst
-                  : CrossFadeState.showSecond,
+                  ///Past Bookings List
+                  _BookingListView(
+                      sendReminder: false,
+                      emptyBookingText: Constants.emmptyPastBookings,
+                      bookings: past,
+                    ),
             ),
           ),
         ],
@@ -247,7 +246,8 @@ class _BookingCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.read(sportzHubControllerPr.notifier);
-    final loading = ref.watch(sportzHubControllerPr) == booking.bookingId!;
+    final loading =
+        ref.watch(sportzHubControllerPr).loadingId == booking.bookingId!;
 
     return Card(
       margin: EdgeInsets.zero,

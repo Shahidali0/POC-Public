@@ -1,13 +1,18 @@
-import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter/material.dart';
 
-final sportzHubControllerPr =
-    StateNotifierProvider<SportzHubController, String?>(
+import 'package:cricket_poc/lib_exports.dart';
+
+final sportzHubControllerPr = StateNotifierProvider.autoDispose<
+    SportzHubController, _SportzHubControllerStatus>(
   (ref) => SportzHubController(
     ref: ref,
     sportzHubRepo: ref.read(sportzHubRepositoryPr),
   ),
 );
+
+final sportzHubTabIndexPr = StateProvider<int>((ref) {
+  return 0;
+});
 
 final myBookingSegemntIndexPr = StateProvider<MyBookingType>(
   (ref) => MyBookingType.upcoming,
@@ -28,7 +33,7 @@ final getMyServicesBookingsFtPr = FutureProvider.family
       .getMyServicesBookingList(serviceId: serviceId);
 });
 
-class SportzHubController extends StateNotifier<String?> {
+class SportzHubController extends StateNotifier<_SportzHubControllerStatus> {
   final SportzHubRepository _repository;
   final Ref _ref;
 
@@ -37,7 +42,9 @@ class SportzHubController extends StateNotifier<String?> {
     required Ref ref,
   })  : _repository = sportzHubRepo,
         _ref = ref,
-        super(null);
+        super(
+          _SportzHubControllerStatus(loadingId: ""),
+        );
 
   //* Get My Services
   Future<AllServicesJson?> getMyServicesList() =>
@@ -61,7 +68,7 @@ class SportzHubController extends StateNotifier<String?> {
   }) async {
     ///Assign booking Id to state so that the particular item
     ///Should show loading indicator
-    state = bookingId;
+    state = state.copyWith(loadingId: bookingId);
 
     final response = await _repository.updateMyServiceBookingStatus(
       providerId: providerId,
@@ -69,7 +76,7 @@ class SportzHubController extends StateNotifier<String?> {
       status: status,
     );
 
-    state = null;
+    state = state.copyWith(loadingId: "");
 
     response.fold(
       (failure) => showErrorSnackBar(
@@ -97,14 +104,14 @@ class SportzHubController extends StateNotifier<String?> {
   }) async {
     ///Assign booking Id to state so that the particular item
     ///Should show loading indicator
-    state = bookingId;
+    state = state.copyWith(loadingId: bookingId);
 
     final response = await _repository.deleteBooking(
       userId: userId,
       bookingId: bookingId,
     );
 
-    state = null;
+    state = state.copyWith(loadingId: "");
 
     response.fold(
       (failure) => showErrorSnackBar(
@@ -121,6 +128,21 @@ class SportzHubController extends StateNotifier<String?> {
           content: success,
         );
       },
+    );
+  }
+}
+
+///Status
+class _SportzHubControllerStatus {
+  final String loadingId;
+
+  _SportzHubControllerStatus({required this.loadingId});
+
+  _SportzHubControllerStatus copyWith({
+    String? loadingId,
+  }) {
+    return _SportzHubControllerStatus(
+      loadingId: loadingId ?? this.loadingId,
     );
   }
 }

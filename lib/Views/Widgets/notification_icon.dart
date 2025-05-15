@@ -26,23 +26,36 @@ class NotificationIcon extends ConsumerWidget {
                 "$count",
                 style: Theme.of(context).textTheme.labelLarge,
               ),
-              child: _buildIcon(context),
+              child: _buildIcon(
+                context: context,
+                ref: ref,
+              ),
             );
           },
           error: (error, st) {
             debugPrint("NotificationError:$error");
-            return _buildIcon(context);
+            return _buildIcon(
+              context: context,
+              ref: ref,
+            );
           },
           loading: () => const ShowPlatformLoader(),
         );
   }
 
   ///Notification Icon Buttton
-  Widget _buildIcon(BuildContext context) => CommonIconButton(
-        onPressed: () => AppRouter.instance.push(
-          context: context,
-          page: const NotificationScreen(),
-        ),
+  Widget _buildIcon({
+    required BuildContext context,
+    required WidgetRef ref,
+  }) =>
+      CommonIconButton(
+        onPressed: () => ref.read(profileControllerPr.notifier).isAuthorized(
+              context: context,
+              redirectTo: () async => AppRouter.instance.push(
+                context: context,
+                page: const NotificationScreen(),
+              ),
+            ),
         iconData: CupertinoIcons.bell,
         iconColor: iconColor,
       );

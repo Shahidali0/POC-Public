@@ -69,7 +69,7 @@ dependencies:
   shimmer: ^3.0.0
 
   # Stripe Payment Gateway 
-  flutter_stripe: ^9.4.1
+  flutter_stripe: ^10.1.1
 
   # For accessing version of the app
   package_info_plus: ^8.3.0

@@ -21,6 +21,10 @@ sealed class StripePaymentServices {
     required String clientSecretKey,
     required String merchantName,
   });
+
+  Future<String?> updatePaymentStatus({
+    required PaymentStatusDto paymentStatusDto,
+  });
 }
 
 class _StripePaymentServicesImpl implements StripePaymentServices {
@@ -103,6 +107,27 @@ class _StripePaymentServicesImpl implements StripePaymentServices {
           ),
         ),
       );
+
+  //* Create Payment Intent -- To get ClientSecret Key
+  @override
+  Future<String?> updatePaymentStatus({
+    required PaymentStatusDto paymentStatusDto,
+  }) async {
+    const url = "payment/status";
+
+    ///Request body
+    final body = paymentStatusDto.toRawJson();
+
+    final headers = await _apiHeaders.getHeadersWithToken();
+
+    final response = await BaseHttpClient.postService(
+      urlEndPoint: url,
+      headers: headers,
+      body: body,
+    );
+
+    return response;
+  }
 }
 
 /// Calculate Amount

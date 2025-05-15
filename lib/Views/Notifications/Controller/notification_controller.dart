@@ -2,7 +2,7 @@ import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter/material.dart';
 
 final notificationControllerPr =
-    StateNotifierProvider<NotificationController, bool>(
+    StateNotifierProvider<NotificationController, String?>(
   (ref) => NotificationController(
     notificationRepository: ref.read(notificationRepositoryPr),
   ),
@@ -16,13 +16,13 @@ final getNotificationCountFtPr = FutureProvider<int>(
   },
 );
 
-class NotificationController extends StateNotifier<bool> {
+class NotificationController extends StateNotifier<String?> {
   final NotificationRepository _notificationRepository;
 
   NotificationController({
     required NotificationRepository notificationRepository,
   })  : _notificationRepository = notificationRepository,
-        super(false);
+        super(null);
 
   //* Get All Notifications
   Future<List<NotificationJson>> getAllNotificationsList() =>
@@ -37,13 +37,13 @@ class NotificationController extends StateNotifier<bool> {
     required BuildContext context,
     required String bookingId,
   }) async {
-    state = true;
+    state = bookingId;
 
     final response = await _notificationRepository.updateUserNotificationStatus(
       bookingId: bookingId,
     );
 
-    state = false;
+    state = null;
 
     return response.fold(
       (failure) {

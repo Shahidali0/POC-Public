@@ -1,19 +1,29 @@
 import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter/material.dart';
 
-final introControllerPr = StateNotifierProvider<IntroController, bool>(
+part 'intro_state.dart';
+
+final introControllerPr = StateNotifierProvider<IntroController, _IntroState>(
   (ref) => IntroController(
     localStorage: LocalStorage(),
   ),
 );
 
-final introIndexPr = StateProvider<int>((ref) => 0);
+// final _introIndexPr = StateProvider<int>((ref) => 0);
 
-class IntroController extends StateNotifier<bool> {
+class IntroController extends StateNotifier<_IntroState> {
   final LocalStorage _localStorage;
   IntroController({required LocalStorage localStorage})
       : _localStorage = localStorage,
-        super(false);
+        super(
+          _IntroState(
+            index: 0,
+            isLoading: false,
+          ),
+        );
+
+  ///Update Index
+  void updateIndex(int index) => state = state.copyWith(index: index);
 
   ///Show Dailog for ReadyToGetStarted
   FutureVoid _showDialogBoxForMarkReady(BuildContext context) {

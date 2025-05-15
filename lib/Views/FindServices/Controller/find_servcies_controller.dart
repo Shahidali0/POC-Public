@@ -7,8 +7,6 @@ final findServicesControllerPr =
   ),
 );
 
-final findServicesTabBarIndexPr = StateProvider<int>((ref) => 0);
-
 final getFindServciesListFtPr = FutureProvider<AllServicesJson?>(
   (ref) async {
     final updateFilter = ref.read(filtersControllerPr).updateFilters;
@@ -30,6 +28,8 @@ class FindServciesController extends StateNotifier<bool> {
     required FindServicesRepository findServiceRepo,
   })  : _repository = findServiceRepo,
         super(false);
+
+  //! Dispose Provider
 
   //* First character of the first and last word in a sentence
   String getInitials(String? sentence) {

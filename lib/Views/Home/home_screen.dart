@@ -14,30 +14,34 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      body: NestedScrollView(
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return [
-            const _HomeTitleAppBar(),
-            const _HomeSearchbarWithCategories(),
-          ];
-        },
-        body: ListView(
-          shrinkWrap: true,
-          primary: false,
-          physics: const NeverScrollableScrollPhysics(),
-          padding: Sizes.globalMargin,
-          children: [
-            const FeaturedServicesList(),
+      body: RefreshIndicator(
+        displacement: 120,
+        onRefresh: () => ref.refresh(getFeaturedServicesFtPr.future),
+        child: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return [
+              const _HomeTitleAppBar(),
+              const _HomeSearchbarWithCategories(),
+            ];
+          },
+          body: ListView(
+            shrinkWrap: true,
+            primary: false,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: Sizes.globalMargin,
+            children: [
+              const FeaturedServicesList(),
 
-            ///How it Works
-            ..._howItWorks(context),
+              ///How it Works
+              ..._howItWorks(context),
 
-            ///About Us
-            //  _AboutUs(),
+              ///About Us
+              //  _AboutUs(),
 
-            ///CopyRights
-            ..._copyRights(context),
-          ],
+              ///CopyRights
+              ..._copyRights(context),
+            ],
+          ),
         ),
       ),
     );

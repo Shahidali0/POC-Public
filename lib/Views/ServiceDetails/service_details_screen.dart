@@ -2,7 +2,9 @@ import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ServiceDetailsScreen extends StatelessWidget {
+part 'Components/service_components.dart';
+
+class ServiceDetailsScreen extends ConsumerWidget {
   const ServiceDetailsScreen({
     super.key,
     required this.serviceJson,
@@ -11,36 +13,73 @@ class ServiceDetailsScreen extends StatelessWidget {
   final ServiceJson serviceJson;
 
   @override
-  Widget build(BuildContext context) {
-    return MyCupertinoSliverScaffold(
-      previousPageTitle: "Home",
-      title: "Service Details",
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isLoading = ref.watch(serviceDetailsControllerPr).loading;
 
-      ///Bottom Navbar
-      bottomNavBar: _BookNowButton(serviceJson: serviceJson),
+    bool disableButton = ref
+        .read(serviceDetailsControllerPr.notifier)
+        .isSameUserService(serviceJson.providerId);
 
-      ///Body
-      body: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          ///About the Provider
-          ServiceProviderWidget(serviceJson: serviceJson),
+    return LoadingOverlay(
+      isLoading: isLoading,
+      child: MyCupertinoSliverScaffold(
+        previousPageTitle: "Home",
+        title: "Service Details",
 
-          const Divider(),
+        ///Bottom Navbar
+        bottomNavBar: _BookNowButton(
+          serviceJson: serviceJson,
+          ref: ref,
+          disableButton: disableButton,
+        ),
 
-          ///Description
-          _DescriptionWidget(serviceJson: serviceJson),
+        ///Body
+        body: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            ///About the Provider
+            ServiceProviderWidget(serviceJson: serviceJson),
 
-          ///Available Session Dates
-          _AvailableDatesWidget(serviceJson: serviceJson),
+            const Divider(),
 
-          ///Available Session TimeSlots
-          _AvailableTimeSlotsWidget(serviceJson: serviceJson),
+            ///Description
+            _DescriptionWidget(serviceJson: serviceJson),
 
-          ///Location Details
-          ..._locationDetails(),
-          const SizedBox(height: Sizes.spaceHeight),
-        ],
+            // ///Available Session Dates
+            // _AvailableDatesWidget(serviceJson: serviceJson),
+
+            // ///Available Session TimeSlots
+            // _AvailableTimeSlotsWidget(serviceJson: serviceJson),
+
+            ///Location Details
+            ..._locationDetails(),
+            // const SizedBox(height: Sizes.spaceHeight),
+
+            ///Dates
+            AbsorbPointer(
+              absorbing: disableButton,
+              child: _DatePickerField(
+                dates: serviceJson.timeSlots!.keys.toList(),
+              ),
+            ),
+
+            ///Time Slots
+            AbsorbPointer(
+              absorbing: disableButton,
+              child: _TimeSlotsField(
+                timeSlotsData: serviceJson.timeSlots!.values.first,
+              ),
+            ),
+
+            ///Duration
+            AbsorbPointer(
+              absorbing: disableButton,
+              child: _DurationField(
+                sessionDurations: serviceJson.duration!,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -202,122 +241,125 @@ class _DescriptionWidget extends StatelessWidget {
             fontSize: Sizes.fontSize16,
           ),
         ),
-        const SizedBox(height: Sizes.spaceMed),
       ],
     );
   }
 }
 
-///Service Dates Widget
-class _AvailableDatesWidget extends StatelessWidget {
-  const _AvailableDatesWidget({
-    required this.serviceJson,
-  });
+// ///Service Dates Widget
+// class _AvailableDatesWidget extends StatelessWidget {
+//   const _AvailableDatesWidget({
+//     required this.serviceJson,
+//   });
 
-  final ServiceJson serviceJson;
+//   final ServiceJson serviceJson;
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: Sizes.space),
-        const Text(
-          "Available Session Dates:",
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontSize: Sizes.fontSize18,
-            color: AppColors.black,
-            fontWeight: FontWeight.w800,
-          ),
-        ),
-        const SizedBox(height: Sizes.spaceMed),
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       mainAxisSize: MainAxisSize.min,
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         const SizedBox(height: Sizes.space),
+//         const Text(
+//           "Available Session Dates:",
+//           overflow: TextOverflow.ellipsis,
+//           style: TextStyle(
+//             fontSize: Sizes.fontSize18,
+//             color: AppColors.black,
+//             fontWeight: FontWeight.w800,
+//           ),
+//         ),
+//         const SizedBox(height: Sizes.spaceMed),
 
-        ///Dates List
-        Wrap(
-          spacing: Sizes.space,
-          runSpacing: Sizes.space,
-          children: serviceJson.timeSlots!.entries.map(
-            (entry) {
-              return Card(
-                elevation: 2,
-                margin: EdgeInsets.zero,
-                child: Padding(
-                  padding: Sizes.cardPadding,
-                  child: Text(entry.key),
-                ),
-              );
-            },
-          ).toList(),
-        ),
+//         ///Dates List
+//         Wrap(
+//           spacing: Sizes.space,
+//           runSpacing: Sizes.space,
+//           children: serviceJson.timeSlots!.entries.map(
+//             (entry) {
+//               return Card(
+//                 elevation: 2,
+//                 margin: EdgeInsets.zero,
+//                 child: Padding(
+//                   padding: Sizes.cardPadding,
+//                   child: Text(entry.key),
+//                 ),
+//               );
+//             },
+//           ).toList(),
+//         ),
 
-        const SizedBox(height: Sizes.spaceMed),
-      ],
-    );
-  }
-}
+//         const SizedBox(height: Sizes.spaceMed),
+//       ],
+//     );
+//   }
+// }
 
-///Service Time Slots Widget
-class _AvailableTimeSlotsWidget extends StatelessWidget {
-  const _AvailableTimeSlotsWidget({
-    required this.serviceJson,
-  });
+// ///Service Time Slots Widget
+// class _AvailableTimeSlotsWidget extends StatelessWidget {
+//   const _AvailableTimeSlotsWidget({
+//     required this.serviceJson,
+//   });
 
-  final ServiceJson serviceJson;
+//   final ServiceJson serviceJson;
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: Sizes.space),
-        const Text(
-          "Available Time Slots:",
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontSize: Sizes.fontSize18,
-            color: AppColors.black,
-            fontWeight: FontWeight.w800,
-          ),
-        ),
-        const SizedBox(height: Sizes.spaceMed),
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       mainAxisSize: MainAxisSize.min,
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         const SizedBox(height: Sizes.space),
+//         const Text(
+//           "Available Time Slots:",
+//           overflow: TextOverflow.ellipsis,
+//           style: TextStyle(
+//             fontSize: Sizes.fontSize18,
+//             color: AppColors.black,
+//             fontWeight: FontWeight.w800,
+//           ),
+//         ),
+//         const SizedBox(height: Sizes.spaceMed),
 
-        ///TimeSlots List
-        Wrap(
-          spacing: Sizes.space,
-          runSpacing: Sizes.space,
-          children: serviceJson.timeSlots!.values.first.map(
-            (entry) {
-              return Card(
-                elevation: 2,
-                margin: EdgeInsets.zero,
-                child: Padding(
-                  padding: Sizes.cardPadding,
-                  child: Text(entry),
-                ),
-              );
-            },
-          ).toList(),
-        ),
-        const SizedBox(height: Sizes.spaceMed),
-      ],
-    );
-  }
-}
+//         ///TimeSlots List
+//         Wrap(
+//           spacing: Sizes.space,
+//           runSpacing: Sizes.space,
+//           children: serviceJson.timeSlots!.values.first.map(
+//             (entry) {
+//               return Card(
+//                 elevation: 2,
+//                 margin: EdgeInsets.zero,
+//                 child: Padding(
+//                   padding: Sizes.cardPadding,
+//                   child: Text(entry),
+//                 ),
+//               );
+//             },
+//           ).toList(),
+//         ),
+//         const SizedBox(height: Sizes.spaceMed),
+//       ],
+//     );
+//   }
+// }
 
 ///Book Now Button Widget
-class _BookNowButton extends ConsumerWidget {
-  const _BookNowButton({required this.serviceJson});
+class _BookNowButton extends StatelessWidget {
+  const _BookNowButton({
+    required this.serviceJson,
+    required this.ref,
+    required this.disableButton,
+  });
 
   final ServiceJson serviceJson;
+  final WidgetRef ref;
+  final bool disableButton;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    bool disableButton = ref
-        .read(serviceDetailsControllerPr.notifier)
-        .isSameUserService(serviceJson.providerId);
+  Widget build(BuildContext context) {
+    final state = ref.watch(serviceDetailsControllerPr);
 
     return Card(
       margin: EdgeInsets.zero,
@@ -354,22 +396,40 @@ class _BookNowButton extends ConsumerWidget {
             ),
             const SizedBox(width: Sizes.spaceHeight),
 
-            ///Button
+            ///Continue Button
             Expanded(
               flex: 2,
               child: CommonButton(
-                onPressed: disableButton
+                onPressed: state.selectedDate.isEmpty ||
+                        state.selectedTimeSlot.isEmpty ||
+                        state.selectedSessionDuration.isEmpty ||
+                        disableButton
                     ? null
-                    : () => ref.read(profileControllerPr.notifier).isAuthorized(
+                    : () => ref
+                        .read(serviceDetailsControllerPr.notifier)
+                        .createBooking(
                           context: context,
-                          redirectTo: () => AppRouter.instance.push(
-                            context: context,
-                            page: BookServiceScreen(serviceJson: serviceJson),
-                          ),
+                          serviceJson: serviceJson,
                         ),
                 text: "Book Now",
               ),
             ),
+
+            // Expanded(
+            //   flex: 2,
+            //   child: CommonButton(
+            //     onPressed: disableButton
+            //         ? null
+            //         : () => ref.read(profileControllerPr.notifier).isAuthorized(
+            //               context: context,
+            //               redirectTo: () => AppRouter.instance.push(
+            //                 context: context,
+            //                 page: BookServiceScreen(serviceJson: serviceJson),
+            //               ),
+            //             ),
+            //     text: "Book Now",
+            //   ),
+            // ),
           ],
         ),
       ),

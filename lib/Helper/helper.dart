@@ -21,3 +21,5 @@ export 'Alerts/snackbars.dart';
 export 'Extensions/string_extensions.dart';
 export 'Extensions/date_time_extensions.dart';
 export 'Extensions/string_list_extensions.dart';
+
+export 'Providers/providers.dart';

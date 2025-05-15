@@ -99,8 +99,6 @@ class AuthController extends StateNotifier<bool> {
         content: failure.message,
       ),
       (success) {
-        // _ref.invalidate(isAuthorizedPr);
-
         return AppRouter.instance.pushOff(
           context: context,
           page: const DashboardScreen(),

@@ -76,7 +76,8 @@ class _CardWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.read(sportzHubControllerPr.notifier);
-    final isLoading = ref.watch(sportzHubControllerPr) == booking.bookingId;
+    final isLoading =
+        ref.watch(sportzHubControllerPr).loadingId == booking.bookingId;
 
     return Card(
       margin: EdgeInsets.zero,

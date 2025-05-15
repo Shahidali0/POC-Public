@@ -25,7 +25,8 @@ class _IntroScreenState extends ConsumerState<IntroScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final currentIndex = ref.watch(introIndexPr);
+    final currentIndex = ref.watch(introControllerPr).index;
+
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -68,6 +69,7 @@ class _IntroScreenState extends ConsumerState<IntroScreen> {
                   ),
               text: currentIndex == 2 ? "Continue" : "Next",
             ),
+            const SizedBox(height: Sizes.space),
           ],
         ),
       ),
@@ -91,7 +93,7 @@ class _IntroPages extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       controller: pageController,
       onPageChanged: (int value) {
-        ref.read(introIndexPr.notifier).state = value;
+        ref.read(introControllerPr.notifier).updateIndex(value);
       },
       children: const [
         ///Intro1

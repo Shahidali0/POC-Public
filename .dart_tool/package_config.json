@@ -177,7 +177,7 @@
     },
     {
       "name": "flutter_stripe",
-      "rootUri": "file:///Users/apple/.pub-cache/hosted/pub.dev/flutter_stripe-9.6.0",
+      "rootUri": "file:///Users/apple/.pub-cache/hosted/pub.dev/flutter_stripe-10.2.0",
       "packageUri": "lib/",
       "languageVersion": "2.17"
     },
@@ -447,19 +447,19 @@
     },
     {
       "name": "stripe_android",
-      "rootUri": "file:///Users/apple/.pub-cache/hosted/pub.dev/stripe_android-9.6.0+2",
+      "rootUri": "file:///Users/apple/.pub-cache/hosted/pub.dev/stripe_android-10.2.1",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "stripe_ios",
-      "rootUri": "file:///Users/apple/.pub-cache/hosted/pub.dev/stripe_ios-9.6.0",
+      "rootUri": "file:///Users/apple/.pub-cache/hosted/pub.dev/stripe_ios-10.2.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "stripe_platform_interface",
-      "rootUri": "file:///Users/apple/.pub-cache/hosted/pub.dev/stripe_platform_interface-9.6.0",
+      "rootUri": "file:///Users/apple/.pub-cache/hosted/pub.dev/stripe_platform_interface-10.2.0",
       "packageUri": "lib/",
       "languageVersion": "2.17"
     },
@@ -542,7 +542,7 @@
       "languageVersion": "3.5"
     }
   ],
-  "generated": "2025-05-13T10:04:19.290392Z",
+  "generated": "2025-05-15T14:15:42.983305Z",
   "generator": "pub",
   "generatorVersion": "3.5.2",
   "flutterRoot": "file:///Users/apple/Developer/flutter",

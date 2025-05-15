@@ -84,8 +84,6 @@ class _UserProfile extends StatelessWidget {
         page: ProfileDetailsPage(userJson: userJson),
       ),
       minLeadingWidth: 0,
-
-      // contentPadding: const EdgeInsets.symmetric(horizontal: Sizes.space),
       leading: CircleAvatar(
         radius: Sizes.space * 2,
         backgroundColor: AppColors.lightBlue,

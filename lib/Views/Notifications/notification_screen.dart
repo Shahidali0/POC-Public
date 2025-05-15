@@ -101,6 +101,12 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> {
   Widget _bodyView({
     required List<NotificationJson> notifications,
   }) {
+    if (notifications.isEmpty) {
+      return const EmptyDataWidget(
+        subTitle: Constants.emptyNotification,
+      );
+    }
+
     return ListView.separated(
       padding: const EdgeInsets.symmetric(vertical: Sizes.spaceMed),
       itemCount: notifications.length,
@@ -121,7 +127,8 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> {
     required NotificationJson notification,
     required BuildContext context,
   }) {
-    bool isLoading = ref.watch(notificationControllerPr);
+    bool isLoading =
+        ref.watch(notificationControllerPr) == notification.bookingId;
     bool isUnread = notification.status!.toLowerCase().contains("unread");
 
     return GestureDetector(

@@ -21,7 +21,7 @@ class ApiHeaders {
 
     return <String, String>{
       HttpHeaders.contentTypeHeader: 'application/json; charset=UTF-8',
-      HttpHeaders.authorizationHeader: 'Bearer $token',
+      HttpHeaders.authorizationHeader: 'Bearer ${token?.trim()}',
     };
   }
 }

@@ -1,5 +1,6 @@
 import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter/material.dart';
+import 'package:fpdart/fpdart.dart';
 
 final serviceDetailsControllerPr = StateNotifierProvider.autoDispose<
     ServiceDetailsController, _ServiceDetailsState>(
@@ -76,44 +77,184 @@ class ServiceDetailsController extends StateNotifier<_ServiceDetailsState> {
   //########################## API CALLS ############################
   //###############################################################
 
-  FutureVoid makePayment({
+  ///Handle left response
+  Failure _handleLeft({
+    required Either<Failure, dynamic> response,
+    required BuildContext context,
+  }) {
+    Option<Failure> left = response.getLeft();
+
+    Failure failure = left.toNullable()!;
+
+    ///Error Snackbar
+    showErrorSnackBar(
+      context: context,
+      title: failure.title,
+      content: failure.message,
+    );
+
+    return failure;
+  }
+
+  ///Create  Booking
+  FutureVoid createBooking({
     required BuildContext context,
     required ServiceJson serviceJson,
   }) async {
-    state = state.copyWith(loading: true);
+    try {
+      ///Go back
+      AppRouter.instance.popUntil(context);
 
+      _ref.read(navbarControllerPr.notifier).updateNavbarIndex(index: 3);
+      _ref.read(sportzHubTabIndexPr.notifier).update((st) => st = 1);
+
+      return;
+
+      state = state.copyWith(loading: true);
+
+      ///STEP 1: Create Payment Intent
+      final paymentIntentResponse =
+          await _repository.createPaymentIntent(amount: serviceJson.price!);
+
+      if (!context.mounted) return;
+
+      if (paymentIntentResponse.isLeft()) {
+        _handleLeft(response: paymentIntentResponse, context: context);
+        return;
+      }
+
+      //Get Client Secret Here
+      final clientSecret = paymentIntentResponse.getRight().toNullable()!;
+
+      ///STEP 2: Make Payment
+      final makePaymentResponse =
+          await _repository.makePayment(clientSecret: clientSecret);
+
+      ///STEP 3: Retrieve Payment Id
+      String paymentId = clientSecret.split('_secret').first;
+
+      if (!context.mounted) return;
+
+      //! Any Exceptions in Make-Payment -- Handle and Update Status
+      if (makePaymentResponse.isLeft()) {
+        final failure =
+            _handleLeft(context: context, response: makePaymentResponse);
+
+        ///Update Payment Status
+        await _updatePaymentStatus(
+          serviceId: serviceJson.serviceId!,
+          paymentId: paymentId,
+          bookingId: "NO_ID",
+          status: "FAILURE - ${failure.message}",
+          context: context,
+        );
+
+        state = state.copyWith(loading: false);
+
+        return;
+      }
+
+      //* No Exceptions
+      await _saveBooking(
+        serviceJson: serviceJson,
+        paymentId: paymentId,
+        context: context,
+      );
+    } finally {
+      state = state.copyWith(loading: false);
+    }
+  }
+
+  //* Update the Payment Status
+  FutureVoid _updatePaymentStatus({
+    required String serviceId,
+    required String paymentId,
+    required String? bookingId,
+    required String status,
+    required BuildContext context,
+  }) async {
+    final updatePaymentResponse = await _repository.updatePaymentStatus(
+      paymentId: paymentId,
+      bookingId: bookingId,
+      serviceId: serviceId,
+      status: status,
+    );
+
+    updatePaymentResponse.fold(
+      (failure) => showErrorSnackBar(
+        context: context,
+        title: failure.title,
+        content: failure.message,
+      ),
+      (success) => null,
+    );
+  }
+
+  //* Save Booking to DB
+  FutureVoid _saveBooking({
+    required ServiceJson serviceJson,
+    required String paymentId,
+    required BuildContext context,
+  }) async {
+    ///Load user
     final user = _ref.read(userJsonPr)?.user;
 
     ///Based on Duration and Selected Time get TimeSlots Range
     final timeSlots = _getActualTimeSlots();
 
-    final response = await _repository.makePayment(
+    //STEP 4: Save Payment Details To DB
+    final createBookingResponse = await _repository.saveBooking(
       serviceJson: serviceJson,
       user: user,
       selectedDate: state.selectedDate,
       selectedTimeSlot: timeSlots,
     );
 
-    state = state.copyWith(loading: false);
+    if (!context.mounted) return;
 
-    response.fold(
-      (failure) => showErrorSnackBar(
+    //! If Any Exceptions
+    if (createBookingResponse.isLeft()) {
+      final failure =
+          _handleLeft(context: context, response: createBookingResponse);
+
+      ///Update Payment Status
+      await _updatePaymentStatus(
+        serviceId: serviceJson.serviceId!,
+        paymentId: paymentId,
+        bookingId: "NO_ID",
+        status: "FAILURE - ${failure.message}",
         context: context,
-        title: failure.title,
-        content: failure.message,
-      ),
-      (success) {
-        ///Go back
-        AppRouter.instance.popUntil(context);
+      );
 
-        ///Now Change BottomNav Index -- To see MyBooking
-        _ref.read(navbarControllerPr.notifier).updateNavbarIndex(index: 3);
+      return;
+    }
 
-        showSuccessSnackBar(
-          context: context,
-          content: success,
-        );
-      },
+    //* Success
+    final successJson = createBookingResponse.getRight().toNullable()!;
+
+    ///Update Payment Status
+    await _updatePaymentStatus(
+      serviceId: serviceJson.serviceId!,
+      paymentId: paymentId,
+      bookingId: successJson.bookingId,
+      status: "SUCCESS",
+      context: context,
+    );
+
+    if (!context.mounted) return;
+
+    ///Go back
+    AppRouter.instance.popUntil(context);
+
+    ///Now Change BottomNav Index -- To see MyBooking
+    _ref.read(navbarControllerPr.notifier).updateNavbarIndex(index: 3);
+
+    ///Refresh Booking
+    _ref.invalidate(getMyBookingsFtPr);
+
+    showSuccessSnackBar(
+      context: context,
+      content: successJson.message,
     );
   }
 }

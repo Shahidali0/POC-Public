@@ -151,6 +151,8 @@ class ProfileRepository {
 
         _ref.invalidate(navbarControllerPr);
         _ref.invalidate(userJsonPr);
+        _ref.invalidate(getMyServicesListFtPr);
+        _ref.invalidate(getMyBookingsFtPr);
 
         if (!context.mounted) return;
 
