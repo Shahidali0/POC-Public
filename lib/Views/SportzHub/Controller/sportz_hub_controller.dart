@@ -10,10 +10,6 @@ final sportzHubControllerPr = StateNotifierProvider.autoDispose<
   ),
 );
 
-final sportzHubTabIndexPr = StateProvider<int>((ref) {
-  return 0;
-});
-
 final myBookingSegemntIndexPr = StateProvider<MyBookingType>(
   (ref) => MyBookingType.upcoming,
 );

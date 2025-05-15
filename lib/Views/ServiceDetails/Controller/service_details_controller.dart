@@ -102,14 +102,6 @@ class ServiceDetailsController extends StateNotifier<_ServiceDetailsState> {
     required ServiceJson serviceJson,
   }) async {
     try {
-      ///Go back
-      AppRouter.instance.popUntil(context);
-
-      _ref.read(navbarControllerPr.notifier).updateNavbarIndex(index: 3);
-      _ref.read(sportzHubTabIndexPr.notifier).update((st) => st = 1);
-
-      return;
-
       state = state.copyWith(loading: true);
 
       ///STEP 1: Create Payment Intent
