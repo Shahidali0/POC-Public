@@ -270,7 +270,7 @@ class PostServiceController extends StateNotifier<_PostServiceStatus> {
     required BuildContext context,
     required int currentStep,
   }) {
-    ///This is fix ScrollIssues
+    ///This is to fix ScrollIssues
     _moveTotop();
 
     ///Handle Validations

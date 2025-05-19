@@ -6,7 +6,6 @@ class _LocationScheduleForm extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.read(postServiceControllerPr.notifier);
-    final locations = ref.watch(postServiceControllerPr).locations;
 
     return GestureDetector(
       onTap: () {
