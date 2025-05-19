@@ -29,7 +29,7 @@ class AppExceptions {
   }
 
   //! Socket Exception
-  Failure handleSocketException() {
+  Failure _handleSocketException() {
     return Failure(
       title: internetTitle,
       message: socketExceptionText,
@@ -65,7 +65,7 @@ class AppExceptions {
   Failure handleException({required String error}) {
     ///Check For Socket Exception
     if (error.toString().contains("Socket")) {
-      return AppExceptions.instance.handleSocketException();
+      return AppExceptions.instance._handleSocketException();
     }
 
     ///Only For Debug

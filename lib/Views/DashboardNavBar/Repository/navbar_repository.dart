@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cricket_poc/lib_exports.dart';
 
 final navbarRepositoryPr = Provider<NavBarRepository>(
@@ -28,8 +26,6 @@ class NavBarRepository {
       }
 
       return getAllCategories;
-    } on SocketException catch (_) {
-      throw AppExceptions.instance.handleSocketException();
     } on MyHttpClientException catch (error) {
       throw AppExceptions.instance.handleMyHTTPClientException(error);
     } catch (e) {

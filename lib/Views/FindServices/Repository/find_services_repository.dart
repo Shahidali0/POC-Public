@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cricket_poc/lib_exports.dart';
 
 final findServicesRepositoryPr = Provider<FindServicesRepository>(
@@ -32,8 +30,6 @@ class FindServicesRepository {
       }
 
       return findAllServices;
-    } on SocketException catch (_) {
-      throw AppExceptions.instance.handleSocketException();
     } on MyHttpClientException catch (error) {
       throw AppExceptions.instance.handleMyHTTPClientException(error);
     } catch (e) {

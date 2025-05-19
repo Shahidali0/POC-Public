@@ -17,3 +17,4 @@ export 'Json/users_json.dart';
 export 'Json/signin_json.dart';
 export 'Json/notifications_json.dart';
 export 'Json/create_booking_json.dart';
+export 'Json/locations_json.dart';

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:cricket_poc/lib_exports.dart';
 import 'package:fpdart/fpdart.dart';
 
@@ -14,6 +13,27 @@ class PostServicesRepository {
 
   PostServicesRepository({required HomeServices homeServices})
       : _homeServices = homeServices;
+
+  ///Get All Locations List
+  FutureEither<List<LocationsJson>> getAllLocations() async {
+    try {
+      List<LocationsJson> locationsJson = [];
+
+      final response = await _homeServices.getAllLocations();
+
+      if (response != null) {
+        final list = LocationsJson.fromRawJson(response);
+        locationsJson = List.from(list);
+      }
+
+      return right(locationsJson);
+    } on MyHttpClientException catch (error) {
+      return left(AppExceptions.instance.handleMyHTTPClientException(error));
+    } catch (error) {
+      return left(
+          AppExceptions.instance.handleException(error: error.toString()));
+    }
+  }
 
   ///Post Service
   FutureEither<String?> postService(
@@ -30,10 +50,7 @@ class PostServicesRepository {
       }
 
       return right(message);
-    } on SocketException {
-      return left(AppExceptions.instance.handleSocketException());
     } on MyHttpClientException catch (error) {
-      ///Here --> error type: Failure
       return left(AppExceptions.instance.handleMyHTTPClientException(error));
     } catch (error) {
       return left(

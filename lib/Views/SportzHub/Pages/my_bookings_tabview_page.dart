@@ -81,24 +81,25 @@ class MyBookingsTabviewPage extends ConsumerWidget {
 
           ///List of Bookings
           Expanded(
-            child: AnimatedSwitcher(
+            child: AnimatedCrossFade(
               duration: Sizes.duration,
-              child: selectedSegment == MyBookingType.upcoming
+              crossFadeState: selectedSegment == MyBookingType.upcoming
+                  ? CrossFadeState.showFirst
+                  : CrossFadeState.showSecond,
 
-                  ///UpComing Bookings List
-                  ? _BookingListView(
-                      sendReminder: true,
-                      emptyBookingText: Constants.emmptyUpcomingBookings,
-                      bookings: upComing,
-                    )
-                  :
+              ///UpComing Bookings List
+              firstChild: _BookingListView(
+                sendReminder: true,
+                emptyBookingText: Constants.emmptyUpcomingBookings,
+                bookings: upComing,
+              ),
 
-                  ///Past Bookings List
-                  _BookingListView(
-                      sendReminder: false,
-                      emptyBookingText: Constants.emmptyPastBookings,
-                      bookings: past,
-                    ),
+              ///Past Bookings List
+              secondChild: _BookingListView(
+                sendReminder: false,
+                emptyBookingText: Constants.emmptyPastBookings,
+                bookings: past,
+              ),
             ),
           ),
         ],

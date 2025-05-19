@@ -6,6 +6,7 @@ class _LocationScheduleForm extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.read(postServiceControllerPr.notifier);
+    final locations = ref.watch(postServiceControllerPr).locations;
 
     return GestureDetector(
       onTap: () {
@@ -30,7 +31,9 @@ class _LocationScheduleForm extends ConsumerWidget {
             const SizedBox(height: Sizes.spaceSmall),
 
             ///Location
-            _LocationField(controller: controller.locationController),
+            _LocationField(
+              controller: controller.locationController,
+            ),
 
             ///Available Dates
             _AvailableDates(ref: ref),
@@ -61,7 +64,7 @@ class _LocationScheduleForm extends ConsumerWidget {
 }
 
 ///Location Field
-class _LocationField extends StatelessWidget {
+class _LocationField extends ConsumerWidget {
   const _LocationField({
     required this.controller,
   });
@@ -69,19 +72,150 @@ class _LocationField extends StatelessWidget {
   final TextEditingController controller;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final locations = ref.watch(postServiceControllerPr).locations;
+
     return FormFiledWidget(
       title: "Location",
       isRequired: true,
-      child: TextFormField(
-        controller: controller,
-        keyboardType: TextInputType.name,
-        validator: FieldValidators.instance.commonValidator,
-        textCapitalization: TextCapitalization.words,
-        decoration: const InputDecoration(
-          hintText: "e.g., Melbourne Cricket Ground",
-        ),
+      child: StatefulBuilder(
+        builder: (context, setState) {
+          return TypeAheadField<LocationsJson>(
+            controller: controller,
+            onSelected: (LocationsJson value) {
+              controller.text = value.location!;
+
+              setState(() {});
+            },
+
+            ///Show items
+            itemBuilder: (BuildContext context, LocationsJson locationJson) {
+              return ListTile(
+                title: Text(locationJson.location!),
+                subtitle: Text(locationJson.postcode!),
+              );
+            },
+
+            ///TextField Decoration
+            builder: (context, editingController, focusNode) {
+              return TextFormField(
+                controller: controller,
+                focusNode: focusNode,
+                keyboardType: TextInputType.name,
+                validator: FieldValidators.instance.commonValidator,
+                textCapitalization: TextCapitalization.words,
+                decoration: const InputDecoration(
+                  hintText: "e.g., 2786 or Parklea",
+                ),
+              );
+            },
+
+            ///Suggestions
+            suggestionsCallback: (String search) {
+              if (search.isEmpty) {
+                return List<LocationsJson>.empty();
+              }
+              return locations.where(
+                (LocationsJson option) {
+                  final result = option.postcode!
+                          .toLowerCase()
+                          .contains(search.toLowerCase()) ||
+                      option.location!
+                          .toLowerCase()
+                          .contains(search.toLowerCase());
+
+                  return result;
+                },
+              ).toList();
+            },
+          );
+        },
       ),
+
+      // child: StatefulBuilder(
+      //   builder: (context, setState) {
+      //     return Autocomplete<LocationsJson>(
+      //       optionsMaxHeight: 300,
+
+      //       ///Options
+      //       optionsBuilder: (TextEditingValue textEditingValue) {
+      //         if (textEditingValue.text.isEmpty) {
+      //           return const Iterable<LocationsJson>.empty();
+      //         }
+      //         return locations.where(
+      //           (LocationsJson option) {
+      //             final result = option.postcode!.toLowerCase().contains(
+      //                       textEditingValue.text.toLowerCase(),
+      //                     ) ||
+      //                 option.location!.contains(
+      //                   textEditingValue.text.toLowerCase(),
+      //                 );
+
+      //             return result;
+      //           },
+      //         );
+      //       },
+      //       onSelected: (LocationsJson locationJson) {
+      //         controller.text = locationJson.location!;
+      //         print(locationJson.location);
+      //         setState(() {});
+      //       },
+      //       displayStringForOption: (LocationsJson option) => option.location!,
+
+      //       ///FieldView
+      //       fieldViewBuilder:
+      //           (context, eController, focusNode, onFieldSubmitted) {
+      //         return TextField(
+      //           onSubmitted: (String selection) => onFieldSubmitted(),
+      //           focusNode: focusNode,
+      //           controller: controller,
+      //           keyboardType: TextInputType.name,
+      //           // validator: FieldValidators.instance.commonValidator,
+      //           textCapitalization: TextCapitalization.words,
+      //           decoration: const InputDecoration(
+      //             hintText: "e.g., 2786 or Parklea",
+      //           ),
+      //         );
+      //       },
+
+      //       // ///Options View Builder
+      //       // optionsViewBuilder: (context, onSelected, options) {
+      //       //   return Align(
+      //       //     alignment: Alignment.topLeft,
+      //       //     child: Material(
+      //       //       shape: ContinuousRectangleBorder(
+      //       //         borderRadius: BorderRadius.circular(Sizes.borderRadiusL),
+      //       //       ),
+      //       //       elevation: 4,
+      //       //       child: ListView.builder(
+      //       //         padding: EdgeInsets.zero,
+      //       //         itemCount: options.length,
+      //       //         itemBuilder: (context, index) {
+      //       //           final LocationsJson option = options.elementAt(index);
+      //       //           return ListTile(
+      //       //             title: Text(option.location!),
+      //       //             subtitle: Text('Code: ${option.postcode}'),
+      //       //             onTap: () => onSelected(option),
+      //       //           );
+      //       //         },
+      //       //       ),
+      //       //     ),
+      //       //   );
+      //       // },
+      //     );
+      //   },
+      // ),
+
+      ///
+      // child: TextFormField(
+      //   controller: controller,
+      //   keyboardType: TextInputType.name,
+      //   validator: FieldValidators.instance.commonValidator,
+      //   textCapitalization: TextCapitalization.words,
+      //   decoration: const InputDecoration(
+      //     hintText: "e.g., Melbourne Cricket Ground",
+      //   ),
+      // ),
     );
   }
 }

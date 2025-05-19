@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
-
 import 'package:cricket_poc/lib_exports.dart';
 import 'package:fpdart/fpdart.dart';
 
@@ -50,8 +48,6 @@ class AuthRepository {
       }
 
       return right(isSignedIn);
-    } on SocketException {
-      return left(AppExceptions.instance.handleSocketException());
     } on MyHttpClientException catch (error) {
       ///Here --> error type: Failure
       return left(AppExceptions.instance.handleMyHTTPClientException(error));
@@ -85,8 +81,6 @@ class AuthRepository {
       );
 
       return showIntroPage;
-    } on SocketException {
-      throw left(AppExceptions.instance.handleSocketException());
     } on MyHttpClientException catch (error) {
       throw left(
         AppExceptions.instance.handleMyHTTPClientException(error),
@@ -113,10 +107,7 @@ class AuthRepository {
       }
 
       return right(message);
-    } on SocketException {
-      return left(AppExceptions.instance.handleSocketException());
     } on MyHttpClientException catch (error) {
-      ///Here --> error type: Failure
       return left(AppExceptions.instance.handleMyHTTPClientException(error));
     } catch (error) {
       return left(
@@ -143,8 +134,6 @@ class AuthRepository {
       }
 
       return right(message);
-    } on SocketException {
-      return left(AppExceptions.instance.handleSocketException());
     } on MyHttpClientException catch (error) {
       return left(AppExceptions.instance.handleMyHTTPClientException(error));
     } catch (error) {
@@ -166,8 +155,6 @@ class AuthRepository {
       }
 
       return right(message);
-    } on SocketException {
-      return left(AppExceptions.instance.handleSocketException());
     } on MyHttpClientException catch (error) {
       return left(AppExceptions.instance.handleMyHTTPClientException(error));
     } catch (error) {
@@ -197,8 +184,6 @@ class AuthRepository {
       }
 
       return right(message);
-    } on SocketException {
-      return left(AppExceptions.instance.handleSocketException());
     } on MyHttpClientException catch (error) {
       return left(AppExceptions.instance.handleMyHTTPClientException(error));
     } catch (error) {

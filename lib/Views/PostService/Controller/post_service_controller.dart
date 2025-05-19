@@ -33,6 +33,7 @@ class PostServiceController extends StateNotifier<_PostServiceStatus> {
               equals: isSameDay,
               hashCode: (dt) => dt.getHashCode,
             ),
+            locations: [],
             loading: false,
           ),
         );
@@ -396,6 +397,28 @@ class PostServiceController extends StateNotifier<_PostServiceStatus> {
   //########################## API CALLS ############################
   //###############################################################
 
+//* Get All Locations
+  FutureVoid getAllLocations(BuildContext context) async {
+    state = state.copyWith(loading: true);
+
+    final response = await _repository.getAllLocations();
+
+    state = state.copyWith(loading: false);
+
+    response.fold(
+      (failure) {
+        showErrorSnackBar(
+          context: context,
+          content: failure.message,
+          title: failure.title,
+        );
+      },
+      (locationsList) {
+        state = state.copyWith(locations: locationsList);
+      },
+    );
+  }
+
   //* Post the Service to API
   void postService(BuildContext context) async {
     state = state.copyWith(loading: true);
@@ -471,6 +494,7 @@ class _PostServiceStatus {
   List<String> selectedTimeSlots;
   List<String> selectedSessionDuration;
   Set<DateTime> selectedDates;
+  List<LocationsJson> locations;
   bool loading;
 
   _PostServiceStatus({
@@ -480,6 +504,7 @@ class _PostServiceStatus {
     required this.selectedTimeSlots,
     required this.selectedSessionDuration,
     required this.selectedDates,
+    required this.locations,
     required this.loading,
   });
 
@@ -490,6 +515,7 @@ class _PostServiceStatus {
     List<String>? selectedTimeSlots,
     List<String>? selectedSessionDuration,
     Set<DateTime>? selectedDates,
+    List<LocationsJson>? locations,
     bool? loading,
   }) {
     return _PostServiceStatus(
@@ -507,6 +533,7 @@ class _PostServiceStatus {
       selectedSessionDuration:
           selectedSessionDuration ?? this.selectedSessionDuration,
       selectedDates: selectedDates ?? this.selectedDates,
+      locations: locations ?? this.locations,
       loading: loading ?? this.loading,
     );
   }

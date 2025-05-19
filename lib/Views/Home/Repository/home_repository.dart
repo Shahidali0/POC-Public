@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:cricket_poc/lib_exports.dart';
 
 final homeRepositoryPr = Provider<HomeRepository>(
@@ -26,8 +25,6 @@ class HomeRepository {
       }
 
       return featuredServices;
-    } on SocketException catch (_) {
-      throw AppExceptions.instance.handleSocketException();
     } on MyHttpClientException catch (error) {
       throw AppExceptions.instance.handleMyHTTPClientException(error);
     } catch (e) {

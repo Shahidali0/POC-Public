@@ -80,6 +80,9 @@ dependencies:
   # Badges on Icons
   badges: ^3.1.2
 
+  #Autocomplete
+  flutter_typeahead: ^5.2.0
+
   # # For Location access
   # geocoding: ^3.0.0
   # geolocator: ^13.0.3

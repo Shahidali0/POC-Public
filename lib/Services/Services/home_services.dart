@@ -44,10 +44,13 @@ sealed class HomeServices {
   Future<String?> getUserNotificationCount({
     required String userId,
   });
+
   Future<String?> updateUserNotificationStatus({
     required String userId,
     required List<String> bookingIds,
   });
+
+  Future<String?> getAllLocations();
 }
 
 class _HomeServicesImpl implements HomeServices {
@@ -284,6 +287,21 @@ class _HomeServicesImpl implements HomeServices {
     final response = await BaseHttpClient.patchService(
       urlEndPoint: url,
       body: body,
+      headers: headers,
+    );
+
+    return response;
+  }
+
+  //* Get All Locations
+  @override
+  Future<String?> getAllLocations() async {
+    String url = "location";
+
+    final headers = await _apiHeaders.getHeadersWithToken();
+
+    final response = await BaseHttpClient.getService(
+      urlEndPoint: url,
       headers: headers,
     );
 

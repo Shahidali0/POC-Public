@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
-
 import 'package:cricket_poc/lib_exports.dart';
 import 'package:flutter/material.dart';
 import 'package:fpdart/fpdart.dart';
@@ -126,8 +124,6 @@ class ProfileRepository {
       }
 
       return right(message);
-    } on SocketException {
-      return left(AppExceptions.instance.handleSocketException());
     } on MyHttpClientException catch (error) {
       return left(AppExceptions.instance.handleMyHTTPClientException(error));
     } catch (error) {

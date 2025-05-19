@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:cricket_poc/lib_exports.dart';
 import 'package:fpdart/fpdart.dart';
 
@@ -63,8 +62,6 @@ class SportzHubRepository {
       }
 
       return userBookings;
-    } on SocketException catch (_) {
-      throw AppExceptions.instance.handleSocketException();
     } on MyHttpClientException catch (error) {
       throw AppExceptions.instance.handleMyHTTPClientException(error);
     } catch (e) {
